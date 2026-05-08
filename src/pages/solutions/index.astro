@@ -1,0 +1,18 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import PageHero from '~/components/PageHero.astro';
+import Industries from '~/components/home/Industries.astro';
+import FinalCTA from '~/components/home/FinalCTA.astro';
+---
+<Layout
+  title="Solutions — One portal, every kind of client work"
+  description="ClientCove fits agencies, MSPs, law firms, accountants, property managers, consultants — anyone who runs work for paying clients."
+>
+  <PageHero
+    eyebrow="SOLUTIONS"
+    title="Built for the work you <em class='cool'>actually do.</em>"
+    subtitle="Whether your deliverable is a campaign, a contract, a quarterly report, a service ticket, or a property — ClientCove is the operating system for the relationship."
+  />
+  <Industries />
+  <FinalCTA />
+</Layout>

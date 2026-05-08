@@ -1,0 +1,142 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import PageHero from '~/components/PageHero.astro';
+import FinalCTA from '~/components/home/FinalCTA.astro';
+import Icon from '~/components/ui/Icon.astro';
+
+const principles = [
+  {
+    t: 'Buy software, don’t rent it',
+    b: 'Subscriptions made software cheap to start and expensive forever. We sell licenses. Yours, paid once, kept forever.',
+  },
+  {
+    t: 'Your data, your domain',
+    b: 'Self-host on your VPS, behind your firewall. Your clients see your brand on your URL. We never see the database.',
+  },
+  {
+    t: 'One schema beats ten integrations',
+    b: 'Tickets, projects, time, files, contracts and invoices live in one database. They share data because they share rows — no Zapier necessary.',
+  },
+  {
+    t: 'Ship the boring 80%',
+    b: 'No AI gimmicks. No social feed. Just the daily-driver tools every service business needs, polished hard.',
+  },
+];
+
+const milestones = [
+  { y: '2022', t: 'v1 launched as an internal tool at LayerCake Marketing.' },
+  { y: '2023', t: 'Released as a perpetual license. First 100 customers in 6 months.' },
+  { y: '2024', t: 'v2 — Stripe billing, multi-tenant white-label, Docker self-host.' },
+  { y: '2025', t: 'v3 — Native time-tracking, e-signature contracts, sticky 4.9★ reviews.' },
+  { y: '2026', t: 'v3.2 — 2,400+ businesses live. Source code license for agencies.' },
+];
+---
+<Layout
+  title="About — A bet against per-seat pricing"
+  description="ClientCove is built by a small team in California. We sell licensed software, not subscriptions. We think you should own the portal your clients live in."
+>
+  <PageHero
+    eyebrow="ABOUT"
+    title="A bet against <em class='acc'>per-seat pricing.</em>"
+    subtitle="ClientCove started as the internal tool we used to run our own agency. We open-licensed it because we kept getting asked to."
+  />
+
+  <section class="sect" style="padding-top:0;">
+    <div class="container">
+      <div class="reveal" style="max-width:720px;margin:0 auto;">
+        <p style="font-size:18px;line-height:1.65;color:var(--color-ink-2);">
+          We ran a marketing agency. We tried every client portal — SuperOkay, Copilot, Plutio, Bonsai. They were either rented forever, or so opinionated they fought our workflow, or so generic they replaced nothing.
+        </p>
+        <p style="font-size:18px;line-height:1.65;color:var(--color-ink-2);margin-top:18px;">
+          So we built our own. It replaced ClickUp, Notion, DocuSign, Dropbox, and Harvest in our stack. Our clients started asking us to build them one too. We took the obvious next step: <strong>licensed it.</strong> Pay once. Own forever.
+        </p>
+        <p style="font-size:18px;line-height:1.65;color:var(--color-ink-2);margin-top:18px;">
+          Today 2,400+ service businesses run on ClientCove — agencies, MSPs, law firms, accountants, consultants, property managers. The portal lives on their domain, in their colors. Their clients have never heard of us. That’s the point.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sect" style="background:var(--color-bg-2);">
+    <div class="container-wide">
+      <div class="reveal" style="text-align:center;max-width:680px;margin:0 auto 56px;">
+        <div class="eyebrow teal" style="margin-bottom:14px;justify-content:center;"><span class="badge">PRINCIPLES</span> What we believe</div>
+        <h2 class="cc-h2">Four ideas we won't compromise on.</h2>
+      </div>
+      <div class="principles">
+        {principles.map(p => (
+          <div class="card reveal" style="padding:28px;">
+            <h3 class="cc-h3" style="margin-bottom:10px;">{p.t}</h3>
+            <p style="font-size:14.5px;line-height:1.6;color:var(--color-ink-2);margin:0;">{p.b}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sect">
+    <div class="container">
+      <div class="reveal" style="text-align:center;max-width:680px;margin:0 auto 56px;">
+        <div class="eyebrow" style="margin-bottom:14px;justify-content:center;"><span class="badge">TIMELINE</span> A short history</div>
+        <h2 class="cc-h2">Five years of shipping.</h2>
+      </div>
+      <ol class="timeline">
+        {milestones.map(m => (
+          <li class="reveal">
+            <span class="year num">{m.y}</span>
+            <span class="dot"></span>
+            <p>{m.t}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="sect" style="background:var(--color-bg-2);">
+    <div class="container">
+      <div class="reveal" style="text-align:center;max-width:520px;margin:0 auto 32px;">
+        <h2 class="cc-h2">Want to talk?</h2>
+        <p style="font-size:16px;color:var(--color-ink-2);margin-top:14px;">
+          We're a small team. We answer our own email.
+        </p>
+      </div>
+      <div class="reveal" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <a href="/contact" class="btn btn-dark btn-lg">Email the team <Icon name="arrow" class="arrow" /></a>
+        <a href="/pricing" class="btn btn-ghost btn-lg">See pricing</a>
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA />
+</Layout>
+
+<style>
+  .principles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 920px; margin: 0 auto; }
+  .timeline {
+    list-style: none; padding: 0; margin: 0 auto;
+    max-width: 720px; position: relative;
+  }
+  .timeline::before {
+    content: ""; position: absolute; left: 80px; top: 12px; bottom: 12px;
+    width: 1px; background: var(--color-line);
+  }
+  .timeline li {
+    display: grid; grid-template-columns: 80px 24px 1fr;
+    align-items: flex-start; gap: 16px;
+    padding: 18px 0; position: relative;
+  }
+  .timeline .year {
+    font-family: var(--font-serif); font-weight: 700;
+    color: var(--color-ink); font-size: 18px;
+  }
+  .timeline .dot {
+    width: 12px; height: 12px; border-radius: 999px;
+    background: var(--color-orange);
+    border: 3px solid #fff; box-shadow: 0 0 0 1px var(--color-line);
+    margin-top: 6px; margin-left: 6px;
+  }
+  .timeline p {
+    margin: 0; font-size: 15.5px; line-height: 1.6; color: var(--color-ink-2);
+  }
+  @media (max-width: 720px) { .principles { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,23 @@
+---
+interface Props {
+  size?: number;
+  class?: string;
+  title?: string;
+}
+const { size = 36, class: className = '', title } = Astro.props;
+---
+<svg
+  viewBox="0 0 165.11 165.11"
+  width={size}
+  height={size}
+  class={className}
+  role={title ? 'img' : undefined}
+  aria-hidden={title ? undefined : 'true'}
+  aria-label={title}
+>
+  <path fill="#0A1F2E" d="M119.8,69.73c-6.05-17.46-23.46-28.35-41.86-26.14L82.73,0l3.13,25.72c25.5,1.44,46.92,19.6,52.48,44.51l-18.54-.49Z"/>
+  <path fill="#0A1F2E" d="M95.5,119.65c17.48-6.04,28.39-23.43,26.17-41.8l43.65,4.78-25.75,3.13c-1.41,25.47-19.63,46.86-44.53,52.41l.46-18.51Z"/>
+  <path fill="#E76F2A" d="M69.82,45.46c-17.48,6.04-28.39,23.47-26.17,41.8L0,82.52l25.75-3.13c1.44-25.47,19.63-46.86,44.57-52.41l-.49,18.48Z"/>
+  <path fill="#E76F2A" d="M45.52,95.38c6.05,17.46,23.5,28.35,41.86,26.14l-4.75,43.6-3.13-25.72c-25.5-1.4-46.92-19.6-52.48-44.47l18.5.46Z"/>
+  <polygon fill="#E76F2A" points="102.46 62.81 82.94 107.67 76.82 88.42 57.51 82.31 102.46 62.81"/>
+</svg>

@@ -1,0 +1,40 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import Hero from '~/components/home/Hero.astro';
+import TrustBar from '~/components/home/TrustBar.astro';
+import ProblemSolution from '~/components/home/ProblemSolution.astro';
+import FeatureGrid from '~/components/home/FeatureGrid.astro';
+import ProductTour from '~/components/home/ProductTour.astro';
+import Industries from '~/components/home/Industries.astro';
+import Testimonial from '~/components/home/Testimonial.astro';
+import PricingTeaser from '~/components/home/PricingTeaser.astro';
+import Faq from '~/components/Faq.astro';
+import FinalCTA from '~/components/home/FinalCTA.astro';
+import { HOMEPAGE_FAQS } from '~/lib/faqs';
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: HOMEPAGE_FAQS.map(f => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+<Layout
+  title="ClientCove — One branded portal. Every client. All your work."
+  description="The licensed, self-hosted client portal for service businesses. One branded portal for every client, every project, every invoice — completely under your control. Pay once. Own forever."
+  jsonLd={faqLd}
+>
+  <Hero />
+  <TrustBar />
+  <ProblemSolution />
+  <FeatureGrid />
+  <ProductTour />
+  <Industries />
+  <Testimonial />
+  <PricingTeaser />
+  <Faq items={HOMEPAGE_FAQS} />
+  <FinalCTA />
+</Layout>

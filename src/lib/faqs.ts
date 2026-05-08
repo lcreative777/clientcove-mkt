@@ -1,0 +1,18 @@
+export const HOMEPAGE_FAQS = [
+  { q: 'What does "self-hosted" actually mean?',
+    a: "You install ClientCove on your own server, your own subdomain, with your own database. Your clients' data never touches our infrastructure. We ship a Docker compose, a one-click DigitalOcean image, and a managed hosting option if you'd rather we ran it." },
+  { q: 'Is the source code included?',
+    a: 'Yes. The Agency License includes full source-code access under a perpetual commercial license. Modify, extend, fork — no rev-share, no audits.' },
+  { q: 'How do updates work after year one?',
+    a: 'Year one of updates is included with every license. After that, annual updates are optional ($97/yr Single Site, $297/yr Agency). Skip a year, your install keeps working.' },
+  { q: 'Can I migrate off ClickUp / Notion / DocuSign / Harvest?',
+    a: 'Yes. We ship importers for ClickUp, Notion, Asana, Trello, Harvest, Toggl, DocuSign and HelloSign. The Agency License includes 4 hours of white-glove migration help.' },
+  { q: 'Is there a per-user fee?',
+    a: "Never. Add 5 users or 5,000. Add 10 clients or 10,000. The license fee is the only fee. Stripe takes its standard processing on invoices — that's it." },
+  { q: 'What about white-labeling?',
+    a: 'The Agency License includes full white-label rights — your domain, your logo, your colors, your favicon. Clients see your brand only.' },
+  { q: 'How long does setup take?',
+    a: 'About 90 seconds with the DigitalOcean image. About 20 minutes with Docker on any VPS. About a coffee with the managed hosting option.' },
+  { q: 'What happens if ClientCove disappears tomorrow?',
+    a: "Your install keeps running. You have the source. You have the database. You have the data. That's the whole point of buying instead of renting." },
+];

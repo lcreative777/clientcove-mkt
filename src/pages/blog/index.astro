@@ -1,0 +1,116 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import PageHero from '~/components/PageHero.astro';
+import { getCollection } from 'astro:content';
+import Icon from '~/components/ui/Icon.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+const featured = posts.find(p => p.data.featured) ?? posts[0];
+const rest = posts.filter(p => p.id !== featured.id);
+
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+---
+<Layout
+  title="Blog — Notes from the cove"
+  description="Engineering posts, customer case studies, and the occasional opinion on how service businesses should run software."
+>
+  <PageHero
+    eyebrow="BLOG"
+    title="Notes from <em class='cool'>the cove.</em>"
+    subtitle="Engineering posts, customer stories, and the occasional opinion on how service businesses should run software."
+  />
+
+  <section class="sect" style="padding-top:0;">
+    <div class="container-wide">
+      {featured && (
+        <a href={`/blog/${featured.id}`} class="featured-card reveal">
+          <div class="left">
+            <span class="cat">{featured.data.category}</span>
+            <h2 class="cc-h2" style="margin:14px 0 14px;">{featured.data.title}</h2>
+            <p>{featured.data.description}</p>
+            <div class="meta">
+              <span>{featured.data.author}</span>
+              <span>·</span>
+              <time datetime={featured.data.pubDate.toISOString()}>{fmt(featured.data.pubDate)}</time>
+            </div>
+            <span class="lnk" style="margin-top:18px;">Read article <Icon name="arrow" /></span>
+          </div>
+          <div class="right" aria-hidden="true">
+            <div class="art-mesh"></div>
+            <div class="art-grid grid-bg"></div>
+            <div class="art-pill">{featured.data.category}</div>
+          </div>
+        </a>
+      )}
+
+      <div class="post-grid">
+        {rest.map(p => (
+          <a href={`/blog/${p.id}`} class="post-card reveal">
+            <span class="cat">{p.data.category}</span>
+            <h3 class="cc-h3" style="margin:10px 0 8px;">{p.data.title}</h3>
+            <p>{p.data.description}</p>
+            <div class="meta">
+              <span>{p.data.author}</span>
+              <span>·</span>
+              <time datetime={p.data.pubDate.toISOString()}>{fmt(p.data.pubDate)}</time>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .featured-card {
+    display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px;
+    background: #fff; border: 1px solid var(--color-line);
+    border-radius: 16px; overflow: hidden; padding: 0;
+    transition: border-color .2s ease, transform .2s ease;
+  }
+  .featured-card:hover { border-color: var(--color-ink-3); transform: translateY(-2px); }
+  .featured-card .left { padding: 40px 40px 36px; }
+  .featured-card .right { position: relative; min-height: 280px; background: linear-gradient(135deg, var(--color-orange-50), var(--color-teal-50)); }
+  .featured-card .right .art-mesh {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 60% at 30% 30%, rgba(231,111,42,.4), transparent 70%),
+      radial-gradient(ellipse 60% 60% at 70% 70%, rgba(43,179,179,.4), transparent 70%);
+  }
+  .featured-card .right .art-grid { position: absolute; inset: 0; opacity: .5; }
+  .featured-card .right .art-pill {
+    position: absolute; top: 24px; right: 24px;
+    background: rgba(255,255,255,.85); backdrop-filter: blur(8px);
+    padding: 8px 14px; border-radius: 999px;
+    font-size: 11px; font-weight: 600; letter-spacing: .08em;
+    color: var(--color-orange);
+  }
+  .cat {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--color-orange);
+  }
+  .featured-card p { font-size: 16px; line-height: 1.6; color: var(--color-ink-2); margin: 0 0 18px; }
+  .meta { display: flex; gap: 8px; font-size: 13px; color: var(--color-ink-3); }
+
+  .post-grid {
+    margin-top: 24px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  }
+  .post-card {
+    background: #fff; border: 1px solid var(--color-line);
+    border-radius: 14px; padding: 26px;
+    transition: border-color .2s ease, transform .2s ease;
+    display: flex; flex-direction: column;
+  }
+  .post-card:hover { border-color: var(--color-ink-3); transform: translateY(-2px); }
+  .post-card p { font-size: 14px; line-height: 1.55; color: var(--color-ink-2); margin: 0 0 16px; flex: 1; }
+
+  @media (max-width: 880px) {
+    .featured-card { grid-template-columns: 1fr; }
+    .featured-card .left { padding: 28px; }
+    .featured-card .right { min-height: 180px; }
+    .post-grid { grid-template-columns: 1fr; }
+  }
+</style>

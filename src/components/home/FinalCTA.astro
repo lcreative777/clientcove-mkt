@@ -1,0 +1,48 @@
+---
+import Mark from '~/components/ui/Mark.astro';
+import Icon from '~/components/ui/Icon.astro';
+---
+<section class="on-dark final-cta">
+  <div class="cta-bg" aria-hidden="true"></div>
+  <div class="grid-bg-dark cta-grid" aria-hidden="true"></div>
+
+  <div class="container-wide" style="position:relative;text-align:center;max-width:880px;margin:0 auto;">
+    <div class="reveal"><Mark size={56} /></div>
+    <h2 class="cc-h1 reveal" style="margin-top:30px;color:#fff;">
+      Stop renting your stack.<br />
+      <em class="acc">Own the portal</em> your clients live in.
+    </h2>
+    <p class="reveal cta-sub">
+      One install. One branded URL. Every project, ticket, contract and invoice —
+      under your domain, on your stack, at your price.
+    </p>
+    <div class="reveal cta-btns">
+      <a href="/pricing" class="btn btn-primary btn-lg">
+        Buy ClientCove — $497 <Icon name="arrow" class="arrow" />
+      </a>
+      <a href="#tour" class="btn btn-ghost-light btn-lg">See live demo</a>
+    </div>
+    <div class="reveal trust-line">
+      30-day money-back guarantee · 2,400+ businesses on the platform · v3.2 shipped April 2026
+    </div>
+  </div>
+</section>
+
+<style>
+  .final-cta { position: relative; overflow: hidden; padding: 140px 0; }
+  .cta-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 70% 50%, rgba(231,111,42,.25), transparent 60%),
+      radial-gradient(ellipse 60% 80% at 20% 50%, rgba(43,179,179,.18), transparent 60%);
+    pointer-events: none;
+  }
+  .cta-grid { position: absolute; inset: 0; opacity: .4; }
+  .cta-sub {
+    font-size: 19px; line-height: 1.5; color: rgba(222,231,238,.75);
+    margin: 24px auto 0; max-width: 600px;
+  }
+  .cta-btns { display: flex; gap: 10px; justify-content: center; margin-top: 40px; flex-wrap: wrap; }
+  .trust-line { margin-top: 28px; font-size: 13px; color: rgba(222,231,238,.5); }
+  @media (max-width: 720px) { .final-cta { padding: 90px 0; } }
+</style>

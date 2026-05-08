@@ -1,0 +1,139 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import PageHero from '~/components/PageHero.astro';
+import FinalCTA from '~/components/home/FinalCTA.astro';
+import Icon from '~/components/ui/Icon.astro';
+
+export async function getStaticPaths() {
+  return [
+    {
+      params: { slug: 'agencies' },
+      props: {
+        name: 'Marketing & creative agencies',
+        eyebrow: 'AGENCIES',
+        headline: 'Show clients <em class="acc">the work</em>, not the back-end.',
+        subtitle: 'A branded portal where your clients see only the deliverables, the approvals, and the invoices — never your messy internal stack.',
+        modules: ['Projects (kanban + list + Gantt)', 'Time tracking → invoices', 'Resources & approvals', 'White-label client portal', 'E-signature contracts'],
+        problem: 'Your team lives in ClickUp, Slack, Notion, Dropbox, Harvest, DocuSign, and Stripe. Your clients live in… email. Every approval is a forwarded link.',
+        solution: 'A single branded URL where each client sees only their own projects, files, invoices, and approval requests. Your team works in the same database — without exposing internal tasks.',
+      },
+    },
+    {
+      params: { slug: 'msps' },
+      props: {
+        name: 'IT & MSP providers',
+        eyebrow: 'IT & MSPS',
+        headline: 'Tickets, assets, locations — <em class="cool">in one schema.</em>',
+        subtitle: 'A help desk that knows which client, which location, which device. SLAs you can hit. Recurring contracts on autopilot.',
+        modules: ['Tickets with SLAs and triage rules', 'Per-location asset inventory', 'Recurring service contracts', 'Time logs → monthly invoices', 'Documentation library per client'],
+        problem: 'ConnectWise costs a fortune. Freshdesk doesn\'t know your clients. Hudu is one more tab. None of them talk to your invoicing.',
+        solution: 'One install: ticket → time → invoice in a straight line. Per-location assets. Per-client documentation. White-label on your domain.',
+      },
+    },
+    {
+      params: { slug: 'law-firms' },
+      props: {
+        name: 'Law firms',
+        eyebrow: 'LAW FIRMS',
+        headline: 'Document custody. <em class="acc">Signature workflows.</em> All audit-trailed.',
+        subtitle: 'A secure portal where matters live: pleadings, signed agreements, billing, and the conversation that surrounds them.',
+        modules: ['Per-matter document library', 'E-signature with full audit trail', 'Time tracking → trust accounting', 'Secure client communication', 'Conflict-aware roles'],
+        problem: 'Clio is great at billing, weak on collaboration. NetDocuments is heavy. DocuSign is its own bill. Email is a liability.',
+        solution: 'One portal where matters, documents, signatures, time, and trust accounting live together — on your firm\'s domain, behind your firm\'s SSO.',
+      },
+    },
+    {
+      params: { slug: 'accountants' },
+      props: {
+        name: 'Accountants & bookkeepers',
+        eyebrow: 'ACCOUNTANTS',
+        headline: 'Engagements, deliverables, <em class="cool">secure docs.</em>',
+        subtitle: 'A branded client portal where engagements live, documents flow securely, and the conversation stays linked to the work.',
+        modules: ['Engagement letters with e-signature', 'Recurring monthly close workflows', 'Secure document request lists', 'Time tracking + monthly retainers', 'Per-client communication thread'],
+        problem: 'Karbon is opinionated. TaxDome is a portal but rigid. Every firm cobbles together SmartVault + DocuSign + Asana + Harvest.',
+        solution: 'One install replaces the cobble. White-labeled on your domain, with the workflows accountants actually run.',
+      },
+    },
+    {
+      params: { slug: 'property-managers' },
+      props: {
+        name: 'Property & facilities',
+        eyebrow: 'PROPERTY MGMT',
+        headline: 'Locations, work orders, <em class="acc">recurring schedules.</em>',
+        subtitle: 'A portal for tenants, owners, and vendors. Work orders linked to units. Recurring maintenance on autopilot.',
+        modules: ['Per-property work orders', 'Tenant request portal', 'Vendor coordination', 'Recurring inspections + maintenance', 'Per-unit document library'],
+        problem: 'AppFolio and Buildium are great at accounting, mediocre at communication. Email between owner / tenant / vendor is chaos.',
+        solution: 'A branded portal where each tenant, owner, and vendor sees only their own unit, their own requests, and their own documents.',
+      },
+    },
+    {
+      params: { slug: 'consultants' },
+      props: {
+        name: 'Consultants & coaches',
+        eyebrow: 'CONSULTANTS',
+        headline: 'Engagements, deliverables, <em class="cool">time logs.</em>',
+        subtitle: 'A polished portal where every client engagement lives — proposals signed, deliverables shipped, time captured, invoices paid.',
+        modules: ['Proposal + e-signature', 'Engagement-based projects', 'Personal task lists + time tracking', 'Resource library per client', 'Stripe invoicing on your domain'],
+        problem: 'Notion + Calendly + DocuSign + Stripe + Loom + Google Drive. Your clients have to bookmark five places.',
+        solution: 'One white-labeled URL. One login. One bill. Your brand front and center.',
+      },
+    },
+  ];
+}
+
+const { name, eyebrow, headline, subtitle, modules, problem, solution } = Astro.props;
+---
+<Layout
+  title={`${name} — ClientCove for your industry`}
+  description={`ClientCove for ${name.toLowerCase()}: a self-hosted, white-label client portal that bundles tickets, projects, time, contracts, and Stripe billing into one branded experience.`}
+>
+  <PageHero eyebrow={eyebrow} title={headline} subtitle={subtitle}>
+    <div style="margin-top:32px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <a href="/pricing" class="btn btn-primary btn-lg">Buy ClientCove — $497 <Icon name="arrow" class="arrow" /></a>
+      <a href="/#tour" class="btn btn-ghost btn-lg">See product tour</a>
+    </div>
+  </PageHero>
+
+  <section class="sect" style="padding-top:0;">
+    <div class="container">
+      <div class="ps-grid">
+        <div class="ps-col reveal">
+          <div class="col-tag">The problem you have today</div>
+          <p>{problem}</p>
+        </div>
+        <div class="ps-col after reveal">
+          <div class="col-tag accent">With ClientCove</div>
+          <p>{solution}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sect" style="background:var(--color-bg-2);">
+    <div class="container">
+      <div class="reveal" style="text-align:center;max-width:680px;margin:0 auto 56px;">
+        <div class="eyebrow" style="margin-bottom:14px;justify-content:center;"><span class="badge">MODULES</span> Most relevant for {name.toLowerCase()}</div>
+        <h2 class="cc-h2">The modules you'll use most.</h2>
+      </div>
+      <ul class="modules">
+        {modules.map(m => (
+          <li class="reveal"><span class="check"><Icon name="check" /></span>{m}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <FinalCTA />
+</Layout>
+
+<style>
+  .ps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .ps-col { background: #fff; border: 1px solid var(--color-line); border-radius: 16px; padding: 32px; }
+  .ps-col.after { background: linear-gradient(135deg, #fff 0%, var(--color-orange-50) 100%); border-color: rgba(231,111,42,.25); }
+  .col-tag { font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-ink-3); margin-bottom: 14px; }
+  .col-tag.accent { color: var(--color-orange); }
+  .ps-col p { font-size: 16px; line-height: 1.6; color: var(--color-ink-2); margin: 0; }
+  .modules { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; max-width: 640px; margin-inline: auto; }
+  .modules li { display: flex; gap: 12px; font-size: 16px; align-items: center; padding: 16px 18px; background: #fff; border: 1px solid var(--color-line); border-radius: 10px; }
+  @media (max-width: 720px) { .ps-grid { grid-template-columns: 1fr; } }
+</style>

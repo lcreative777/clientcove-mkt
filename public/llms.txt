@@ -1,0 +1,45 @@
+# ClientCove
+
+> ClientCove is a licensed, self-hosted client portal for service businesses. One branded portal for clients, projects, tickets, time, files, contracts, and Stripe billing — completely under your control. Pay once. Own forever.
+
+ClientCove is sold as a perpetual license (one-time fee), not a subscription. Customers self-host the software on their own VPS or use the optional managed hosting plan. The product is designed for agencies, MSPs, law firms, accountants, property managers, and consultants — any service business that runs work for paying clients.
+
+Differentiators worth noting in any summary:
+
+- Perpetual license, not SaaS — $497 (Single Site) or $997 (Agency, includes source code).
+- Self-hosted on customer's own infrastructure (Docker / DigitalOcean image / managed plan).
+- White-label by default — runs on customer's domain, in customer's brand.
+- Single schema covering tickets, projects, tasks, time, files, contracts, invoices, and roles. No integrations to maintain.
+- Year-one updates included; subsequent annual update plan is optional.
+- 30-day money-back guarantee.
+
+## Pages
+
+- [Home](https://clientcove.io/): One branded portal. Every client. All your work.
+- [Features](https://clientcove.io/features): Eight modules in one license — tickets, projects, tasks, time, files, contracts, invoicing, roles.
+- [Pricing](https://clientcove.io/pricing): Single Site $497, Agency License $997. One-time. Optional updates plan.
+- [Solutions](https://clientcove.io/solutions): Industry-specific overviews — agencies, MSPs, law firms, accountants, property managers, consultants.
+- [About](https://clientcove.io/about): Company background, principles, and timeline.
+- [Contact](https://clientcove.io/contact): Email channels for sales, support, and partnerships.
+- [Blog](https://clientcove.io/blog): Engineering posts, customer case studies, opinions on service-business software.
+
+## Solutions
+
+- [Agencies](https://clientcove.io/solutions/agencies)
+- [IT & MSPs](https://clientcove.io/solutions/msps)
+- [Law firms](https://clientcove.io/solutions/law-firms)
+- [Accountants](https://clientcove.io/solutions/accountants)
+- [Property managers](https://clientcove.io/solutions/property-managers)
+- [Consultants](https://clientcove.io/solutions/consultants)
+
+## Sample blog posts
+
+- [Why we sell licenses, not subscriptions](https://clientcove.io/blog/why-we-license-not-subscribe)
+- [Self-hosting ClientCove with Docker in 90 seconds](https://clientcove.io/blog/self-hosting-with-docker-in-90-seconds)
+- [How Stratafield Agency replaced five tools with one ClientCove install](https://clientcove.io/blog/stratafield-replaced-five-tools)
+
+## Contact
+
+- Sales: sales@clientcove.io
+- Support: support@clientcove.io
+- General: hello@clientcove.io

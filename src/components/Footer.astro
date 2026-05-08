@@ -1,0 +1,103 @@
+---
+import Logo from './ui/Logo.astro';
+
+const cols = [
+  { h: 'Product', items: [
+    { l: 'Features', href: '/features' },
+    { l: 'Pricing', href: '/pricing' },
+    { l: 'Current', href: '/current' },
+    { l: 'Changelog', href: '/blog' },
+  ]},
+  { h: 'Industries', items: [
+    { l: 'Agencies', href: '/industries' },
+    { l: 'IT & MSPs', href: '/industries' },
+    { l: 'Legal & accounting', href: '/industries' },
+    { l: 'Property & facilities', href: '/industries' },
+    { l: 'Architecture & engineering', href: '/industries' },
+    { l: 'Government & education', href: '/industries' },
+  ]},
+  { h: 'Resources', items: [
+    { l: 'Blog', href: '/blog' },
+    { l: 'Documentation', href: 'https://docs.clientcove.io' },
+    { l: 'Self-host playbook', href: 'https://docs.clientcove.io/self-host' },
+    { l: 'Contact', href: '/contact' },
+  ]},
+  { h: 'Company', items: [
+    { l: 'About', href: '/about' },
+    { l: 'Pricing', href: '/pricing' },
+    { l: 'Contact', href: '/contact' },
+    { l: 'License', href: '/license' },
+  ]},
+];
+
+const year = new Date().getFullYear();
+---
+<footer class="on-dark site-footer">
+  <div class="container-wide grid">
+    <div>
+      <Logo inverse height={26} />
+      <p>
+        One branded portal for your clients, your team, and every piece of work that runs between them.
+      </p>
+    </div>
+    {cols.map(c => (
+      <div>
+        <div class="col-head">{c.h}</div>
+        <ul>
+          {c.items.map(i => (
+            <li><a href={i.href}>{i.l}</a></li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+  <div class="container-wide bottom">
+    <div>© {year} ClientCove. Built for service businesses that value control.</div>
+    <div class="legal">
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/license">License</a>
+      <a href="/security">Security</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer { padding-top: 100px; padding-bottom: 40px; }
+  .site-footer .grid {
+    display: grid;
+    grid-template-columns: 1.5fr repeat(4, 1fr);
+    gap: 48px;
+  }
+  .site-footer p {
+    margin-top: 18px; font-size: 14px;
+    color: rgba(222,231,238,.55); line-height: 1.6; max-width: 280px;
+  }
+  .site-footer .col-head {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
+    text-transform: uppercase; color: rgba(222,231,238,.4); margin-bottom: 16px;
+  }
+  .site-footer ul {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .site-footer ul a {
+    font-size: 14px; color: rgba(222,231,238,.85);
+    transition: color .15s ease;
+  }
+  .site-footer ul a:hover { color: #fff; }
+  .site-footer .bottom {
+    margin-top: 80px; padding-top: 28px;
+    border-top: 1px solid rgba(255,255,255,.08);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px; color: rgba(222,231,238,.5);
+    flex-wrap: wrap; gap: 14px;
+  }
+  .site-footer .legal { display: flex; gap: 22px; }
+  .site-footer .legal a:hover { color: #fff; }
+
+  @media (max-width: 980px) {
+    .site-footer .grid { grid-template-columns: repeat(2, 1fr); gap: 36px; }
+    .site-footer .grid > div:first-child { grid-column: 1 / -1; }
+  }
+</style>

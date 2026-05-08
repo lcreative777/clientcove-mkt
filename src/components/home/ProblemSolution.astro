@@ -1,0 +1,66 @@
+---
+import Icon from '~/components/ui/Icon.astro';
+---
+<section class="sect ps-section">
+  <div class="container-wide">
+    <div class="reveal heading-row">
+      <div>
+        <div class="eyebrow ink" style="margin-bottom:14px;">
+          <span class="badge" style="background:rgba(10,31,46,.06);color:var(--color-ink-2);">PROBLEM → SOLUTION</span>
+          The daily client scramble — solved
+        </div>
+        <h2 class="cc-h1">Stop renting six tools. <em class="cool">Own the one</em> that replaces them.</h2>
+      </div>
+    </div>
+
+    <div class="ps-grid">
+      <div class="ps-col before reveal" aria-labelledby="before-h">
+        <div class="col-tag" id="before-h">Before ClientCove</div>
+        <ul>
+          <li><span class="x"><Icon name="x" /></span><div><strong>Notion + ClickUp + Slack + DocuSign + Harvest + Stripe.</strong> Six tabs open. Nothing actually talks. Per-seat pricing on each.</div></li>
+          <li><span class="x"><Icon name="x" /></span><div><strong>Client portals are an afterthought.</strong> Files in Dropbox, contracts in DocuSign, invoices in QuickBooks — clients chase you for the link.</div></li>
+          <li><span class="x"><Icon name="x" /></span><div><strong>Your data lives on someone else's server.</strong> Outage? You wait. Pricing change? You pay. Account deleted? Good luck.</div></li>
+          <li><span class="x"><Icon name="x" /></span><div><strong>Monthly bills compound forever.</strong> $30/seat × 5 tools × 12 people × 5 years = $108k. You own nothing.</div></li>
+        </ul>
+      </div>
+      <div class="ps-col after reveal" aria-labelledby="after-h">
+        <div class="col-tag accent" id="after-h">With ClientCove</div>
+        <ul>
+          <li><span class="check"><Icon name="check" /></span><div><strong>One install. One schema.</strong> Tickets, projects, tasks, files, contracts, invoices — they actually share data because they share a database.</div></li>
+          <li><span class="check"><Icon name="check" /></span><div><strong>Branded as your own.</strong> Your domain, your logo, your colors. Clients log into <em>your</em> portal — they never see ours.</div></li>
+          <li><span class="check"><Icon name="check" /></span><div><strong>You own everything.</strong> Self-host on your VPS, behind your firewall. Or let us run it. Either way, the database is yours.</div></li>
+          <li><span class="check"><Icon name="check" /></span><div><strong>Pay once. $497.</strong> No per-seat tax. No quotas. Annual updates are optional. Ship in 90 seconds with our DigitalOcean image.</div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ps-section { background: var(--color-bg-2); }
+  .heading-row { max-width: 760px; margin-bottom: 56px; }
+  .ps-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .ps-col {
+    background: #fff; border: 1px solid var(--color-line);
+    border-radius: 16px; padding: 36px;
+  }
+  .ps-col.after {
+    background: linear-gradient(135deg, #fff 0%, var(--color-orange-50) 100%);
+    border-color: rgba(231,111,42,.25);
+  }
+  .col-tag {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--color-ink-3);
+    margin-bottom: 22px;
+  }
+  .col-tag.accent { color: var(--color-orange); }
+  .ps-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 18px; }
+  .ps-col li { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; line-height: 1.55; color: var(--color-ink-2); }
+  .ps-col li strong { color: var(--color-ink); font-weight: 600; }
+  .ps-col li .check, .ps-col li .x { margin-top: 2px; }
+  @media (max-width: 880px) {
+    .ps-grid { grid-template-columns: 1fr; }
+  }
+</style>

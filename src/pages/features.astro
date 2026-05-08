@@ -1,0 +1,99 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import PageHero from '~/components/PageHero.astro';
+import FeatureGrid from '~/components/home/FeatureGrid.astro';
+import Faq from '~/components/Faq.astro';
+import FinalCTA from '~/components/home/FinalCTA.astro';
+import Icon from '~/components/ui/Icon.astro';
+
+const compare = [
+  { feat: 'Tickets & support inbox',         clientcove: '✓ Native', stack: 'Zendesk / Help Scout' },
+  { feat: 'Project management (kanban/list/timeline)', clientcove: '✓ Native', stack: 'ClickUp / Asana' },
+  { feat: 'Personal tasks + time tracking',  clientcove: '✓ Native', stack: 'Todoist + Harvest' },
+  { feat: 'Resources / file library',        clientcove: '✓ Native', stack: 'Dropbox / Google Drive' },
+  { feat: 'Contracts + e-signature',         clientcove: '✓ Native', stack: 'DocuSign / HelloSign' },
+  { feat: 'Invoices + Stripe billing',       clientcove: '✓ Native', stack: 'QuickBooks + Stripe' },
+  { feat: 'Client portal (white-label)',     clientcove: '✓ Native', stack: 'SuperOkay / Copilot' },
+  { feat: 'Self-hosting on your domain',     clientcove: '✓ Yes',    stack: '✗ Never' },
+  { feat: 'Source code access (Agency)',     clientcove: '✓ Yes',    stack: '✗ Never' },
+  { feat: 'Per-seat pricing',                clientcove: '✗ None',   stack: '✓ Always' },
+];
+
+const faqs = [
+  { q: 'How do the modules talk to each other?',
+    a: 'They share the same database. A ticket links to a project, which links to tasks, which roll into time logs, which generate invoice line items. No integrations to maintain because there is nothing to integrate — it is one app.' },
+  { q: 'Can I disable modules I don\'t use?',
+    a: 'Yes. Every module is toggleable per workspace and per role. If your firm doesn\'t use contracts, the contracts surface area never appears in the nav.' },
+  { q: 'Can clients see only what I want them to?',
+    a: 'Yes. Per-row visibility on tickets, files, projects, and time. Clients see what you publish. Internal-only items never leave the team view.' },
+  { q: 'Does it support custom fields?',
+    a: 'Yes. Per project, per ticket type, per client. Text, number, date, dropdown, multi-select, file. Custom fields appear in filters, exports, and Stripe metadata.' },
+];
+---
+<Layout
+  title="Features — Eight modules. One schema. One license."
+  description="Tickets, projects, tasks, time tracking, files, contracts, invoices, and Stripe billing — bundled in one self-hosted, white-label client portal."
+>
+  <PageHero
+    eyebrow="FEATURES"
+    title="The whole stack — <em class='acc'>in one license.</em>"
+    subtitle="Tickets, projects, tasks, time, files, contracts, and Stripe billing — under one schema, one branded URL, one fee."
+  >
+    <div style="margin-top:32px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <a href="/pricing" class="btn btn-primary btn-lg">Buy ClientCove — $497 <Icon name="arrow" class="arrow" /></a>
+      <a href="/#tour" class="btn btn-ghost btn-lg">Watch product tour <Icon name="arrow" class="arrow" /></a>
+    </div>
+  </PageHero>
+
+  <FeatureGrid />
+
+  <section class="sect" style="background:var(--color-bg-2);">
+    <div class="container-wide">
+      <div class="reveal" style="text-align:center;max-width:720px;margin:0 auto 56px;">
+        <div class="eyebrow teal" style="margin-bottom:18px;justify-content:center;">
+          <span class="badge">COMPARISON</span> One license vs. seven subscriptions
+        </div>
+        <h2 class="cc-h1">All the things you'd otherwise rent.</h2>
+      </div>
+      <div class="reveal compare-table-wrap">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Capability</th>
+              <th>ClientCove</th>
+              <th>Typical SaaS stack</th>
+            </tr>
+          </thead>
+          <tbody>
+            {compare.map(row => (
+              <tr>
+                <td>{row.feat}</td>
+                <td class="cc">{row.clientcove}</td>
+                <td>{row.stack}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faqs} eyebrow="FEATURE FAQ" heading="Modules, in detail." />
+  <FinalCTA />
+</Layout>
+
+<style>
+  .compare-table-wrap { overflow-x: auto; border-radius: 14px; border: 1px solid var(--color-line); background: #fff; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 640px; }
+  .compare-table th, .compare-table td {
+    text-align: left; padding: 16px 22px;
+    border-bottom: 1px solid var(--color-line-2);
+  }
+  .compare-table th {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--color-ink-3);
+    background: var(--color-bg-2); border-bottom-color: var(--color-line);
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td.cc { color: var(--color-orange); font-weight: 600; }
+</style>

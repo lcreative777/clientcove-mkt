@@ -1,0 +1,107 @@
+---
+import Logo from './ui/Logo.astro';
+import Icon from './ui/Icon.astro';
+import { NAV_PRIMARY } from '~/lib/site';
+
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+<header id="site-nav" class="site-nav">
+  <div class="container-wide" style="display:flex;align-items:center;justify-content:space-between;height:88px;">
+    <div style="display:flex;align-items:center;gap:40px;">
+      <Logo height={58} />
+      <nav class="primary-nav" aria-label="Primary">
+        {NAV_PRIMARY.map(n => {
+          const active = currentPath === n.href || (n.href !== '/' && currentPath.startsWith(n.href));
+          return (
+            <a href={n.href} aria-current={active ? 'page' : undefined}>{n.label}</a>
+          );
+        })}
+      </nav>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;">
+      <a href="https://app.clientcove.io" class="signin-link">Sign in</a>
+      <a href="/pricing" class="btn btn-dark btn-sm">
+        Buy ClientCove <Icon name="arrow" class="arrow" />
+      </a>
+      <a href="#mobile-menu" class="mobile-toggle" aria-label="Open menu">
+        <Icon name="menu" size={22} />
+      </a>
+    </div>
+  </div>
+</header>
+
+<aside id="mobile-menu" class="mobile-menu" aria-label="Mobile navigation">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--color-line);">
+    <Logo height={38} />
+    <a href="#" aria-label="Close menu" style="color:var(--color-ink-2);"><Icon name="close" size={22} /></a>
+  </div>
+  <nav style="display:flex;flex-direction:column;padding:14px 22px;gap:2px;">
+    {NAV_PRIMARY.map(n => (
+      <a href={n.href} style="padding:14px 6px;font-size:18px;font-weight:500;color:var(--color-ink);border-bottom:1px solid var(--color-line-2);">
+        {n.label}
+      </a>
+    ))}
+    <a href="/contact" style="padding:14px 6px;font-size:18px;font-weight:500;color:var(--color-ink);border-bottom:1px solid var(--color-line-2);">Contact</a>
+  </nav>
+  <div style="padding:18px 22px;display:flex;flex-direction:column;gap:10px;">
+    <a href="https://app.clientcove.io" class="btn btn-ghost" style="width:100%;">Sign in</a>
+    <a href="/pricing" class="btn btn-primary" style="width:100%;">
+      Buy ClientCove <Icon name="arrow" class="arrow" />
+    </a>
+  </div>
+</aside>
+<a href="#" class="mobile-overlay" aria-hidden="true"></a>
+
+<style>
+  .site-nav {
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    background: rgba(255,255,255,.5);
+    border-bottom: 1px solid transparent;
+    transition: background .25s ease, border-color .25s ease;
+  }
+  .site-nav.is-scrolled {
+    background: rgba(255,255,255,.85);
+    border-bottom-color: var(--color-line);
+  }
+  .primary-nav { display: flex; align-items: center; gap: 2px; }
+  .primary-nav a {
+    padding: 8px 12px; border-radius: 6px;
+    font-size: 14px; font-weight: 500; color: var(--color-ink-2);
+    white-space: nowrap;
+    transition: color .15s ease;
+  }
+  .primary-nav a:hover { color: var(--color-ink); }
+  .primary-nav a[aria-current="page"] { color: var(--color-ink); }
+  .signin-link {
+    font-size: 14px; font-weight: 500; color: var(--color-ink-2);
+    padding: 8px 12px; white-space: nowrap;
+  }
+  .signin-link:hover { color: var(--color-ink); }
+  .mobile-toggle { display: none; padding: 8px; color: var(--color-ink); }
+
+  .mobile-menu {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(360px, 88vw); background: #fff;
+    z-index: 200; overflow-y: auto;
+    box-shadow: -10px 0 40px rgba(10,31,46,.15);
+  }
+  .mobile-overlay {
+    position: fixed; inset: 0; background: rgba(10,31,46,.4); z-index: 199;
+  }
+
+  @media (max-width: 880px) {
+    .primary-nav, .signin-link { display: none; }
+    .mobile-toggle { display: inline-flex; align-items: center; justify-content: center; }
+  }
+</style>
+
+<script>
+  const nav = document.getElementById('site-nav');
+  if (nav) {
+    const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+</script>

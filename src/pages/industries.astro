@@ -1,0 +1,518 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import Icon from '~/components/ui/Icon.astro';
+import Mark from '~/components/ui/Mark.astro';
+import IndustryArt from '~/components/industries/IndustryArt.astro';
+import IndustryIcon from '~/components/industries/IndustryIcon.astro';
+
+const INDUSTRIES = [
+  {
+    id: 'agency',
+    eyebrow: 'AGENCIES',
+    short: 'Agencies',
+    title: 'Marketing & Creative Agencies',
+    intro: 'Your clients expect polish. Your team needs clarity. ClientCove gives you a branded portal that looks like your own product — because it is. Manage deliverables, feedback cycles, and approvals without juggling five different tabs.',
+    bullets: [
+      'Manage client deliverables, feedback cycles, and approvals in one branded portal',
+      'White-label the portal as your own product — your domain, your logo, your colors',
+      'Track project milestones, billable hours, and team utilization in real time',
+      'Share files, collect signatures on contracts, and keep every conversation in context',
+    ],
+    cta: 'Get started for your agency',
+  },
+  {
+    id: 'msp',
+    eyebrow: 'IT & MSPs',
+    short: 'IT & MSPs',
+    title: 'IT & MSP Providers',
+    intro: 'Your technicians need instant access to credentials and documentation in the field. Your clients need to know their data is locked down. ClientCove gives you both — with a vault built for the way managed service providers actually work.',
+    bullets: [
+      'Secure asset vault for client credentials, API keys, and network documentation',
+      'QR code intake for field techs — scan and submit tickets tied to specific locations',
+      'Automated service reminders before maintenance windows',
+      'Complete audit trail for compliance and client reporting',
+    ],
+    cta: 'Get started for your MSP',
+  },
+  {
+    id: 'legal',
+    eyebrow: 'LEGAL & ACCOUNTING',
+    short: 'Legal & accounting',
+    title: 'Law Firms & Accounting Practices',
+    intro: 'Sensitive documents deserve better than email attachments and shared Google Drives. ClientCove gives your firm an encrypted, auditable portal where clients access what they need and nothing they should not — with every action permanently logged.',
+    bullets: [
+      'Encrypted vault for sensitive client documents and credentials',
+      'Contract e-signatures with full audit trail for compliance',
+      'Client portal for document sharing without email exposure',
+      'Time tracking for billable hours with automatic ROI reporting',
+    ],
+    cta: 'Get started for your firm',
+  },
+  {
+    id: 'property',
+    eyebrow: 'PROPERTY & FACILITIES',
+    short: 'Property & facilities',
+    title: 'Property & Facilities Management',
+    intro: 'Tenants need a simple way to report issues. Your team needs visibility across every building, unit, and contractor. ClientCove turns QR codes into intake forms, equipment records into maintenance schedules, and chaos into calm.',
+    bullets: [
+      'Location-based QR code intake — tenants scan and submit maintenance requests',
+      'Asset tracking for every building, unit, and piece of equipment',
+      'Service notes with automated maintenance reminders',
+      'Contractor management with workload visibility',
+    ],
+    cta: 'Get started for property management',
+  },
+  {
+    id: 'arch',
+    eyebrow: 'ARCHITECTURE & ENGINEERING',
+    short: 'Architecture & engineering',
+    title: 'Architecture & Engineering Firms',
+    intro: 'Multi-phase builds demand clarity across long timelines. ClientCove gives your team structured milestone tracking, secure file sharing for plans and specs, and client-visible dashboards that reduce status-update meetings to zero.',
+    bullets: [
+      'Project milestone tracking across multi-phase builds',
+      'Secure file sharing for plans, specs, and revisions',
+      'Client-visible progress dashboards that eliminate status meetings',
+      'Contract management with scope documentation and change orders',
+    ],
+    cta: 'Get started for your firm',
+  },
+  {
+    id: 'gov',
+    eyebrow: 'GOVERNMENT & EDUCATION',
+    short: 'Government & education',
+    title: 'Government & Education Organizations',
+    intro: 'Public institutions need data sovereignty, regulatory compliance, and predictable costs. ClientCove runs on your servers, provides complete audit trails for every action, and never charges per user — because public service should not come with a per-seat tax.',
+    bullets: [
+      'Self-hosted deployment for data sovereignty requirements',
+      'Role-based dashboards for different departments and stakeholders',
+      'Complete audit trails for regulatory compliance',
+      'No per-user pricing — unlimited users on every license',
+    ],
+    cta: 'Get started for your organization',
+  },
+  {
+    id: 'any',
+    eyebrow: 'ANY SERVICE BUSINESS',
+    short: 'Any service business',
+    title: 'Consultants, Coaches, Freelancers & Beyond',
+    intro: 'If you serve clients and manage projects, ClientCove fits. Whether you are a solo consultant, a growing coaching practice, or a freelancer juggling a dozen accounts, this is where you replace the tool sprawl with one platform you actually own.',
+    bullets: [
+      'Replace scattered tools with one owned, white-labeled client portal',
+      'Projects, contracts, files, invoicing, and messaging in a single workspace',
+      'Pay once and stop worrying about monthly SaaS bills that grow with your team',
+      'Self-hosted on your own infrastructure — you own the data, the experience, and the future',
+    ],
+    cta: 'Get started for your business',
+  },
+] as const;
+
+const features = [
+  { tag: 'For everyone', title: 'Asset Vault', desc: 'Encrypted credential, document, and key storage with row-level access control. Audit trail on every read.', meta: 'AES-256 · row-level ACLs', accent: '#E76F2A', icon: 'shield' },
+  { tag: 'For everyone', title: 'QR Intake', desc: 'Generate scannable codes for any unit, asset, or location. Tickets land tagged with context, every time.', meta: 'Per-asset · per-location', accent: '#2BB3B3', icon: 'qr' },
+  { tag: 'For everyone', title: 'Audit Trail', desc: 'Every view, edit, signature, and download is logged immutably. Export for SOC 2, HIPAA, FERPA, GDPR.', meta: 'Immutable · exportable', accent: '#0A1F2E', icon: 'log' },
+  { tag: 'For everyone', title: 'White-label', desc: 'Your domain. Your logo. Your colors and typography. Even the login screen and emails are yours, not ours.', meta: 'Domain · brand · email', accent: '#E76F2A', icon: 'globe' },
+  { tag: 'For everyone', title: 'No per-user tax', desc: 'Add staff, contractors, or 10,000 clients. Pricing never changes. Pay for the platform, not for headcount.', meta: '∞ users · 1 license', accent: '#2BB3B3', icon: 'people' },
+  { tag: 'For everyone', title: 'Self-hosted', desc: 'Runs on your own server or your private cloud. You control the data, the uptime, the backup policy.', meta: 'Your servers · your rules', accent: '#0A1F2E', icon: 'server' },
+];
+---
+<Layout
+  title="Industries — Built for service businesses that value control"
+  description="ClientCove fits agencies, MSPs, law firms, accountants, property managers, architects, and any service business. One white-label portal — built for the way you actually run client work."
+>
+  <!-- Hero with rotating preview + chips -->
+  <section class="hero-section">
+    <div class="container-wide hero-grid">
+      <div>
+        <div class="eyebrow"><span class="badge">Industries</span><span class="label">Built for service businesses</span></div>
+        <h1 class="cc-h1" style="margin-top:18px;">
+          Built for service businesses<br/>that value <em class="acc">control</em>.
+        </h1>
+        <p class="hero-lede">
+          Stop patching together tools with duct tape. ClientCove gives you a single, white-labeled
+          client portal — streamlined, branded, and genuinely user-friendly for teams and clients alike.
+        </p>
+        <div style="display:flex;gap:12px;margin-top:32px;flex-wrap:wrap;">
+          <a href="/pricing" class="btn btn-primary btn-lg">Get early access <Icon name="arrow" class="arrow"/></a>
+          <a href="#industries" class="btn btn-ghost btn-lg">Explore industries</a>
+        </div>
+        <div class="hero-chips" data-hero-chips>
+          {INDUSTRIES.map((i, idx) => (
+            <button type="button" data-chip={idx} data-target={i.id} aria-pressed={idx === 0 ? 'true' : 'false'}>
+              {i.eyebrow}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div class="hero-preview">
+        <div class="hero-preview-bg" aria-hidden="true"></div>
+        <div class="hero-preview-stage" data-hero-stage>
+          {INDUSTRIES.map((i, idx) => (
+            <div class="stage-slot" data-slot={idx} data-active={idx === 0 ? '' : undefined}>
+              <IndustryArt kind={i.id} />
+              <div class="stage-pill">
+                <span class="pulse" style="background:var(--color-orange);"></span>
+                {i.eyebrow}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sticky industry switcher -->
+  <section id="industries" class="industries-body">
+    <div class="container-wide ind-grid">
+      <aside class="ind-sidebar">
+        <div class="eyebrow ink" style="margin-bottom:20px;">
+          <span class="label">Pick your industry</span>
+        </div>
+        <nav class="ind-nav" data-ind-nav>
+          {INDUSTRIES.map((i, idx) => (
+            <button type="button" data-tab={i.id} data-active={idx === 0 ? '' : undefined} aria-pressed={idx === 0 ? 'true' : 'false'}>
+              <IndustryIcon kind={i.id} />
+              <span>{i.short}</span>
+            </button>
+          ))}
+        </nav>
+        <div class="ind-progress">
+          <div class="ind-progress-num" data-ind-progress>Industry 01 / 0{INDUSTRIES.length}</div>
+          <div class="ind-progress-text">All industries get the full platform. The tour just changes the spotlight.</div>
+        </div>
+      </aside>
+
+      <div class="ind-content">
+        {INDUSTRIES.map((i, idx) => (
+          <article class="ind-panel" data-panel={i.id} data-active={idx === 0 ? '' : undefined}>
+            <div class="eyebrow"><span class="badge">{i.eyebrow}</span></div>
+            <h2 class="cc-h2" style="margin-top:16px;max-width:720px;">{i.title}</h2>
+            <p class="ind-intro">{i.intro}</p>
+            <div class="ind-art-wrap">
+              <IndustryArt kind={i.id} />
+            </div>
+            <div class="ind-bullets">
+              {i.bullets.map((b, bi) => (
+                <div class="ind-bullet">
+                  <span class="num">{String(bi + 1).padStart(2, '0')}</span>
+                  <span>{b}</span>
+                </div>
+              ))}
+            </div>
+            <div class="ind-ctas">
+              <a href="/pricing" class="btn btn-primary btn-lg">{i.cta} <Icon name="arrow" class="arrow"/></a>
+              <a href="/#tour" class="btn btn-ghost btn-lg">See live demo</a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Cross-industry features -->
+  <section class="cross-ind">
+    <div class="container-wide">
+      <div class="cross-head">
+        <div>
+          <div class="eyebrow ink"><span class="label">Cross-industry</span></div>
+          <h2 class="cc-h2" style="margin-top:14px;">
+            Your industry is unique.<br/>
+            Your need for <em class="acc">clarity</em> is universal.
+          </h2>
+        </div>
+        <p>
+          Powerful from day one. Integrated tools for projects, tasks, files, contracts, and custom dashboards —
+          with an open, documented system for tailored customization, white-label perfection, no user tax, and seamless scaling.
+        </p>
+      </div>
+      <div class="cross-grid">
+        {features.map(f => (
+          <div class="cross-card">
+            <div class="cross-icon" style={`color:${f.accent};background:${f.accent === '#0A1F2E' ? 'rgba(10,31,46,.06)' : f.accent === '#E76F2A' ? 'var(--color-orange-50)' : 'var(--color-teal-50)'};`}>
+              {f.icon === 'shield' && <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z"/><path d="M9 12l2 2 4-4"/></svg>}
+              {f.icon === 'qr' && <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3M21 14v3M17 17v4M14 21h3" stroke-linecap="round"/></svg>}
+              {f.icon === 'log' && <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>}
+              {f.icon === 'globe' && <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18M3 12h18"/></svg>}
+              {f.icon === 'people' && <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3.5 2.7-6 6-6s6 2.5 6 6"/><path d="M14 18c0-2.5 1.5-4 3-4s3 1.5 3 4"/></svg>}
+              {f.icon === 'server' && <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><circle cx="7" cy="7" r="0.5" fill="currentColor"/><circle cx="7" cy="17" r="0.5" fill="currentColor"/></svg>}
+            </div>
+            <h3 class="cc-h3" style="margin:0;">{f.title}</h3>
+            <p class="cross-desc">{f.desc}</p>
+            <div class="cross-meta">{f.meta}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="on-dark final-cta">
+    <div class="grid-bg-dark cta-grid" aria-hidden="true"></div>
+    <div class="cta-bg" aria-hidden="true"></div>
+    <div class="container-wide" style="position:relative;text-align:center;">
+      <div style="display:inline-flex;"><Mark size={56} /></div>
+      <h2 class="cc-h1" style="margin-top:24px;color:#fff;">
+        Whatever you do for clients,<br/>do it from <em class="acc">one calm place</em>.
+      </h2>
+      <p class="cta-sub">
+        Pick the version that fits your industry. Or pick "any service business" and tell us what to build next.
+      </p>
+      <div class="cta-btns">
+        <a href="/pricing" class="btn btn-primary btn-lg">Get early access <Icon name="arrow" class="arrow"/></a>
+        <a href="/#tour" class="btn btn-ghost-light btn-lg">See live demo</a>
+      </div>
+      <div class="cta-fineprint">Pay once · self-host · unlimited users · own forever</div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  // Hero rotating preview + chip sync
+  (() => {
+    const stage = document.querySelector<HTMLElement>('[data-hero-stage]');
+    const chipBar = document.querySelector<HTMLElement>('[data-hero-chips]');
+    if (!stage || !chipBar) return;
+    const slots = stage.querySelectorAll<HTMLElement>('[data-slot]');
+    const chips = chipBar.querySelectorAll<HTMLButtonElement>('[data-chip]');
+    let idx = 0;
+    let paused = false;
+    let timer: number | undefined;
+
+    const setActive = (i: number) => {
+      idx = i;
+      slots.forEach((s, j) => j === i ? s.setAttribute('data-active', '') : s.removeAttribute('data-active'));
+      chips.forEach((c, j) => c.setAttribute('aria-pressed', j === i ? 'true' : 'false'));
+    };
+
+    const tick = () => { if (!paused) setActive((idx + 1) % slots.length); };
+    const start = () => { stop(); timer = window.setInterval(tick, 3200); };
+    const stop = () => { if (timer) { window.clearInterval(timer); timer = undefined; } };
+
+    chips.forEach((c, j) => {
+      c.addEventListener('mouseenter', () => { paused = true; setActive(j); });
+      c.addEventListener('mouseleave', () => { paused = false; });
+      c.addEventListener('click', () => {
+        const target = c.getAttribute('data-target');
+        if (target) {
+          // Sync sticky tab + scroll
+          const tabBtn = document.querySelector<HTMLButtonElement>(`[data-tab="${target}"]`);
+          tabBtn?.click();
+          document.getElementById('industries')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    start();
+  })();
+
+  // Sticky industry switcher
+  (() => {
+    const nav = document.querySelector<HTMLElement>('[data-ind-nav]');
+    if (!nav) return;
+    const tabs = nav.querySelectorAll<HTMLButtonElement>('[data-tab]');
+    const panels = document.querySelectorAll<HTMLElement>('[data-panel]');
+    const progress = document.querySelector<HTMLElement>('[data-ind-progress]');
+    const total = tabs.length;
+
+    const setActive = (id: string) => {
+      let activeIdx = 0;
+      tabs.forEach((t, i) => {
+        const on = t.getAttribute('data-tab') === id;
+        if (on) activeIdx = i;
+        if (on) t.setAttribute('data-active', '');
+        else t.removeAttribute('data-active');
+        t.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      panels.forEach(p => {
+        if (p.getAttribute('data-panel') === id) p.setAttribute('data-active', '');
+        else p.removeAttribute('data-active');
+      });
+      if (progress) progress.textContent = `Industry ${String(activeIdx + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+    };
+
+    tabs.forEach(t => t.addEventListener('click', () => {
+      const id = t.getAttribute('data-tab');
+      if (id) setActive(id);
+    }));
+  })();
+</script>
+
+<style>
+  /* Hero */
+  .hero-section { padding: 80px 0; background: linear-gradient(180deg, #FFFFFF 0%, var(--color-bg-2) 100%); }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 64px; align-items: center; }
+  .hero-lede {
+    margin-top: 24px; font-size: 19px; line-height: 1.55; color: var(--color-ink-2);
+    max-width: 540px; font-family: var(--font-serif);
+  }
+  .hero-chips {
+    margin-top: 36px; display: flex; flex-wrap: wrap; gap: 8px; max-width: 560px;
+  }
+  .hero-chips button {
+    padding: 7px 12px; border-radius: 999px;
+    background: #fff; border: 1px solid var(--color-line);
+    color: var(--color-ink-2); font-size: 12px; font-weight: 500;
+    cursor: pointer; font-family: var(--font-sans);
+    transition: all .2s ease; letter-spacing: 0.01em;
+  }
+  .hero-chips button[aria-pressed="true"] {
+    background: var(--color-navy-900); border-color: var(--color-navy-900); color: #fff;
+  }
+
+  .hero-preview { position: relative; }
+  .hero-preview-bg {
+    position: absolute; top: -16px; left: -16px; right: 16px; bottom: 16px;
+    background: linear-gradient(135deg, rgba(231,111,42,.08), rgba(43,179,179,.06));
+    border-radius: 22px; transform: rotate(-1.5deg);
+  }
+  .hero-preview-stage { position: relative; }
+  .stage-slot {
+    position: absolute; inset: 0;
+    opacity: 0; transform: translateY(8px); transition: opacity .55s ease, transform .55s ease;
+    pointer-events: none;
+  }
+  .stage-slot[data-active] { opacity: 1; transform: none; pointer-events: auto; position: relative; }
+  .stage-pill {
+    position: absolute; left: 18px; bottom: 18px;
+    background: rgba(255,255,255,.96); backdrop-filter: blur(8px);
+    border-radius: 999px; padding: 8px 14px;
+    border: 1px solid var(--color-line); box-shadow: var(--shadow-md);
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--font-sans); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; color: var(--color-ink);
+  }
+
+  /* Sticky industry switcher */
+  .industries-body { padding: 40px 0 120px; }
+  .ind-grid { display: grid; grid-template-columns: 260px 1fr; gap: 56px; align-items: start; }
+
+  .ind-sidebar { position: sticky; top: 96px; padding-top: 8px; }
+  .ind-nav { display: flex; flex-direction: column; gap: 2px; }
+  .ind-nav button {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 14px; border-radius: 10px;
+    background: transparent; border: none; cursor: pointer; text-align: left;
+    transition: background .2s ease;
+    position: relative; font-family: var(--font-sans);
+    color: var(--color-ink-2); font-size: 13.5px; font-weight: 500;
+    line-height: 1.3;
+  }
+  .ind-nav button:hover { background: var(--color-bg-2); }
+  .ind-nav button[data-active] {
+    background: var(--color-bg-2);
+    color: var(--color-ink); font-weight: 600;
+  }
+  .ind-nav button[data-active]::before {
+    content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 3px;
+    background: var(--color-orange); border-radius: 2px;
+  }
+  .ind-nav button[data-active] .ind-icon {
+    background: var(--color-orange-50); color: var(--color-orange);
+  }
+
+  .ind-progress {
+    margin-top: 28px; padding: 14px 16px;
+    background: var(--color-navy-900); color: #fff; border-radius: 10px;
+    font-family: var(--font-sans);
+  }
+  .ind-progress-num {
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+  }
+  .ind-progress-text {
+    margin-top: 8px; font-size: 13px; color: rgba(255,255,255,.85); line-height: 1.4;
+  }
+
+  .ind-content { position: relative; min-height: 800px; }
+  .ind-panel { display: none; animation: indPanel .45s ease-out; }
+  .ind-panel[data-active] { display: block; }
+  @keyframes indPanel {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .ind-panel { animation: none; } }
+
+  .ind-intro {
+    margin-top: 22px; font-family: var(--font-serif); font-size: 20px; line-height: 1.5;
+    color: var(--color-ink-2); max-width: 720px;
+  }
+  .ind-art-wrap { margin-top: 40px; }
+  .ind-bullets {
+    margin-top: 40px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .ind-bullet {
+    display: flex; gap: 14px;
+    padding: 20px 22px;
+    background: #fff; border: 1px solid var(--color-line);
+    border-radius: 12px;
+    font-size: 15px; line-height: 1.55; color: var(--color-ink);
+  }
+  .ind-bullet .num {
+    flex-shrink: 0;
+    width: 28px; height: 28px; border-radius: 8px;
+    background: var(--color-orange-50); color: var(--color-orange);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-serif); font-style: italic; font-weight: 600; font-size: 14px;
+  }
+  .ind-ctas { margin-top: 40px; display: flex; gap: 12px; flex-wrap: wrap; }
+
+  /* Cross-industry */
+  .cross-ind {
+    padding: 120px 0; background: var(--color-bg-2);
+    border-top: 1px solid var(--color-line); border-bottom: 1px solid var(--color-line);
+  }
+  .cross-head {
+    display: grid; grid-template-columns: 1fr 1.4fr; gap: 64px;
+    margin-bottom: 56px; align-items: end;
+  }
+  .cross-head p {
+    font-family: var(--font-serif); font-size: 20px; line-height: 1.55;
+    color: var(--color-ink-2); margin: 0;
+  }
+  .cross-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--color-line);
+    border: 1px solid var(--color-line); border-radius: 16px; overflow: hidden;
+  }
+  .cross-card {
+    background: #fff; padding: 32px 32px 36px;
+    display: flex; flex-direction: column; gap: 16px; min-height: 260px;
+  }
+  .cross-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .cross-desc { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--color-ink-2); }
+  .cross-meta {
+    margin-top: auto; font-family: var(--font-mono); font-size: 11.5px;
+    color: var(--color-ink-3); letter-spacing: 0.02em;
+  }
+
+  /* Final CTA */
+  .final-cta { padding: 120px 0; position: relative; overflow: hidden; }
+  .cta-grid { position: absolute; inset: 0; opacity: .6; }
+  .cta-bg {
+    position: absolute; top: -120px; right: -120px; width: 460px; height: 460px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(231,111,42,.18), transparent 70%);
+  }
+  .cta-sub {
+    margin: 24px auto 0; font-family: var(--font-serif); font-size: 21px; line-height: 1.55;
+    color: rgba(222,231,238,.75); max-width: 640px;
+  }
+  .cta-btns { margin-top: 40px; display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .cta-fineprint { margin-top: 24px; font-size: 13px; color: rgba(222,231,238,.5); }
+
+  @media (max-width: 980px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .ind-grid { grid-template-columns: 1fr; gap: 32px; }
+    .ind-sidebar { position: static; }
+    .ind-nav { flex-direction: row; flex-wrap: wrap; gap: 6px; }
+    .ind-nav button { padding: 10px 14px; }
+    .ind-bullets { grid-template-columns: 1fr; }
+    .cross-head { grid-template-columns: 1fr; gap: 24px; }
+    .cross-grid { grid-template-columns: 1fr; }
+    .final-cta { padding: 90px 0; }
+  }
+</style>

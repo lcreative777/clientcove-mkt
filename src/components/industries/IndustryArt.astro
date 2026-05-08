@@ -1,0 +1,416 @@
+---
+interface Props {
+  kind: 'agency' | 'msp' | 'legal' | 'property' | 'arch' | 'gov' | 'any';
+}
+const { kind } = Astro.props;
+---
+<div class="ind-art">
+  <svg viewBox="0 0 600 440" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"
+    style="position:absolute;inset:0;">
+    <defs>
+      <pattern id={`iaDots-${kind}`} x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+        <circle cx="1" cy="1" r="1" fill="rgba(10,31,46,.07)"/>
+      </pattern>
+    </defs>
+    <rect width="600" height="440" fill={`url(#iaDots-${kind})`}/>
+
+    {kind === 'agency' && (
+      <>
+        <g>
+          <circle cx="80" cy="90" r="44" fill="#E76F2A" opacity=".18"/>
+          <circle cx="80" cy="90" r="22" fill="#E76F2A"/>
+          <circle cx="120" cy="60" r="10" fill="#2BB3B3"/>
+          <circle cx="55" cy="140" r="7" fill="#0A1F2E"/>
+        </g>
+        <g transform="translate(40,360)">
+          <rect width="60" height="44" rx="6" fill="#0A1F2E"/>
+          <rect x="68" width="60" height="44" rx="6" fill="#E76F2A"/>
+          <rect x="136" width="60" height="44" rx="6" fill="#2BB3B3"/>
+          <rect x="204" width="60" height="44" rx="6" fill="#FFF1E8" stroke="#E4EAF0"/>
+        </g>
+        <g transform="translate(190,80)">
+          <rect width="360" height="230" rx="10" fill="#0A1F2E"/>
+          <rect x="10" y="10" width="340" height="210" rx="4" fill="#FFFFFF"/>
+          <rect x="10" y="10" width="340" height="26" fill="#F6F8FA"/>
+          <circle cx="22" cy="23" r="3" fill="#E76F2A"/><circle cx="32" cy="23" r="3" fill="#E4EAF0"/><circle cx="42" cy="23" r="3" fill="#E4EAF0"/>
+          <rect x="60" y="16" width="200" height="14" rx="3" fill="#fff" stroke="#E4EAF0"/>
+          <text x="68" y="26" font-family="Inter Tight" font-size="9" fill="#5A7184">portal.agency.com/clients/acme</text>
+          <rect x="24" y="50" width="160" height="14" rx="2" fill="#0A1F2E"/>
+          <rect x="24" y="70" width="120" height="8" rx="2" fill="#8FA1B0"/>
+          <g transform="translate(24,98)">
+            <rect width="100" height="100" rx="6" fill="#FFF1E8"/>
+            <rect x="12" y="14" width="76" height="40" rx="3" fill="#E76F2A" opacity=".7"/>
+            <rect x="12" y="62" width="60" height="6" rx="2" fill="#0A1F2E"/>
+            <rect x="12" y="74" width="40" height="5" rx="2" fill="#8FA1B0"/>
+          </g>
+          <g transform="translate(132,98)">
+            <rect width="100" height="100" rx="6" fill="#E6F6F6"/>
+            <rect x="12" y="14" width="76" height="40" rx="3" fill="#2BB3B3" opacity=".7"/>
+            <rect x="12" y="62" width="50" height="6" rx="2" fill="#0A1F2E"/>
+            <rect x="12" y="74" width="38" height="5" rx="2" fill="#8FA1B0"/>
+          </g>
+          <g transform="translate(240,98)">
+            <rect width="100" height="100" rx="6" fill="#F6F8FA" stroke="#E4EAF0"/>
+            <rect x="12" y="14" width="76" height="40" rx="3" fill="#0A1F2E"/>
+            <rect x="12" y="62" width="56" height="6" rx="2" fill="#0A1F2E"/>
+            <rect x="12" y="74" width="32" height="5" rx="2" fill="#8FA1B0"/>
+          </g>
+        </g>
+        <g transform="translate(120,250) rotate(-8)">
+          <rect width="120" height="44" rx="22" fill="none" stroke="#E76F2A" stroke-width="2"/>
+          <text x="60" y="28" text-anchor="middle" font-family="Newsreader" font-style="italic" font-size="18" font-weight="600" fill="#E76F2A">approved</text>
+        </g>
+      </>
+    )}
+
+    {kind === 'msp' && (
+      <>
+        <g transform="translate(40,90)">
+          <rect width="130" height="280" rx="8" fill="#0A1F2E"/>
+          {[0,1,2,3,4,5].map(i => (
+            <g transform={`translate(10, ${14 + i*44})`}>
+              <rect width="110" height="34" rx="3" fill="#122A3D"/>
+              <circle cx="14" cy="17" r="3" fill={i % 2 ? "#2BB3B3" : "#E76F2A"}/>
+              <rect x="26" y="13" width="60" height="3" rx="1" fill="rgba(255,255,255,.25)"/>
+              <rect x="26" y="20" width="40" height="3" rx="1" fill="rgba(255,255,255,.15)"/>
+              <rect x="92" y="11" width="12" height="12" rx="2" fill="rgba(255,255,255,.08)"/>
+            </g>
+          ))}
+        </g>
+        <g transform="translate(210,110)">
+          <rect width="240" height="160" rx="14" fill="#FFFFFF" stroke="#E4EAF0"/>
+          <g transform="translate(20,20)">
+            <rect width="34" height="34" rx="8" fill="#FFF1E8"/>
+            <rect x="6" y="14" width="22" height="14" rx="2" fill="#E76F2A"/>
+          </g>
+          <text x="64" y="34" font-family="Inter Tight" font-weight="600" font-size="13" fill="#0A1F2E">Asset Vault</text>
+          <text x="64" y="50" font-family="Inter Tight" font-size="11" fill="#5A7184">147 credentials · AES-256</text>
+          <g transform="translate(20,72)">
+            {[
+              ['Acme Corp · admin', 'aws-prod-key', '#2BB3B3'],
+              ['Beacon LLC · root', 'firewall-mgr', '#E76F2A'],
+              ['Cliff Co · service', 'azure-tenant', '#0A1F2E'],
+            ].map((r, i) => (
+              <g transform={`translate(0, ${i * 26})`}>
+                <rect width="200" height="22" rx="4" fill="#F6F8FA"/>
+                <circle cx="14" cy="11" r="4" fill={r[2]}/>
+                <text x="26" y="14" font-family="Inter Tight" font-size="10" font-weight="500" fill="#0A1F2E">{r[0]}</text>
+                <text x="118" y="14" font-family="JetBrains Mono" font-size="9" fill="#5A7184">{r[1]}</text>
+              </g>
+            ))}
+          </g>
+        </g>
+        <g transform="translate(470,60)">
+          <rect width="100" height="100" rx="8" fill="#FFFFFF" stroke="#E4EAF0"/>
+          <g transform="translate(10,10)">
+            {Array.from({ length: 64 }).map((_, i) => {
+              const x = (i % 8) * 10, y = Math.floor(i / 8) * 10;
+              const fill = ((i * 13 + 7) % 7 < 4) ? '#0A1F2E' : 'transparent';
+              return <rect x={x} y={y} width="10" height="10" fill={fill}/>;
+            })}
+            <rect x="0" y="0" width="22" height="22" fill="none" stroke="#0A1F2E" stroke-width="3"/>
+            <rect x="6" y="6" width="10" height="10" fill="#0A1F2E"/>
+            <rect x="58" y="0" width="22" height="22" fill="none" stroke="#0A1F2E" stroke-width="3"/>
+            <rect x="64" y="6" width="10" height="10" fill="#0A1F2E"/>
+            <rect x="0" y="58" width="22" height="22" fill="none" stroke="#0A1F2E" stroke-width="3"/>
+            <rect x="6" y="64" width="10" height="10" fill="#0A1F2E"/>
+          </g>
+        </g>
+        <g transform="translate(484,176)">
+          <rect width="72" height="22" rx="11" fill="#E76F2A"/>
+          <text x="36" y="15" text-anchor="middle" font-family="Inter Tight" font-weight="600" font-size="10" fill="#fff">Scan to log</text>
+        </g>
+        <g transform="translate(470,300) rotate(-12)">
+          <circle cx="20" cy="20" r="14" fill="none" stroke="#2BB3B3" stroke-width="3"/>
+          <rect x="32" y="17" width="40" height="6" fill="#2BB3B3"/>
+          <rect x="60" y="23" width="6" height="10" fill="#2BB3B3"/>
+          <rect x="68" y="23" width="4" height="14" fill="#2BB3B3"/>
+        </g>
+      </>
+    )}
+
+    {kind === 'legal' && (
+      <>
+        <g transform="translate(60,70)">
+          <rect width="240" height="300" rx="6" fill="#FFFFFF" stroke="#E4EAF0"/>
+          <rect x="0" y="0" width="240" height="40" rx="6" fill="#0A1F2E"/>
+          <rect x="0" y="34" width="240" height="6" fill="#0A1F2E"/>
+          <text x="20" y="26" font-family="Newsreader" font-weight="600" font-size="14" fill="#fff" font-style="italic">Engagement Letter</text>
+          <text x="200" y="26" font-family="Inter Tight" font-size="9" fill="rgba(255,255,255,.6)">v.3</text>
+          {Array.from({ length: 14 }).map((_, i) => (
+            <rect x="20" y={60 + i * 14} width={i === 13 ? 100 : (160 + (i % 3) * 18)} height="3" rx="1" fill="#E4EAF0"/>
+          ))}
+          <line x1="20" y1="262" x2="120" y2="262" stroke="#0A1F2E"/>
+          <text x="20" y="274" font-family="Inter Tight" font-size="9" fill="#5A7184">Client signature</text>
+          <g transform="translate(28,242)">
+            <path d="M0 14 C 8 0, 22 22, 30 8 S 60 6, 70 16" fill="none" stroke="#E76F2A" stroke-width="2" stroke-linecap="round"/>
+          </g>
+          <line x1="140" y1="262" x2="220" y2="262" stroke="#0A1F2E"/>
+          <text x="140" y="274" font-family="Inter Tight" font-size="9" fill="#5A7184">Firm signature</text>
+          <g transform="translate(146,244)">
+            <path d="M0 12 C 6 0, 18 18, 26 6 S 44 8, 52 14" fill="none" stroke="#0A1F2E" stroke-width="2" stroke-linecap="round"/>
+          </g>
+        </g>
+        <g transform="translate(280,230) rotate(-10)">
+          <circle cx="0" cy="0" r="42" fill="none" stroke="#E76F2A" stroke-width="2"/>
+          <circle cx="0" cy="0" r="34" fill="none" stroke="#E76F2A" stroke-width="1" stroke-dasharray="3 2"/>
+          <text text-anchor="middle" y="-4" font-family="Newsreader" font-weight="600" font-style="italic" font-size="14" fill="#E76F2A">signed</text>
+          <text text-anchor="middle" y="14" font-family="Inter Tight" font-size="8" letter-spacing="1.5" fill="#E76F2A">AUDITED · 2026</text>
+        </g>
+        <g transform="translate(360,80)">
+          <rect width="200" height="160" rx="12" fill="#0A1F2E"/>
+          <g transform="translate(18,18)">
+            <rect width="28" height="28" rx="14" fill="rgba(231,111,42,.18)"/>
+            <rect x="9" y="14" width="18" height="12" rx="2" fill="#E76F2A"/>
+          </g>
+          <text x="56" y="32" font-family="Inter Tight" font-weight="600" font-size="12" fill="#fff">Audit Trail</text>
+          <text x="56" y="46" font-family="Inter Tight" font-size="10" fill="rgba(255,255,255,.55)">Last 24 hours</text>
+          {[
+            ['09:14', 'Doc viewed', '#2BB3B3'],
+            ['10:02', 'E-sign sent', '#E76F2A'],
+            ['11:38', 'Doc signed', '#18A57A'],
+            ['14:21', 'Vault unlocked', '#FFA94D'],
+          ].map((r, i) => (
+            <g transform={`translate(18, ${68 + i * 22})`}>
+              <text x="0" y="11" font-family="JetBrains Mono" font-size="10" fill="rgba(255,255,255,.5)">{r[0]}</text>
+              <circle cx="38" cy="8" r="3" fill={r[2]}/>
+              <text x="48" y="11" font-family="Inter Tight" font-size="10" fill="#fff">{r[1]}</text>
+            </g>
+          ))}
+        </g>
+        <g transform="translate(420,290)">
+          <line x1="-40" y1="0" x2="40" y2="0" stroke="#0A1F2E" stroke-width="2"/>
+          <line x1="0" y1="0" x2="0" y2="50" stroke="#0A1F2E" stroke-width="2"/>
+          <circle cx="0" cy="56" r="6" fill="#E76F2A"/>
+          <path d="M-50 8 a14 8 0 0 0 20 0 z" fill="#0A1F2E"/>
+          <path d="M30 8 a14 8 0 0 0 20 0 z" fill="#0A1F2E"/>
+          <line x1="-40" y1="0" x2="-40" y2="8" stroke="#0A1F2E"/>
+          <line x1="40" y1="0" x2="40" y2="8" stroke="#0A1F2E"/>
+        </g>
+      </>
+    )}
+
+    {kind === 'property' && (
+      <>
+        <g transform="translate(40,90)">
+          <rect width="140" height="280" fill="#0A1F2E"/>
+          {Array.from({ length: 32 }).map((_, i) => {
+            const c = i % 4, r = Math.floor(i / 4);
+            const lit = (i * 7 + 3) % 5 < 2;
+            return <rect x={14 + c * 30} y={20 + r * 32} width="20" height="20" fill={lit ? '#FFA94D' : '#1B3D54'}/>;
+          })}
+          <polygon points="0,0 70,-30 140,0" fill="#0A1F2E"/>
+        </g>
+        <g transform="translate(200,140)">
+          <rect width="100" height="230" fill="#122A3D"/>
+          {Array.from({ length: 18 }).map((_, i) => {
+            const c = i % 3, r = Math.floor(i / 3);
+            const lit = (i * 5 + 1) % 4 < 2;
+            return <rect x={14 + c * 26} y={20 + r * 32} width="18" height="20" fill={lit ? '#2BB3B3' : '#1B3D54'}/>;
+          })}
+        </g>
+        <g transform="translate(310,180)">
+          <rect width="80" height="190" fill="#0A1F2E"/>
+          {Array.from({ length: 12 }).map((_, i) => {
+            const c = i % 2, r = Math.floor(i / 2);
+            return <rect x={12 + c * 30} y={16 + r * 28} width="20" height="18" fill="#1B3D54"/>;
+          })}
+        </g>
+        <g transform="translate(140,180) rotate(-6)">
+          <rect width="74" height="94" rx="4" fill="#FFFFFF" stroke="#E4EAF0"/>
+          <text x="37" y="14" text-anchor="middle" font-family="Inter Tight" font-weight="700" font-size="8" fill="#0A1F2E" letter-spacing="0.6">UNIT 4B</text>
+          <g transform="translate(8,18)">
+            {Array.from({ length: 36 }).map((_, i) => {
+              const x = (i % 6) * 10, y = Math.floor(i / 6) * 10;
+              const fill = ((i * 11 + 5) % 7 < 4) ? '#0A1F2E' : 'transparent';
+              return <rect x={x} y={y} width="10" height="10" fill={fill}/>;
+            })}
+            <rect x="0" y="0" width="20" height="20" fill="none" stroke="#0A1F2E" stroke-width="2.5"/>
+            <rect x="5" y="5" width="10" height="10" fill="#0A1F2E"/>
+            <rect x="40" y="0" width="20" height="20" fill="none" stroke="#0A1F2E" stroke-width="2.5"/>
+            <rect x="45" y="5" width="10" height="10" fill="#0A1F2E"/>
+          </g>
+          <text x="37" y="88" text-anchor="middle" font-family="Inter Tight" font-size="6" fill="#5A7184">scan to report</text>
+        </g>
+        <g transform="translate(410,90)">
+          <rect width="160" height="120" rx="10" fill="#FFFFFF" stroke="#E4EAF0"/>
+          <rect x="0" y="0" width="160" height="32" rx="10" fill="#FFF1E8"/>
+          <rect x="0" y="22" width="160" height="10" fill="#FFF1E8"/>
+          <circle cx="20" cy="16" r="6" fill="#E76F2A"/>
+          <text x="34" y="20" font-family="Inter Tight" font-weight="600" font-size="11" fill="#0A1F2E">Ticket #4119</text>
+          <text x="14" y="52" font-family="Inter Tight" font-weight="600" font-size="11" fill="#0A1F2E">Leak under sink</text>
+          <text x="14" y="70" font-family="Inter Tight" font-size="10" fill="#5A7184">Bldg A · Unit 4B</text>
+          <g transform="translate(14,84)">
+            <rect width="60" height="20" rx="10" fill="#E6F6F6"/>
+            <circle cx="10" cy="10" r="3" fill="#2BB3B3"/>
+            <text x="18" y="13" font-family="Inter Tight" font-size="9" font-weight="600" fill="#1F9999">In progress</text>
+          </g>
+          <text x="92" y="98" font-family="Inter Tight" font-size="10" fill="#5A7184">2 hr ago</text>
+        </g>
+        <g transform="translate(440,250) rotate(35)">
+          <path d="M0 0 a16 16 0 1 0 12 26 l50 50 l8 -8 l-50 -50 a16 16 0 0 0 -20 -18 z" fill="#E76F2A"/>
+          <circle cx="6" cy="10" r="6" fill="#FFF1E8"/>
+        </g>
+      </>
+    )}
+
+    {kind === 'arch' && (
+      <>
+        <g transform="translate(50,60)">
+          <rect width="320" height="320" rx="6" fill="#0A1F2E"/>
+          <defs>
+            <pattern id="bpGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,.08)" stroke-width=".8"/>
+            </pattern>
+          </defs>
+          <rect width="320" height="320" fill="url(#bpGrid)"/>
+          <g stroke="#fff" fill="none" stroke-width="1.6">
+            <rect x="40" y="40" width="240" height="200"/>
+            <line x1="40" y1="120" x2="160" y2="120"/>
+            <line x1="160" y1="40" x2="160" y2="180"/>
+            <line x1="160" y1="180" x2="280" y2="180"/>
+            <line x1="100" y1="120" x2="100" y2="240"/>
+            <path d="M120 120 a16 16 0 0 1 16 -16"/>
+            <path d="M160 80 a16 16 0 0 0 -16 16"/>
+            <circle cx="80" cy="80" r="3" fill="#E76F2A" stroke="none"/>
+            <circle cx="220" cy="80" r="3" fill="#2BB3B3" stroke="none"/>
+            <circle cx="220" cy="200" r="3" fill="#E76F2A" stroke="none"/>
+          </g>
+          <g stroke="#E76F2A" stroke-width="1">
+            <line x1="40" y1="270" x2="280" y2="270"/>
+            <line x1="40" y1="266" x2="40" y2="274"/>
+            <line x1="280" y1="266" x2="280" y2="274"/>
+            <text x="160" y="285" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#E76F2A">24'-0"</text>
+          </g>
+          <text x="160" y="22" text-anchor="middle" font-family="Newsreader" font-style="italic" font-size="11" fill="rgba(255,255,255,.6)">PHASE 02 · LEVEL 1</text>
+        </g>
+        <g transform="translate(390,70)">
+          <rect width="180" height="220" rx="12" fill="#FFFFFF" stroke="#E4EAF0"/>
+          <text x="20" y="28" font-family="Inter Tight" font-weight="600" font-size="12" fill="#0A1F2E">Phases</text>
+          <text x="20" y="44" font-family="Inter Tight" font-size="10" fill="#5A7184">Riverside Tower</text>
+          <line x1="32" y1="68" x2="32" y2="200" stroke="#E4EAF0" stroke-width="2"/>
+          {([
+            { label: 'Schematic',    status: 'Done',       color: '#18A57A', state: 1 },
+            { label: 'Design Dev',   status: 'Done',       color: '#18A57A', state: 1 },
+            { label: 'Permits',      status: 'In review',  color: '#E76F2A', state: 2 },
+            { label: 'Construction', status: 'Pending',    color: '#8FA1B0', state: 0 },
+            { label: 'Closeout',     status: 'Pending',    color: '#8FA1B0', state: 0 },
+          ] as const).map((r, i) => (
+            <g transform={`translate(20, ${68 + i * 26})`}>
+              <circle cx="12" cy="6" r="6" fill={r.state ? r.color : '#FFFFFF'} stroke={r.color} stroke-width="2"/>
+              {r.state === 1 && <path d="M9 6 l2 2 l4 -4" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/>}
+              <text x="28" y="8" font-family="Inter Tight" font-weight="500" font-size="10" fill="#0A1F2E">{r.label}</text>
+              <text x="28" y="20" font-family="Inter Tight" font-size="9" fill={r.color}>{r.status}</text>
+            </g>
+          ))}
+        </g>
+        <g transform="translate(380,310) rotate(-15)">
+          <polygon points="0,0 140,0 0,80" fill="none" stroke="#E76F2A" stroke-width="2"/>
+          {[10,30,50,70,90,110,130].map(x => (
+            <line x1={x} y1="0" x2={x} y2="6" stroke="#E76F2A"/>
+          ))}
+        </g>
+      </>
+    )}
+
+    {kind === 'gov' && (
+      <>
+        <g transform="translate(50,80)">
+          <polygon points="0,30 240,30 200,0 40,0" fill="#0A1F2E"/>
+          <rect y="30" width="240" height="6" fill="#E76F2A"/>
+          {[0,1,2,3,4].map(i => (
+            <g transform={`translate(${20 + i * 50}, 36)`}>
+              <rect width="20" height="6" fill="#0A1F2E"/>
+              <rect x="2" y="6" width="16" height="200" fill="#E4EAF0"/>
+              <rect width="20" height="6" y="206" fill="#0A1F2E"/>
+            </g>
+          ))}
+          <rect y="212" width="240" height="14" fill="#0A1F2E"/>
+          <rect y="226" width="260" x="-10" height="10" fill="#1B3D54"/>
+        </g>
+        <g transform="translate(330,80)">
+          <rect width="220" height="100" rx="12" fill="#FFFFFF" stroke="#E4EAF0"/>
+          <g transform="translate(20,20)">
+            <path d="M30 0 L60 8 V32 C60 48, 46 58, 30 60 C14 58, 0 48, 0 32 V8 Z" fill="#0A1F2E"/>
+            <path d="M16 30 L26 40 L44 22" fill="none" stroke="#2BB3B3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <text x="100" y="36" font-family="Inter Tight" font-weight="600" font-size="13" fill="#0A1F2E">Compliance</text>
+          <text x="100" y="54" font-family="Inter Tight" font-size="11" fill="#5A7184">SOC 2 · FERPA · GDPR</text>
+          <g transform="translate(100,68)">
+            <rect width="50" height="20" rx="10" fill="#E6F6F6"/>
+            <circle cx="10" cy="10" r="3" fill="#2BB3B3"/>
+            <text x="18" y="13" font-family="Inter Tight" font-weight="600" font-size="9" fill="#1F9999">Verified</text>
+          </g>
+        </g>
+        <g transform="translate(330,200)">
+          <rect width="220" height="160" rx="12" fill="#0A1F2E"/>
+          <text x="20" y="28" font-family="Inter Tight" font-weight="600" font-size="12" fill="#fff">your-domain.gov</text>
+          <text x="20" y="44" font-family="Inter Tight" font-size="10" fill="rgba(255,255,255,.55)">Self-hosted · 1 license</text>
+          <g transform="translate(20,60)">
+            <rect width="180" height="6" rx="3" fill="rgba(255,255,255,.1)"/>
+            <rect width="138" height="6" rx="3" fill="#2BB3B3"/>
+            <text x="0" y="22" font-family="JetBrains Mono" font-size="9" fill="rgba(255,255,255,.6)">Storage 76%</text>
+          </g>
+          <g transform="translate(20,98)">
+            <rect width="180" height="6" rx="3" fill="rgba(255,255,255,.1)"/>
+            <rect width="60" height="6" rx="3" fill="#E76F2A"/>
+            <text x="0" y="22" font-family="JetBrains Mono" font-size="9" fill="rgba(255,255,255,.6)">CPU 33%</text>
+          </g>
+          <text x="20" y="148" font-family="JetBrains Mono" font-size="10" fill="#FFA94D">∞ users · $0/seat</text>
+        </g>
+        <g transform="translate(150,300) rotate(-6)">
+          <polygon points="0,30 60,15 120,30 60,45" fill="#E76F2A"/>
+          <rect x="20" y="32" width="80" height="20" fill="#0A1F2E"/>
+          <line x1="120" y1="30" x2="135" y2="55" stroke="#E76F2A" stroke-width="2"/>
+          <circle cx="135" cy="58" r="4" fill="#E76F2A"/>
+        </g>
+      </>
+    )}
+
+    {kind === 'any' && (
+      <>
+        <g transform="translate(300,220)">
+          <circle r="78" fill="#0A1F2E"/>
+          <circle r="78" fill="none" stroke="#E76F2A" stroke-width="1.5" stroke-dasharray="3 3" opacity=".4"/>
+          <text text-anchor="middle" y="-6" font-family="Newsreader" font-style="italic" font-weight="600" font-size="22" fill="#fff">one</text>
+          <text text-anchor="middle" y="18" font-family="Inter Tight" font-weight="600" font-size="13" fill="#E76F2A" letter-spacing="2">PORTAL</text>
+        </g>
+        {[
+          { tx: 80, ty: 80, label: 'Projects', icon: '◧', color: '#E76F2A' },
+          { tx: 460, ty: 70, label: 'Contracts', icon: '✎', color: '#2BB3B3' },
+          { tx: 70, ty: 250, label: 'Files', icon: '⬒', color: '#0A1F2E' },
+          { tx: 460, ty: 270, label: 'Invoices', icon: '$', color: '#E76F2A' },
+          { tx: 230, ty: 60, label: 'Messages', icon: '✉', color: '#2BB3B3' },
+          { tx: 250, ty: 360, label: 'Branding', icon: '◐', color: '#0A1F2E' },
+        ].map(s => (
+          <g transform={`translate(${s.tx}, ${s.ty})`}>
+            <line x1="60" y1="30" x2={300 - s.tx + 60} y2={220 - s.ty + 30} stroke="#0A1F2E" stroke-opacity=".15" stroke-dasharray="2 3"/>
+            <rect width="120" height="58" rx="10" fill="#FFFFFF" stroke="#E4EAF0"/>
+            <circle cx="22" cy="29" r="14" fill={s.color === '#0A1F2E' ? 'rgba(10,31,46,.08)' : (s.color === '#E76F2A' ? '#FFF1E8' : '#E6F6F6')}/>
+            <text x="22" y="34" text-anchor="middle" font-family="Inter Tight" font-weight="700" font-size="14" fill={s.color}>{s.icon}</text>
+            <text x="44" y="26" font-family="Inter Tight" font-weight="600" font-size="11" fill="#0A1F2E">{s.label}</text>
+            <text x="44" y="42" font-family="Inter Tight" font-size="9" fill="#8FA1B0">included</text>
+          </g>
+        ))}
+        <g transform="translate(40,400)">
+          <rect width="170" height="22" rx="11" fill="#FFF1E8"/>
+          <circle cx="11" cy="11" r="3" fill="#E76F2A"/>
+          <text x="20" y="14" font-family="Inter Tight" font-weight="600" font-size="10" fill="#E76F2A">Pay once · own forever</text>
+        </g>
+      </>
+    )}
+  </svg>
+</div>
+
+<style>
+  .ind-art {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 600 / 440;
+    background: var(--color-bg-2);
+    border-radius: 18px;
+    border: 1px solid var(--color-line);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+  }
+</style>

@@ -1,0 +1,117 @@
+---
+import Icon from '~/components/ui/Icon.astro';
+import { SITE } from '~/lib/site';
+
+const { single, agency } = SITE.pricing;
+
+const tiers = [
+  {
+    name: single.name,
+    price: single.price,
+    desc: 'Solo operators and boutique firms running one portal.',
+    feats: ['1 production install', 'Unlimited clients & users', 'Lifetime updates: 1 year', 'Email support', 'Self-hosted on your stack'],
+    cta: 'Buy Single Site',
+    href: '/pricing#single',
+    dark: false,
+  },
+  {
+    name: agency.name,
+    price: agency.price,
+    desc: 'Agencies running portals for themselves and their own clients.',
+    feats: ['Up to 10 production installs', 'White-label rights', 'Lifetime updates: included', 'Priority email + chat', 'Migration help from old stack'],
+    cta: 'Buy Agency License',
+    href: '/pricing#agency',
+    dark: true,
+    popular: true,
+  },
+];
+---
+<section class="sect pricing-teaser" id="pricing">
+  <div class="container-wide">
+    <div class="reveal" style="text-align:center;max-width:700px;margin:0 auto 56px;">
+      <div class="eyebrow" style="margin-bottom:18px;">
+        <span class="badge">PRICING</span> One-time. No per-seat tax.
+      </div>
+      <h2 class="cc-h1">Pay once. <em class="acc">Own forever.</em></h2>
+      <p style="font-size:17px;line-height:1.55;color:var(--color-ink-2);margin-top:18px;">
+        No monthly fees. No per-seat charges. No surprise quotas. One license. Yours.
+      </p>
+    </div>
+
+    <div class="tiers">
+      {tiers.map(p => (
+        <div class={`tier reveal ${p.dark ? 'tier-dark' : ''}`}>
+          {p.popular && <span class="popular">MOST POPULAR</span>}
+          <div class="tier-name">{p.name}</div>
+          <div class="tier-price">
+            <span class="cc-serif num">${p.price}</span>
+            <span class="cycle">one-time</span>
+          </div>
+          <p class="tier-desc">{p.desc}</p>
+          <a href={p.href} class={p.dark ? 'btn btn-primary' : 'btn btn-dark'} style="width:100%;margin-bottom:22px;">
+            {p.cta} <Icon name="arrow" class="arrow" />
+          </a>
+          <ul>
+            {p.feats.map(f => (
+              <li><span class="check"><Icon name="check" /></span>{f}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <p class="guarantee">
+      Every license includes a <strong>30-day money-back guarantee</strong>.
+      Annual updates after year one are optional (${single.yearlyUpdates}/yr).
+      <a href="/pricing" class="lnk" style="margin-left:8px;">See full pricing <Icon name="arrow" /></a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .pricing-teaser { background: var(--color-bg-2); }
+  .tiers {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px; max-width: 920px; margin: 0 auto;
+  }
+  .tier {
+    position: relative;
+    background: #fff; color: var(--color-ink);
+    border: 1px solid var(--color-line);
+    border-radius: 14px; padding: 32px;
+    box-shadow: var(--shadow-sm);
+  }
+  .tier-dark {
+    background: var(--color-navy-900); color: #fff;
+    border-color: var(--color-navy-700);
+    box-shadow: 0 30px 60px -20px rgba(10,31,46,.4);
+  }
+  .popular {
+    position: absolute; top: 16px; right: 16px;
+    font-size: 9.5px; font-weight: 700; padding: 4px 9px; border-radius: 4px;
+    background: var(--color-orange); color: #fff; letter-spacing: 0.08em;
+  }
+  .tier-name {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--color-ink-3); margin-bottom: 14px;
+  }
+  .tier-dark .tier-name { color: rgba(255,255,255,.55); }
+  .tier-price { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+  .tier-price .cc-serif { font-size: 56px; font-weight: 700; line-height: 1; color: var(--color-ink); }
+  .tier-dark .tier-price .cc-serif { color: #fff; }
+  .cycle { font-size: 13px; color: var(--color-ink-3); white-space: nowrap; }
+  .tier-dark .cycle { color: rgba(255,255,255,.5); }
+  .tier-desc {
+    font-size: 14px; color: var(--color-ink-2); line-height: 1.5; margin-bottom: 22px;
+  }
+  .tier-dark .tier-desc { color: rgba(255,255,255,.7); }
+  .tier ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px; }
+  .tier li { display: flex; gap: 8px; font-size: 13.5px; color: var(--color-ink-2); }
+  .tier-dark li { color: rgba(255,255,255,.85); }
+  .tier-dark .check { background: rgba(43,179,179,.2); color: var(--color-teal); }
+  .guarantee {
+    text-align: center; margin: 32px 0 0; font-size: 13px; color: var(--color-ink-3);
+  }
+  .guarantee strong { color: var(--color-ink); }
+  @media (max-width: 720px) { .tiers { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,358 @@
+---
+import Icon from '~/components/ui/Icon.astro';
+---
+<section class="hero">
+  <svg class="hero-mesh" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <radialGradient id="g1" cx="20%" cy="20%" r="50%">
+        <stop offset="0%" stop-color="#E76F2A" stop-opacity=".35" />
+        <stop offset="100%" stop-color="#E76F2A" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="g2" cx="80%" cy="10%" r="50%">
+        <stop offset="0%" stop-color="#2BB3B3" stop-opacity=".28" />
+        <stop offset="100%" stop-color="#2BB3B3" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="g3" cx="60%" cy="80%" r="55%">
+        <stop offset="0%" stop-color="#7E5BD7" stop-opacity=".2" />
+        <stop offset="100%" stop-color="#7E5BD7" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="g4" cx="10%" cy="90%" r="40%">
+        <stop offset="0%" stop-color="#0A1F2E" stop-opacity=".18" />
+        <stop offset="100%" stop-color="#0A1F2E" stop-opacity="0" />
+      </radialGradient>
+      <linearGradient id="fade" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0%" stop-color="#fff" stop-opacity="0" />
+        <stop offset="100%" stop-color="#fff" stop-opacity="1" />
+      </linearGradient>
+    </defs>
+    <rect width="1600" height="900" fill="url(#g1)" />
+    <rect width="1600" height="900" fill="url(#g2)" />
+    <rect width="1600" height="900" fill="url(#g3)" />
+    <rect width="1600" height="900" fill="url(#g4)" />
+    <rect x="0" y="600" width="1600" height="300" fill="url(#fade)" />
+  </svg>
+  <div class="grid-bg hero-grid" aria-hidden="true"></div>
+
+  <div class="container-wide hero-inner">
+    <div class="hero-copy">
+      <div class="reveal" style="margin-bottom:24px;">
+        <span class="pill warm">
+          <span class="dot"></span>
+          v3.2 — Native time-tracking, Stripe billing, e-signature contracts
+        </span>
+      </div>
+
+      <h1 class="cc-display reveal">
+        One branded portal. <em class="acc">Every client.</em><br />
+        All your work. Completely under your control.
+      </h1>
+
+      <p class="reveal hero-sub">
+        ClientCove is a licensed, self-hosted client portal that bundles tickets,
+        projects, tasks, resources, contracts and Stripe billing into one branded
+        experience. <strong>Pay once. Own forever.</strong> No per-seat tax. No monthly rent.
+      </p>
+
+      <div class="reveal hero-ctas">
+        <a href="/pricing" class="btn btn-primary btn-lg">
+          Buy ClientCove — $497 <Icon name="arrow" class="arrow" />
+        </a>
+        <a href="#tour" class="btn btn-ghost btn-lg">
+          Live product tour <Icon name="arrow" class="arrow" />
+        </a>
+      </div>
+
+      <ul class="reveal trust-bar" aria-label="Trust">
+        <li><span class="check"><Icon name="check" /></span> On-premises or managed</li>
+        <li><span class="check"><Icon name="check" /></span> You own the data</li>
+        <li><span class="check"><Icon name="check" /></span> Unlimited clients & users</li>
+        <li><span class="check"><Icon name="check" /></span> 30-day money back</li>
+      </ul>
+    </div>
+
+    <div class="reveal hero-mock">
+      <div class="hero-frame-glow" aria-hidden="true"></div>
+      <div class="hero-frame">
+        <div class="browser-bar">
+          <div class="dots">
+            <span style="background:#FF5F57"></span>
+            <span style="background:#FEBC2E"></span>
+            <span style="background:#28C840"></span>
+          </div>
+          <div class="addr">
+            <Icon name="shield" size={10} /> portal.<strong>acmeagency</strong>.com
+          </div>
+          <span style="width:60px"></span>
+        </div>
+
+        <div class="kpis num">
+          <div><span class="lbl">Active tickets</span><div class="val"><span class="cc-serif">247</span><span class="delta">▲ +8</span></div></div>
+          <div><span class="lbl">Open invoices</span><div class="val"><span class="cc-serif">$48.2k</span><span class="delta">▲ +$1.2k</span></div></div>
+          <div><span class="lbl">Hours logged</span><div class="val"><span class="cc-serif">184.5</span><span class="delta">▲ +0.5</span></div></div>
+          <div><span class="lbl">On-time delivery</span><div class="val"><span class="cc-serif">94%</span><span class="delta">▲ +1%</span></div></div>
+        </div>
+
+        <div class="app-grid">
+          <aside class="sidebar">
+            <div class="ws-head">Workspace</div>
+            <div class="ws-card">
+              <span class="ws-thumb"></span>
+              Acme Agency
+              <Icon name="caret" class="caret" />
+            </div>
+            <div class="nav-item">Dashboard</div>
+            <div class="nav-item">Tickets <span class="badge">12</span></div>
+            <div class="nav-item active">Projects <span class="badge active">5</span></div>
+            <div class="nav-item">My Tasks <span class="badge">11</span></div>
+            <div class="nav-item">Resources</div>
+            <div class="nav-item">Clients</div>
+            <div class="nav-item">Contracts <span class="badge">4</span></div>
+            <div class="nav-item">Invoices <span class="badge">8</span></div>
+          </aside>
+
+          <div class="kanban-pane">
+            <div class="kanban-head">
+              <div>
+                <div class="crumb">Projects / Acme Website</div>
+                <div class="cc-serif title">Acme Website redesign</div>
+              </div>
+              <div class="head-right">
+                <span class="pill cool"><span class="pulse"></span> On track</span>
+                <span class="task-btn"><Icon name="plus" /> Task</span>
+              </div>
+            </div>
+
+            <div class="kanban">
+              <div class="col">
+                <div class="col-head"><span style="background:#2BB3B3"></span>Concept <em>3</em></div>
+                <div class="card-mini"><div class="t">Discovery brief</div><div class="r"><span class="tag" style="background:#2BB3B314;color:#2BB3B3">Research</span><div class="avs"><i style="background:#E76F2A"></i><i style="background:#2BB3B3"></i></div></div></div>
+                <div class="card-mini"><div class="t">Stakeholder interviews</div><div class="r"><span class="tag" style="background:#E76F2A14;color:#E76F2A">UX</span><div class="avs"><i style="background:#E76F2A"></i><i style="background:#2BB3B3"></i><i style="background:#0A1F2E"></i></div></div><div class="prog"><i style="width:100%;background:#E76F2A"></i></div></div>
+              </div>
+              <div class="col">
+                <div class="col-head"><span style="background:#E76F2A"></span>Design <em>4</em></div>
+                <div class="card-mini"><div class="t">Homepage wireframes</div><div class="r"><span class="tag" style="background:#E76F2A14;color:#E76F2A">Design</span><div class="avs"><i style="background:#E76F2A"></i><i style="background:#2BB3B3"></i></div></div><div class="prog"><i style="width:80%;background:#E76F2A"></i></div></div>
+                <div class="card-mini"><div class="t">Component library</div><div class="r"><span class="tag" style="background:#2BB3B314;color:#2BB3B3">UI</span><div class="avs"><i style="background:#E76F2A"></i><i style="background:#2BB3B3"></i><i style="background:#0A1F2E"></i><i style="background:#7E5BD7"></i></div></div></div>
+                <div class="card-mini"><div class="t">Pricing page</div><div class="r"><span class="tag" style="background:#E76F2A14;color:#E76F2A">Design</span><div class="avs"><i style="background:#E76F2A"></i></div></div></div>
+              </div>
+              <div class="col">
+                <div class="col-head"><span style="background:#1B3D54"></span>Build <em>6</em></div>
+                <div class="card-mini"><div class="t">CMS integration</div><div class="r"><span class="tag" style="background:#0A1F2E14;color:#0A1F2E">Eng</span><div class="avs"><i style="background:#0A1F2E"></i><i style="background:#2BB3B3"></i></div></div><div class="prog"><i style="width:45%;background:#0A1F2E"></i></div></div>
+                <div class="card-mini"><div class="t">Auth + billing</div><div class="r"><span class="tag" style="background:#0A1F2E14;color:#0A1F2E">Backend</span><div class="avs"><i style="background:#E76F2A"></i><i style="background:#2BB3B3"></i><i style="background:#0A1F2E"></i></div></div></div>
+              </div>
+              <div class="col">
+                <div class="col-head"><span style="background:#7E5BD7"></span>Review <em>2</em></div>
+                <div class="card-mini"><div class="t">Client UAT</div><div class="r"><span class="tag" style="background:#7E5BD714;color:#7E5BD7">QA</span><div class="avs"><i style="background:#7E5BD7"></i><i style="background:#E76F2A"></i></div></div></div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="rail">
+            <div class="rail-head">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span class="pulse"></span>
+                <span style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-ink-2);">Live activity</span>
+              </div>
+              <div style="font-size:10.5px;color:var(--color-ink-4);margin-top:2px;">What your team is shipping right now</div>
+            </div>
+            <ul class="feed">
+              <li><span class="av" style="background:var(--color-teal-600)">S</span><span class="line"><strong>Sara</strong> logged 2.5h on <em>Acme Website</em></span><span class="tg" style="background:rgba(31,153,153,.12);color:var(--color-teal-600)">TIME</span></li>
+              <li><span class="av" style="background:var(--color-green)">E</span><span class="line"><strong>Eric</strong> closed <em>#1058 Website is up</em></span><span class="tg" style="background:rgba(24,165,122,.14);color:var(--color-green)">TICKET</span></li>
+              <li><span class="av" style="background:var(--color-orange)">J</span><span class="line"><strong>Jerry</strong> signed <em>MSA</em></span><span class="tg" style="background:rgba(231,111,42,.14);color:var(--color-orange)">CONTRACT</span></li>
+              <li><span class="av" style="background:var(--color-violet)">M</span><span class="line"><strong>Mei</strong> paid <em>INV-2026-0114 · $4,200</em></span><span class="tg" style="background:rgba(126,91,215,.14);color:var(--color-violet)">INVOICE</span></li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+
+      <div class="float-a float-card float-tr">
+        <div class="card-h">
+          <span class="ic" style="background:var(--color-orange-50);color:var(--color-orange);">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 5h12v6H2z" stroke="currentColor" stroke-width="1.4"/><path d="M2 8h12" stroke="currentColor" stroke-width="1.4"/></svg>
+          </span>
+          <div style="flex:1">
+            <div class="num" style="font-size:10.5px;color:var(--color-ink-4)">Ticket #1058</div>
+            <div style="font-size:12.5px;font-weight:600">Website is up</div>
+          </div>
+          <span class="badge-status" style="background:var(--color-green);">RESOLVED</span>
+        </div>
+        <p>Triaged → assigned → fixed in 14 minutes. Client notified.</p>
+      </div>
+
+      <div class="float-b float-card float-bl">
+        <div class="card-h">
+          <span class="ic" style="background:var(--color-teal-50);color:var(--color-teal-600);">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2h6l3 3v9H4V2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 2v3h3" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          </span>
+          <div>
+            <div style="font-size:10.5px;color:var(--color-ink-4);">Contract</div>
+            <div style="font-size:12.5px;font-weight:600">Master Services Agreement</div>
+          </div>
+        </div>
+        <div class="signed-row">
+          <span style="font-size:10px;color:var(--color-ink-4)">Signed by Eric L.</span>
+          <span class="badge-status" style="background:var(--color-teal-600);">SIGNED</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; padding: 40px 0 160px; overflow: hidden; }
+  .hero-mesh { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 0; opacity: .6;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 30%, transparent 80%);
+            mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 30%, transparent 80%);
+  }
+  .hero-inner { position: relative; z-index: 1; }
+  .hero-copy { text-align: center; max-width: 980px; margin: 0 auto; padding: 80px 0 70px; }
+  .hero-sub {
+    font-size: 20px; line-height: 1.5; color: var(--color-ink-2);
+    max-width: 700px; margin: 28px auto 0; text-wrap: pretty;
+  }
+  .hero-ctas { display: flex; gap: 10px; justify-content: center; margin-top: 36px; flex-wrap: wrap; }
+  .trust-bar {
+    list-style: none; padding: 0; margin: 26px auto 0;
+    display: inline-flex; align-items: center; gap: 22px;
+    font-size: 13px; color: var(--color-ink-3);
+    flex-wrap: wrap; justify-content: center;
+  }
+  .trust-bar li { display: inline-flex; align-items: center; gap: 6px; }
+
+  /* Mock frame */
+  .hero-mock { position: relative; width: 100%; max-width: 1180px; margin: 0 auto; }
+  .hero-frame-glow {
+    position: absolute; inset: -1px; border-radius: 17px;
+    background: linear-gradient(135deg, rgba(231,111,42,.5), rgba(43,179,179,.5) 50%, rgba(126,91,215,.5));
+    filter: blur(2px); opacity: .6; pointer-events: none;
+  }
+  .hero-frame {
+    position: relative; border-radius: 16px; overflow: hidden;
+    background: #fff; border: 1px solid var(--color-line);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .browser-bar {
+    height: 36px; background: #F6F8FA; border-bottom: 1px solid var(--color-line);
+    display: flex; align-items: center; padding: 0 14px; gap: 10px;
+  }
+  .browser-bar .dots { display: flex; gap: 6px; }
+  .browser-bar .dots span { width: 11px; height: 11px; border-radius: 999px; }
+  .browser-bar .addr {
+    margin: 0 auto; font-size: 11px; color: var(--color-ink-3);
+    background: #fff; padding: 4px 14px; border-radius: 6;
+    border: 1px solid var(--color-line-2); display: flex; align-items: center; gap: 6px;
+  }
+
+  /* KPIs */
+  .kpis {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--color-line);
+    border-bottom: 1px solid var(--color-line);
+    background: #fff;
+  }
+  .kpis > div { padding: 14px 18px; border-right: 1px solid var(--color-line); display: flex; flex-direction: column; gap: 4px; }
+  .kpis > div:last-child { border-right: none; }
+  .kpis .lbl { font-size: 11px; color: var(--color-ink-3); letter-spacing: 0.04em; }
+  .kpis .val { display: flex; align-items: baseline; gap: 6px; }
+  .kpis .val .cc-serif { font-size: 22px; color: var(--color-ink); font-weight: 700; }
+  .kpis .delta { font-size: 11px; color: var(--color-green); font-weight: 600; }
+
+  /* App grid */
+  .app-grid { display: grid; grid-template-columns: 180px 1fr 280px; min-height: 460px; }
+  .sidebar { background: #FAFBFC; border-right: 1px solid var(--color-line-2); padding: 14px; }
+  .ws-head { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--color-ink-4); margin-bottom: 8px; }
+  .ws-card {
+    display: flex; align-items: center; gap: 8px; padding: 8px 10px;
+    background: #fff; border: 1px solid var(--color-line-2); border-radius: 6px;
+    margin-bottom: 14px; font-size: 12px; font-weight: 500;
+  }
+  .ws-thumb { width: 18px; height: 18px; border-radius: 4px; background: linear-gradient(135deg, var(--color-orange), var(--color-teal)); }
+  .ws-card .caret { margin-left: auto; opacity: .5; }
+  .nav-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 7px 10px; border-radius: 6px; margin-bottom: 1px;
+    color: var(--color-ink-2); font-size: 12.5px; font-weight: 500;
+  }
+  .nav-item.active { background: var(--color-orange-50); color: var(--color-orange-600); font-weight: 600; }
+  .nav-item .badge {
+    font-size: 10px; padding: 1px 6px; border-radius: 4px;
+    background: rgba(10,31,46,.06); color: var(--color-ink-3); font-weight: 600;
+  }
+  .nav-item .badge.active { background: var(--color-orange); color: #fff; }
+
+  /* Kanban */
+  .kanban-pane { padding: 18px; background: #FAFBFC; }
+  .kanban-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .crumb { font-size: 10.5px; color: var(--color-ink-4); letter-spacing: 0.04em; }
+  .kanban-head .title { font-size: 18px; color: var(--color-ink); font-weight: 700; }
+  .head-right { display: flex; gap: 6px; align-items: center; }
+  .task-btn {
+    padding: 5px 11px; border-radius: 6px; font-size: 11px; font-weight: 600;
+    background: var(--color-orange); color: #fff;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .kanban { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .col-head {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 10.5px; font-weight: 600; color: var(--color-ink-2);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;
+  }
+  .col-head > span { width: 5px; height: 5px; border-radius: 999px; display: inline-block; margin-right: auto; }
+  .col-head em { font-style: normal; font-size: 9.5px; color: var(--color-ink-4); margin-left: 4px; }
+  .col { display: flex; flex-direction: column; gap: 5px; }
+  .card-mini { background: #fff; border: 1px solid var(--color-line-2); border-radius: 7px; padding: 9px; box-shadow: var(--shadow-sm); }
+  .card-mini .t { font-size: 11px; font-weight: 500; line-height: 1.35; margin-bottom: 7px; }
+  .card-mini .r { display: flex; align-items: center; justify-content: space-between; }
+  .card-mini .tag { font-size: 9px; font-weight: 600; padding: 1.5px 5px; border-radius: 3px; }
+  .card-mini .avs { display: flex; }
+  .card-mini .avs i { width: 13px; height: 13px; border-radius: 999px; border: 1.5px solid #fff; margin-left: -4px; display: inline-block; }
+  .card-mini .avs i:first-child { margin-left: 0; }
+  .card-mini .prog { margin-top: 6px; height: 2.5px; background: var(--color-line-2); border-radius: 999px; overflow: hidden; }
+  .card-mini .prog i { display: block; height: 100%; border-radius: 999px; }
+
+  /* Right rail */
+  .rail { border-left: 1px solid var(--color-line-2); display: flex; flex-direction: column; }
+  .rail-head { padding: 14px 14px 8px; border-bottom: 1px solid var(--color-line-2); }
+  .feed { list-style: none; padding: 0; margin: 0; }
+  .feed li { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--color-line-2); }
+  .feed li:last-child { border-bottom: none; }
+  .feed .av { width: 26px; height: 26px; border-radius: 999px; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .feed .line { font-size: 12px; color: var(--color-ink-2); flex: 1; line-height: 1.4; }
+  .feed .line strong { color: var(--color-ink); font-weight: 600; }
+  .feed .line em { color: var(--color-ink); font-weight: 500; font-style: normal; }
+  .feed .tg { font-size: 9.5px; font-weight: 700; padding: 2px 6px; border-radius: 4px; letter-spacing: 0.06em; }
+
+  /* Float cards */
+  .float-card {
+    position: absolute; width: 270px;
+    background: #fff; border: 1px solid var(--color-line);
+    border-radius: 12px; padding: 14px; box-shadow: var(--shadow-lg);
+    z-index: 2;
+  }
+  .float-tr { top: -38px; right: -38px; transform: rotate(3deg); }
+  .float-bl { bottom: -36px; left: -50px; transform: rotate(-3deg); width: 256px; padding: 13px; }
+  .float-card .card-h { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .float-card .ic { width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; }
+  .float-card p { font-size: 11px; color: var(--color-ink-3); line-height: 1.5; padding-left: 42px; margin: 0; }
+  .badge-status { font-size: 9.5px; font-weight: 700; padding: 3px 7px; color: #fff; border-radius: 4px; }
+  .signed-row { display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px solid var(--color-line-2); }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .app-grid { grid-template-columns: 160px 1fr; }
+    .rail { display: none; }
+    .float-card { display: none; }
+  }
+  @media (max-width: 780px) {
+    .app-grid { grid-template-columns: 1fr; min-height: auto; }
+    .sidebar { display: none; }
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .kpis > div:nth-child(2) { border-right: none; }
+    .kpis > div:nth-child(1), .kpis > div:nth-child(2) { border-bottom: 1px solid var(--color-line); }
+    .kanban { grid-template-columns: repeat(2, 1fr); }
+    .hero { padding-bottom: 80px; }
+    .hero-copy { padding: 40px 0 50px; }
+  }
+</style>

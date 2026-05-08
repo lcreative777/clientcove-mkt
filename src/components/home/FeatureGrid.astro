@@ -1,0 +1,380 @@
+---
+import Icon from '~/components/ui/Icon.astro';
+
+const features = [
+  {
+    span: 5, color: 'orange', tag: 'Tickets & support',
+    title: 'A help desk that lives inside the same app as the work.',
+    body: 'Threaded tickets, priorities, SLAs, locations, attachments. Every conversation stays linked to the project, asset or client it touches.',
+    ill: 'tickets',
+  },
+  {
+    span: 7, color: 'teal', tag: 'Projects',
+    title: 'Kanban, list and timeline — for the whole team.',
+    body: 'Custom sections per project. Drag-and-drop, dependencies, checklists, tags, members, due dates. Switch lenses without losing context.',
+    ill: 'projects',
+  },
+  {
+    span: 4, color: 'navy', tag: 'Tasks & time',
+    title: 'Personal task lists with built-in time tracking.',
+    body: 'Three lenses on the same task list. Log hours per task, per client, per project. Export timesheets straight to invoices.',
+    ill: 'time',
+  },
+  {
+    span: 4, color: 'violet', tag: 'Resources',
+    title: 'A file library that doesn’t feel like Dropbox circa 2014.',
+    body: 'Per-client folders, shared assets, versioning, in-line previews. Every artifact your clients need, gated by role.',
+    ill: 'files',
+  },
+  {
+    span: 4, color: 'orange', tag: 'Contracts',
+    title: 'E-signature, included.',
+    body: 'NDA, MSA, SOW, custom — sent and tracked in seconds. Audit trail attached to the client record. No DocuSign tax.',
+    ill: 'contracts',
+  },
+  {
+    span: 6, color: 'teal', tag: 'Invoices & billing',
+    title: 'Stripe billing on your domain, in your colors.',
+    body: 'One-time, recurring, milestone-based. Invoices generated from time logs and approved scope. Clients pay in two clicks.',
+    ill: 'invoices',
+  },
+  {
+    span: 6, color: 'navy', tag: 'Roles & access',
+    title: 'Role-aware permissions, baked in.',
+    body: 'Team admin, project lead, client, vendor, read-only. Per-row visibility on tickets, files and time. The right people see the right things.',
+    ill: 'roles',
+  },
+];
+
+const COLOR_MAP = {
+  orange: { fg: 'var(--color-orange)', bg: 'var(--color-orange-50)' },
+  teal:   { fg: 'var(--color-teal-600)', bg: 'var(--color-teal-50)' },
+  navy:   { fg: 'var(--color-navy-900)', bg: 'rgba(10,31,46,.06)' },
+  violet: { fg: 'var(--color-violet)', bg: 'rgba(126,91,215,.10)' },
+} as const;
+---
+<section class="sect" id="features">
+  <div class="container-wide">
+    <div class="reveal heading-row">
+      <div>
+        <div class="eyebrow" style="margin-bottom:18px;">
+          <span class="badge">FEATURES</span> The whole stack — in one license
+        </div>
+        <h2 class="cc-h1">
+          Everything your team and clients need.<br />
+          <span style="color:var(--color-ink-3);">Nothing they don't.</span>
+        </h2>
+      </div>
+      <div style="padding-bottom:8px;">
+        <p style="font-size:17px;line-height:1.55;color:var(--color-ink-2);text-wrap:pretty;">
+          Eight modules, one schema, one branded URL. Drop a fee on Notion, ClickUp, Dropbox,
+          DocuSign, Harvest and Stripe Billing — they're all in here, and they actually talk to each other.
+        </p>
+        <a href="/features" class="lnk" style="margin-top:18px;white-space:nowrap;">
+          Compare every feature <Icon name="arrow" />
+        </a>
+      </div>
+    </div>
+
+    <div class="feature-grid">
+      {features.map(f => {
+        const c = COLOR_MAP[f.color as keyof typeof COLOR_MAP];
+        return (
+          <article class="card reveal feature-card" style={`grid-column: span ${f.span};`}>
+            <div class={`ill ill-${f.ill}`} style={`--c: ${c.fg}; --c-bg: ${c.bg};`}>
+              {f.ill === 'tickets' && (
+                <div class="ill-list">
+                  {[
+                    { id: '1058', t: 'Website is up', s: 'RESOLVED', col: 'var(--color-green)' },
+                    { id: '1057', t: 'Login redirect after SAML', s: 'IN PROGRESS', col: 'var(--color-orange)' },
+                    { id: '1056', t: 'Add 2FA backup codes', s: 'TRIAGED', col: 'var(--color-teal-600)' },
+                    { id: '1055', t: 'Export billing CSV', s: 'BACKLOG', col: 'var(--color-ink-4)' },
+                  ].map(t => (
+                    <div class="ticket-row">
+                      <span class="num" style="font-size:10.5px;color:var(--color-ink-4);min-width:36px;">#{t.id}</span>
+                      <span style="font-size:12px;font-weight:500;color:var(--color-ink);flex:1;">{t.t}</span>
+                      <span class="status" style={`background:color-mix(in srgb, ${t.col} 8%, transparent);color:${t.col};`}>{t.s}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {f.ill === 'projects' && (
+                <div class="ill-kanban">
+                  {[
+                    { l: 'Concept', n: 3, h: [60, 80] },
+                    { l: 'Design', n: 4, h: [50, 70, 45] },
+                    { l: 'Build', n: 6, h: [55, 65, 40, 75] },
+                    { l: 'Review', n: 2, h: [50] },
+                  ].map(col => (
+                    <div class="ill-col">
+                      <div class="ill-col-h"><span>{col.l}</span><span>{col.n}</span></div>
+                      {col.h.map(h => (
+                        <div class="ill-block" style={`height:${h * 0.55}px;`}>
+                          <div class="bar" style="width:60%;background:var(--c);"></div>
+                          <div class="bar" style="width:90%;background:var(--color-line);"></div>
+                          <div class="bar" style="width:70%;background:var(--color-line);"></div>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {f.ill === 'time' && (
+                <div class="ill-time">
+                  <div style="display:flex;align-items:baseline;gap:6px;">
+                    <span class="cc-serif num" style="font-size:36px;font-weight:700;color:var(--c);">14:32</span>
+                    <span style="font-size:11px;color:var(--color-ink-3);">tracked today</span>
+                  </div>
+                  <div class="bars">
+                    {[35, 55, 70, 45, 90, 60, 78].map((h, i) => (
+                      <div class="bar" style={`height:${h}%;background:${i === 4 ? 'var(--c)' : 'var(--c-bg)'};`}></div>
+                    ))}
+                  </div>
+                  <div class="weekdays"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+                  <div class="active-timer">
+                    <span class="pulse"></span>
+                    <span style="font-size:11px;color:var(--color-ink-2);">Acme Website · <strong>1:24:08</strong></span>
+                    <span style="margin-left:auto;font-size:9.5px;padding:2px 6px;border-radius:3px;background:var(--c);color:#fff;font-weight:700;">STOP</span>
+                  </div>
+                </div>
+              )}
+
+              {f.ill === 'files' && (
+                <div class="ill-files">
+                  {[
+                    { i: '📄', n: 'Brand-guidelines-v3.pdf', s: '2.4 MB', t: 'PDF' },
+                    { i: '🖼', n: 'Hero-final-export.png', s: '480 KB', t: 'IMG' },
+                    { i: '📊', n: 'Q1-roadmap.figma', s: '—', t: 'FIGMA', live: true },
+                    { i: '📁', n: 'Client deliverables', s: '12 files', t: 'FOLDER' },
+                  ].map(file => (
+                    <div class="file-row">
+                      <span class="ic" style="background:var(--c-bg);color:var(--c);">{file.i}</span>
+                      <div style="flex:1;">
+                        <div style="font-size:11.5px;font-weight:500;color:var(--color-ink);">{file.n}</div>
+                        <div class="num" style="font-size:9.5px;color:var(--color-ink-4);">{file.s}</div>
+                      </div>
+                      <span class="tag">{file.t}</span>
+                      {file.live && <span style="width:6px;height:6px;border-radius:999px;background:var(--color-green);"></span>}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {f.ill === 'contracts' && (
+                <div class="ill-contract">
+                  <div class="contract-doc">
+                    <div class="doc-tag">MSA · v3.2</div>
+                    <div class="doc-title">Master Services Agreement</div>
+                    {[1,1,1,.7,1,1,.5].map(w => (
+                      <div class="doc-line" style={`width:${w*100}%;`}></div>
+                    ))}
+                    <div class="doc-sig">
+                      <div style="font-size:8px;color:var(--color-ink-4);margin-bottom:3px;">Signed by Eric L.</div>
+                      <div class="sig">Eric Larson</div>
+                    </div>
+                  </div>
+                  <div class="signed-stamp">SIGNED</div>
+                </div>
+              )}
+
+              {f.ill === 'invoices' && (
+                <div class="ill-invoice">
+                  <div class="invoice">
+                    <div class="inv-h">
+                      <div>
+                        <div style="font-size:9.5px;color:var(--color-ink-4);letter-spacing:0.06em;">INVOICE</div>
+                        <div class="num" style="font-size:12px;font-weight:600;">INV-2026-0114</div>
+                      </div>
+                      <span style="font-size:9px;font-weight:700;padding:2px 6px;background:var(--c-bg);color:var(--c);border-radius:3px;">PAID</span>
+                    </div>
+                    {[['Discovery','$1,200'],['Wireframes','$1,800'],['Visual design','$1,200']].map(([l,v], i) => (
+                      <div class="inv-row" style={i === 0 ? 'border-top:1px solid var(--color-line-2);' : ''}>
+                        <span style="color:var(--color-ink-2);">{l}</span>
+                        <span class="num" style="color:var(--color-ink);">{v}</span>
+                      </div>
+                    ))}
+                    <div class="inv-total">
+                      <span>Total</span><span class="num" style="color:var(--c);">$4,200.00</span>
+                    </div>
+                  </div>
+                  <div class="pay-cta" style="background:var(--c);">
+                    <span style="font-size:9.5px;opacity:.7;letter-spacing:0.08em;">STRIPE · 2 CLICKS</span>
+                    Pay $4,200
+                    <span style="font-size:9px;opacity:.8;">portal.acmeagency.com</span>
+                  </div>
+                </div>
+              )}
+
+              {f.ill === 'roles' && (
+                <div class="ill-roles">
+                  {[
+                    { r: 'Team admin', n: 'Sara Chen', col: 'var(--color-orange)', perms: ['Full access', 'Billing', 'Roles'] },
+                    { r: 'Project lead', n: 'Eric Larson', col: 'var(--color-teal-600)', perms: ['Edit', 'Invite', 'Time'] },
+                    { r: 'Client', n: 'Jerry Park', col: 'var(--color-violet)', perms: ['View', 'Comment', 'Sign'] },
+                    { r: 'Vendor', n: 'Mei Wang', col: 'var(--color-ink-3)', perms: ['Time only', 'Files'] },
+                  ].map(p => (
+                    <div class="role-card">
+                      <div class="role-h">
+                        <span class="av" style={`background:${p.col};`}>{p.n[0]}</span>
+                        <div>
+                          <div style="font-weight:600;color:var(--color-ink);font-size:10.5px;">{p.n}</div>
+                          <div style="color:var(--color-ink-4);font-size:9px;">{p.r}</div>
+                        </div>
+                      </div>
+                      <div class="perms">
+                        {p.perms.map(perm => <span>{perm}</span>)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div class="card-foot">
+              <div class="card-tag" style={`color:${c.fg};`}>{f.tag}</div>
+              <h3 class="cc-h3" style="margin-bottom:10px;">{f.title}</h3>
+              <p>{f.body}</p>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .heading-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    align-items: end; margin-bottom: 64px;
+  }
+  @media (max-width: 880px) {
+    .heading-row { grid-template-columns: 1fr; gap: 24px; }
+  }
+  .feature-grid {
+    display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px;
+  }
+  .feature-card {
+    padding: 28px; height: 100%;
+    display: flex; flex-direction: column; gap: 18px;
+    transition: border-color .2s ease, transform .2s ease;
+    position: relative; overflow: hidden;
+  }
+  .feature-card:hover { border-color: var(--color-ink-3); transform: translateY(-2px); }
+  .card-foot { margin-top: auto; }
+  .card-tag {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  .card-foot p { font-size: 14px; line-height: 1.6; color: var(--color-ink-2); margin: 0; }
+
+  .ill { position: relative; }
+  .ill-list { display: flex; flex-direction: column; gap: 6px; height: 200px; }
+  .ticket-row {
+    background: #fff; border: 1px solid var(--color-line-2); border-radius: 7px;
+    padding: 8px 11px; display: flex; align-items: center; gap: 10px;
+  }
+  .ticket-row .status {
+    font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 3px;
+    letter-spacing: 0.06em;
+  }
+
+  .ill-kanban { height: 200px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .ill-col { display: flex; flex-direction: column; gap: 4px; }
+  .ill-col-h {
+    display: flex; justify-content: space-between;
+    font-size: 9.5px; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--color-ink-3); margin-bottom: 4px;
+  }
+  .ill-block {
+    background: #fff; border: 1px solid var(--color-line-2); border-radius: 5px;
+    padding: 5px;
+  }
+  .ill-block .bar { height: 3px; border-radius: 2px; margin-bottom: 3px; }
+  .ill-block .bar:first-child { height: 4px; margin-bottom: 5px; }
+
+  .ill-time { height: 200px; display: flex; flex-direction: column; gap: 8px; padding: 4px; }
+  .ill-time .bars { display: flex; align-items: flex-end; gap: 4px; height: 64px; }
+  .ill-time .bars .bar { flex: 1; border-radius: 3px; }
+  .ill-time .weekdays { display: flex; justify-content: space-between; font-size: 9px; color: var(--color-ink-4); }
+  .ill-time .active-timer {
+    margin-top: 6px; padding: 8px; background: var(--color-bg-2);
+    border-radius: 6px; display: flex; align-items: center; gap: 8px;
+  }
+
+  .ill-files { height: 200px; display: flex; flex-direction: column; gap: 5px; }
+  .file-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 10px; background: #fff;
+    border: 1px solid var(--color-line-2); border-radius: 6px;
+  }
+  .file-row .ic {
+    width: 28px; height: 28px; border-radius: 5px;
+    display: inline-flex; align-items: center; justify-content: center; font-size: 13px;
+  }
+  .file-row .tag {
+    font-size: 9px; font-weight: 700; padding: 2px 5px; border-radius: 3px;
+    background: var(--color-bg-2); color: var(--color-ink-3);
+  }
+
+  .ill-contract { height: 200px; position: relative; display: flex; align-items: center; justify-content: center; }
+  .contract-doc {
+    width: 160px; height: 200px; background: #fff;
+    border: 1px solid var(--color-line); border-radius: 7px;
+    padding: 14px; position: relative; box-shadow: var(--shadow-md);
+    transform: rotate(-3deg);
+  }
+  .doc-tag { font-size: 8.5px; font-weight: 700; letter-spacing: 0.1em; color: var(--c); margin-bottom: 5px; }
+  .doc-title { font-family: var(--font-serif); font-size: 12px; font-weight: 700; line-height: 1.2; margin-bottom: 8px; }
+  .doc-line { height: 2.5px; background: var(--color-line-2); border-radius: 2px; margin-bottom: 4px; }
+  .doc-sig { position: absolute; bottom: 14px; left: 14px; right: 14px; }
+  .sig { font-family: cursive; font-size: 14px; color: var(--c); transform: rotate(-4deg) translateX(2px); }
+  .signed-stamp {
+    position: absolute; top: 22px; right: 18px;
+    background: var(--color-green); color: #fff; padding: 5px 10px;
+    font-size: 9.5px; font-weight: 700; border-radius: 4px; transform: rotate(8deg);
+    box-shadow: 0 4px 12px rgba(24,165,122,.4);
+  }
+
+  .ill-invoice { height: 200px; display: flex; align-items: center; gap: 14px; }
+  .invoice { flex: 1.4; padding: 14px; background: #fff; border: 1px solid var(--color-line-2); border-radius: 8px; }
+  .inv-h { display: flex; justify-content: space-between; margin-bottom: 12px; }
+  .inv-row { display: flex; justify-content: space-between; font-size: 11px; padding: 5px 0; }
+  .inv-total {
+    display: flex; justify-content: space-between; font-size: 13px;
+    padding-top: 8px; border-top: 1px solid var(--color-line);
+    margin-top: 4px; font-weight: 700;
+  }
+  .pay-cta {
+    color: #fff; padding: 12px 14px; border-radius: 7px;
+    font-size: 11.5px; font-weight: 600;
+    display: flex; flex-direction: column; gap: 6px; align-items: flex-start;
+    box-shadow: 0 8px 16px color-mix(in srgb, var(--c) 25%, transparent);
+  }
+
+  .ill-roles { height: 200px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .role-card {
+    padding: 9px; background: #fff;
+    border: 1px solid var(--color-line-2); border-radius: 6px;
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  .role-h { display: flex; align-items: center; gap: 7px; }
+  .role-h .av {
+    width: 22px; height: 22px; border-radius: 999px; color: #fff;
+    font-size: 9.5px; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .perms { display: flex; flex-wrap: wrap; gap: 3px; }
+  .perms span {
+    font-size: 8.5px; padding: 2px 5px; border-radius: 3px;
+    background: var(--color-bg-2); color: var(--color-ink-3);
+  }
+
+  @media (max-width: 980px) {
+    .feature-grid > .feature-card { grid-column: span 6; }
+  }
+  @media (max-width: 640px) {
+    .feature-grid > .feature-card { grid-column: span 12; }
+  }
+</style>

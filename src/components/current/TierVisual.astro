@@ -1,0 +1,224 @@
+---
+import TierIcon from './TierIcon.astro';
+import Icon from '~/components/ui/Icon.astro';
+
+interface Props {
+  kind: 'comms' | 'react' | 'surge';
+}
+const { kind } = Astro.props;
+---
+{kind === 'comms' && (
+  <div class="visual visual-comms">
+    <div class="vh">
+      <div>
+        <div class="vh-eyebrow">Outbound queue</div>
+        <div class="vh-mono">SPF ✓ DKIM ✓ DMARC ✓</div>
+      </div>
+      <div class="pill cool"><span class="dot"></span>Delivering</div>
+    </div>
+    {[
+      ['Project update — Q4', 'sarah@acme.com', 'delivered', '#18A57A', false],
+      ['Invoice #4119 ready', 'ops@beacon.io', 'delivered', '#18A57A', false],
+      ['Re: ticket #882', 'support+a4@portal', 'inbound', '#2BB3B3', true],
+      ['Welcome — Acme Co.', 'team@acmeagency.com', 'queued', '#FFA94D', false],
+      ['Approval requested', 'cto@cliff.dev', 'delivered', '#18A57A', false],
+      ['Magic link', 'maya@design.studio', 'delivered', '#18A57A', false],
+    ].map((r, i) => (
+      <div class="row" style={i ? 'border-top:1px solid var(--color-line-2);' : ''}>
+        <span class={`env ${r[4] ? 'inbound' : 'out'}`}><span class="env-flap"></span></span>
+        <div>
+          <div class="row-t">{r[0]}</div>
+          <div class="row-mono">{r[1]}</div>
+        </div>
+        <div class="row-status" style={`color:${r[3]};`}>{r[2]}</div>
+      </div>
+    ))}
+  </div>
+)}
+
+{kind === 'react' && (
+  <div class="visual visual-react">
+    <div class="vh">
+      <div>
+        <div class="vh-eyebrow vh-eyebrow-light">Live presence</div>
+        <div class="vh-mono vh-mono-light">ws://acme.clientcove.dev</div>
+      </div>
+      <div class="live-count">
+        <span class="pulse"></span>
+        142 connected
+      </div>
+    </div>
+
+    <div class="stream">
+      {[
+        ['Sarah K.', 'opened ticket #4119', '2s', '#E76F2A', true],
+        ['Maya R.', 'is typing in #design-review', 'now', '#2BB3B3', true],
+        ['Devin L.', 'signed contract v.3', '8s', '#18A57A', false],
+        ['Acme bot', 'auto-tagged 4 tickets', '12s', '#7E5BD7', false],
+        ['Sarah K.', 'cursor on Phase 02 plan', 'now', '#2BB3B3', false],
+      ].map((r, i) => (
+        <div class={`activity ${i === 0 ? 'flash' : ''} ${r[4] ? 'highlight' : ''}`} style={`border-left-color:${r[3]};`}>
+          <span class="av" style={`background:${r[3]};`}>{(r[0] as string)[0]}</span>
+          <span class="line"><strong>{r[0]}</strong> <span class="dim">{r[1]}</span></span>
+          <span class="ts">{r[2]}</span>
+        </div>
+      ))}
+    </div>
+
+    <div class="stats">
+      {[['Latency', '24ms'], ['Reconnects', '0 / hr'], ['Uptime', '99.99%']].map(s => (
+        <div>
+          <div class="stat-l">{s[0]}</div>
+          <div class="stat-v">{s[1]}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
+{kind === 'surge' && (
+  <div class="visual visual-surge">
+    <div class="vh">
+      <div>
+        <div class="vh-eyebrow">Provider routing</div>
+        <div class="vh-mono">4,217 ops today · $0.0042 avg</div>
+      </div>
+      <div class="routed">
+        <span class="pulse" style="background:#7E5BD7;"></span>
+        Routed
+      </div>
+    </div>
+
+    <div class="providers">
+      {[
+        { name: 'OpenAI · gpt-4o-mini', pct: 64, color: '#18A57A', label: 'primary' },
+        { name: 'Anthropic · haiku', pct: 24, color: '#E76F2A', label: 'fallback' },
+        { name: 'Google · gemini-flash', pct: 12, color: '#7E5BD7', label: 'fallback' },
+        { name: 'Together · llama-3.1', pct: 0, color: '#8FA1B0', label: 'reserve' },
+      ].map(p => (
+        <div class="prov">
+          <div class="prov-row">
+            <span class="prov-name">{p.name}</span>
+            <span class="prov-pct" style={`color:${p.color};`}>{p.pct}%</span>
+          </div>
+          <div class="prov-bar"><div style={`width:${p.pct}%;background:${p.color};`}></div></div>
+          <div class="prov-label">{p.label}</div>
+        </div>
+      ))}
+    </div>
+
+    <div class="surge-foot">
+      <span>Ticket polish · Fuzzy search · Help bot</span>
+      <span class="surge-cost">flat $99 / mo</span>
+    </div>
+  </div>
+)}
+
+<style>
+  .visual {
+    position: relative; aspect-ratio: 5 / 4;
+    border-radius: 18px; overflow: hidden; padding: 24px;
+  }
+
+  /* Comms */
+  .visual-comms {
+    background: #fff; border: 1px solid var(--color-line); box-shadow: var(--shadow-md);
+  }
+  .vh { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+  .vh-eyebrow {
+    font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--color-ink-3); font-weight: 600;
+  }
+  .vh-mono { font-family: var(--font-mono); font-size: 13px; color: var(--color-ink); margin-top: 4px; }
+  .row {
+    display: grid; grid-template-columns: 24px 1fr auto; gap: 12px; align-items: center;
+    padding: 12px 0; font-family: var(--font-sans);
+  }
+  .env {
+    width: 24px; height: 18px; border-radius: 3px; position: relative;
+    background: var(--color-orange-50); border: 1px solid rgba(231,111,42,.25);
+  }
+  .env.inbound { background: var(--color-teal-50); border-color: rgba(43,179,179,.3); }
+  .env-flap {
+    position: absolute; inset: 0;
+    border-top: 8px solid rgba(231,111,42,.25);
+    border-left: 12px solid transparent; border-right: 12px solid transparent;
+  }
+  .env.inbound .env-flap { border-top-color: rgba(43,179,179,.3); }
+  .row-t { font-size: 13px; color: var(--color-ink); font-weight: 500; }
+  .row-mono { font-family: var(--font-mono); font-size: 11px; color: var(--color-ink-3); }
+  .row-status { font-size: 11px; font-weight: 600; }
+
+  /* React */
+  .visual-react {
+    background: var(--color-navy-900); color: #fff; box-shadow: var(--shadow-lg);
+  }
+  .vh-eyebrow-light { color: rgba(255,255,255,.5); }
+  .vh-mono-light { color: rgba(255,255,255,.7); }
+  .live-count {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; color: #2BB3B3; font-weight: 600;
+  }
+  .stream {
+    margin-top: 22px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .activity {
+    display: grid; grid-template-columns: 24px 1fr auto; gap: 10px; align-items: center;
+    padding: 8px 12px;
+    background: rgba(255,255,255,.03);
+    border-radius: 8px; border-left: 2px solid transparent;
+    font-family: var(--font-sans); font-size: 12.5px;
+  }
+  .activity.highlight { background: rgba(231,111,42,.08); }
+  .activity.flash { animation: react-flash 2.4s ease-in-out infinite; }
+  @keyframes react-flash { 0%, 100% { background: rgba(231,111,42,.08); } 50% { background: rgba(231,111,42,.2); } }
+  @media (prefers-reduced-motion: reduce) { .activity.flash { animation: none; } }
+  .activity .av {
+    width: 22px; height: 22px; border-radius: 999px; color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700;
+  }
+  .activity .line { color: #fff; }
+  .activity .line strong { font-weight: 600; }
+  .activity .line .dim { color: rgba(255,255,255,.7); }
+  .activity .ts { font-family: var(--font-mono); font-size: 10px; color: rgba(255,255,255,.5); }
+
+  .stats {
+    position: absolute; bottom: 16px; left: 24px; right: 24px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+    padding-top: 14px; border-top: 1px solid rgba(255,255,255,.08);
+  }
+  .stat-l { font-size: 10px; color: rgba(255,255,255,.4); letter-spacing: 0.1em; text-transform: uppercase; }
+  .stat-v { font-family: var(--font-mono); font-size: 14px; color: #E76F2A; margin-top: 2px; }
+
+  /* Surge */
+  .visual-surge {
+    background: linear-gradient(135deg, #FFFFFF 0%, #F5F1FB 100%);
+    border: 1px solid var(--color-line); box-shadow: var(--shadow-md);
+  }
+  .visual-surge .vh-mono { color: var(--color-ink-2); }
+  .routed {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; background: rgba(126,91,215,.1); border-radius: 999px;
+    font-size: 11px; font-weight: 600; color: #7E5BD7;
+  }
+  .providers { margin-top: 22px; display: flex; flex-direction: column; gap: 10px; }
+  .prov {
+    padding: 10px 14px; background: #fff;
+    border: 1px solid var(--color-line); border-radius: 8px;
+    font-family: var(--font-sans);
+  }
+  .prov-row { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; }
+  .prov-name { color: var(--color-ink); font-weight: 600; }
+  .prov-pct { font-family: var(--font-mono); font-size: 11px; }
+  .prov-bar { margin-top: 6px; height: 4px; border-radius: 2px; background: var(--color-bg-2); overflow: hidden; }
+  .prov-bar > div { height: 100%; transition: width .3s ease; }
+  .prov-label { margin-top: 4px; font-size: 10px; color: var(--color-ink-3); letter-spacing: 0.04em; text-transform: uppercase; }
+  .surge-foot {
+    position: absolute; bottom: 16px; left: 24px; right: 24px;
+    padding-top: 14px; border-top: 1px solid var(--color-line);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    font-family: var(--font-sans); font-size: 11px; color: var(--color-ink-3);
+  }
+  .surge-cost { font-family: var(--font-mono); color: #7E5BD7; font-weight: 600; }
+</style>
