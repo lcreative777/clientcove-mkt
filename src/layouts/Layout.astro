@@ -23,6 +23,11 @@ const {
   preloadHero = false,
 } = Astro.props;
 
+// Environment-driven noindex (e.g. for dev.clientcove.io).
+// Set PUBLIC_NOINDEX=true in the Cloudflare Pages env to apply site-wide.
+const envNoindex = import.meta.env.PUBLIC_NOINDEX === 'true';
+const shouldNoindex = noindex || envNoindex;
+
 const fullTitle = title.includes(SITE.name) ? title : `${title} — ${SITE.name}`;
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, SITE.url).toString().replace(/\/$/, '');
 const ogImageUrl = ogImage.startsWith('http') ? ogImage : new URL(ogImage, SITE.url).toString();
@@ -84,7 +89,7 @@ const lds = ([] as object[]).concat(orgLd, softwareLd, jsonLd ?? []);
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
-    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    {shouldNoindex && <meta name="robots" content="noindex,nofollow" />}
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
