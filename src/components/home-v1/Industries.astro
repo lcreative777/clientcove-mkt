@@ -1,0 +1,55 @@
+---
+const industries = [
+  { name: 'Marketing & creative agencies', body: 'Show clients the work, not the back-end.', icon: '◐', href: '/solutions/agencies' },
+  { name: 'IT & MSP providers', body: 'Tickets, assets, locations, contracts.', icon: '⌘', href: '/solutions/msps' },
+  { name: 'Law firms', body: 'Document custody and signature workflows.', icon: '§', href: '/solutions/law-firms' },
+  { name: 'Accountants & bookkeepers', body: 'Engagements, deliverables, secure docs.', icon: '$', href: '/solutions/accountants' },
+  { name: 'Property & facilities', body: 'Locations, work orders, recurring schedules.', icon: '◇', href: '/solutions/property-managers' },
+  { name: 'Architects & engineers', body: 'Drawing sets, RFIs, milestone billing.', icon: '◈', href: '/solutions' },
+  { name: 'Consultants & coaches', body: 'Engagements, deliverables, time logs.', icon: '◎', href: '/solutions/consultants' },
+  { name: 'Anything client-facing', body: 'If you sell time, ClientCove fits.', icon: '+', href: '/solutions' },
+];
+---
+<section class="sect industries">
+  <div class="container-wide">
+    <div class="reveal" style="text-align:center;max-width:720px;margin:0 auto 56px;">
+      <div class="eyebrow teal" style="margin-bottom:18px;">
+        <span class="badge">SOLUTIONS</span> Industries
+      </div>
+      <h2 class="cc-h1">Designed for firms that <em class="cool">value control.</em></h2>
+      <p style="font-size:17px;line-height:1.55;color:var(--color-ink-2);margin-top:18px;">
+        ClientCove is the operating system for any business where the deliverable is a relationship.
+      </p>
+    </div>
+    <div class="ind-grid">
+      {industries.map((i, idx) => (
+        <a class="card reveal ind-card" href={i.href}>
+          <div class={`ind-icon ${idx % 2 === 0 ? 'warm' : 'cool'}`}>{i.icon}</div>
+          <div class="ind-name">{i.name}</div>
+          <div class="ind-body">{i.body}</div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .ind-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .ind-card {
+    padding: 22px;
+    transition: transform .2s ease, border-color .2s ease;
+    display: block;
+  }
+  .ind-card:hover { border-color: var(--color-ink-3); transform: translateY(-2px); }
+  .ind-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 18px; font-family: var(--font-serif); margin-bottom: 16px;
+  }
+  .ind-icon.warm { background: var(--color-orange-50); color: var(--color-orange); }
+  .ind-icon.cool { background: var(--color-teal-50); color: var(--color-teal-600); }
+  .ind-name { font-family: var(--font-serif); font-weight: 700; font-size: 16px; margin-bottom: 6px; color: var(--color-ink); }
+  .ind-body { font-size: 13px; color: var(--color-ink-2); line-height: 1.5; }
+  @media (max-width: 980px) { .ind-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .ind-grid { grid-template-columns: 1fr; } }
+</style>

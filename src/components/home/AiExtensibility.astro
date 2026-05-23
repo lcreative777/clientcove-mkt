@@ -1,0 +1,292 @@
+---
+import Icon from '~/components/ui/Icon.astro';
+
+const blocks = [
+  {
+    color: 'teal',
+    eyebrow: 'DOCS',
+    title: 'Written for AI agents.',
+    body: 'CLAUDE.md and AGENTS.md document every hook, custom post type, REST endpoint, and ACF field — formatted for Claude Code and Cursor to read in one pass.',
+    link: { href: 'https://github.com/lcreative777/clientcove', label: 'See CLAUDE.md on GitHub' },
+    illustration: 'docs',
+  },
+  {
+    color: 'orange',
+    eyebrow: 'STARTER',
+    title: 'Your child theme is your branch.',
+    body: 'Drop the starter ZIP into wp-content/themes, open Claude Code, and start prompting. Your code lives in the child theme — ClientCove updates never overwrite it.',
+    link: { href: 'https://github.com/lcreative777/clientcove/releases', label: 'Download child theme starter' },
+    illustration: 'starter',
+  },
+  {
+    color: 'violet',
+    eyebrow: 'MCP SERVER',
+    badge: 'Ships v3.3 — June',
+    title: 'Run your portal by chatting with Claude.',
+    body: 'Add clients, kick off projects, send invoices, close tickets — all from Claude Desktop or Claude Code. Authenticates via WordPress Application Passwords. No shared server, no data leaves your install.',
+    link: { href: '/mcp', label: 'Get notified at launch' },
+    illustration: 'mcp',
+  },
+];
+
+const recipes = [
+  { num: '01', title: 'Custom Slack event', body: 'Notify a channel when a new client is created — your fields, your conditions.' },
+  { num: '02', title: 'Invoice widget',     body: 'Overdue invoice dashboard tile, custom totals, segmented by client.' },
+  { num: '03', title: 'Make.com integration', body: 'Push portal events into Make scenarios — billing, onboarding, fulfillment.' },
+  { num: '04', title: 'Zapier integration',   body: 'Trigger Zaps from any portal action without writing webhook handlers.' },
+  { num: '05', title: 'Custom dashboard widget', body: 'Drop a chart, KPI, or external feed into the dashboard your team already opens.' },
+];
+
+const COLOR_MAP = {
+  orange: { fg: 'var(--color-orange)',     bg: 'var(--color-orange-50)' },
+  teal:   { fg: 'var(--color-teal-600)',   bg: 'var(--color-teal-50)' },
+  violet: { fg: 'var(--color-violet)',     bg: 'rgba(126,91,215,.10)' },
+} as const;
+---
+<section class="sect ai-ext" id="extend">
+  <div class="container-wide">
+    <div class="reveal ext-head">
+      <div>
+        <div class="eyebrow" style="margin-bottom:18px;">
+          <span class="badge">DON'T BE LIMITED BY SAAS</span> Your business is unique
+        </div>
+        <h2 class="cc-h1">
+          Your business is unique.<br />
+          <span style="color:var(--color-ink-3);">Your portal can be, too.</span>
+        </h2>
+      </div>
+      <div style="padding-bottom:8px;">
+        <p style="font-size:17px;line-height:1.55;color:var(--color-ink-2);text-wrap:pretty;">
+          ClientCove ships with everything 90% of service businesses need. When your workflow
+          doesn't fit the defaults, the platform is the framework — and Claude Code is the keyboard.
+          One prompt instead of a year-long SaaS feature request.
+        </p>
+        <a href="#extend-recipes" class="lnk" style="margin-top:18px;white-space:nowrap;">
+          See the 5 starter recipes <Icon name="arrow" />
+        </a>
+      </div>
+    </div>
+
+    <div class="ext-grid">
+      {blocks.map(b => {
+        const c = COLOR_MAP[b.color as keyof typeof COLOR_MAP];
+        return (
+          <article class="card reveal ext-card">
+            <div class="ext-ill" style={`--c: ${c.fg}; --c-bg: ${c.bg};`}>
+              {b.illustration === 'docs' && (
+                <div class="ill-md">
+                  <div class="md-tab">CLAUDE.md</div>
+                  <div class="md-body">
+                    <div class="md-h1"># ClientCove</div>
+                    <div class="md-line">## Clients (CPT: <span class="md-code">cc_client</span>)</div>
+                    <div class="md-line">- REST: <span class="md-code">/wp-json/cc/v1/clients</span></div>
+                    <div class="md-line">- ACF: <span class="md-code">company_name</span>, <span class="md-code">primary_contact</span></div>
+                    <div class="md-line">## Projects</div>
+                    <div class="md-line">- Hook: <span class="md-code">cc_project_status_change</span></div>
+                  </div>
+                </div>
+              )}
+
+              {b.illustration === 'starter' && (
+                <div class="ill-tree">
+                  <div class="tree-row tree-root"><span class="ic">📁</span> clientcove-child/</div>
+                  <div class="tree-row tree-l1"><span class="ic">📄</span> style.css</div>
+                  <div class="tree-row tree-l1"><span class="ic">📄</span> functions.php</div>
+                  <div class="tree-row tree-l1"><span class="ic">📁</span> hooks/</div>
+                  <div class="tree-row tree-l2"><span class="ic">📄</span> client-created.php</div>
+                  <div class="tree-row tree-l2"><span class="ic">📄</span> invoice-widget.php</div>
+                  <div class="tree-row tree-l1"><span class="ic">📄</span> CLAUDE.md</div>
+                </div>
+              )}
+
+              {b.illustration === 'mcp' && (
+                <div class="ill-chat">
+                  <div class="chat-row chat-user">
+                    <span class="av av-user">E</span>
+                    <span class="bubble bubble-user">Create a new project "Acme Q3 launch" for Acme Corp, due Sept 30.</span>
+                  </div>
+                  <div class="chat-row chat-bot">
+                    <span class="av av-bot">★</span>
+                    <span class="bubble bubble-bot">
+                      <span class="bot-status"><span class="pulse"></span> Created project #248</span>
+                      <span class="bot-meta">portal.acmeagency.com · 0.8s</span>
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div class="ext-foot">
+              <div class="ext-eyebrow" style={`color:${c.fg};`}>
+                {b.eyebrow}
+                {b.badge && <span class="ext-badge" style={`background:${c.bg};color:${c.fg};`}>{b.badge}</span>}
+              </div>
+              <h3 class="cc-h3" style="margin-bottom:10px;">{b.title}</h3>
+              <p>{b.body}</p>
+              <a href={b.link.href} class="lnk ext-link" style={`color:${c.fg};`}>
+                {b.link.label} <Icon name="arrow" />
+              </a>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+
+    <div class="reveal recipes" id="extend-recipes">
+      <div class="recipes-head">
+        <div class="eyebrow" style="margin-bottom:0;">
+          <span class="badge" style="background:var(--color-orange-50);color:var(--color-orange);">RECIPES</span>
+          Five ways to start
+        </div>
+        <p style="font-size:14px;color:var(--color-ink-3);margin:0;">Each one ships as a working example in the starter repo.</p>
+      </div>
+
+      <ol class="recipes-grid">
+        {recipes.map(r => (
+          <li class="recipe-card">
+            <div class="rec-num">{r.num}</div>
+            <div class="rec-body">
+              <div class="rec-title">{r.title}</div>
+              <div class="rec-desc">{r.body}</div>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ai-ext { background: linear-gradient(180deg, #fff 0%, var(--color-bg-2) 100%); }
+
+  .ext-head {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    align-items: end; margin-bottom: 56px;
+  }
+  @media (max-width: 880px) {
+    .ext-head { grid-template-columns: 1fr; gap: 24px; }
+  }
+
+  .ext-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 56px; }
+  .ext-card {
+    padding: 28px; height: 100%;
+    display: flex; flex-direction: column; gap: 20px;
+    transition: border-color .2s ease, transform .2s ease;
+    position: relative; overflow: hidden;
+  }
+  .ext-card:hover { border-color: var(--color-ink-3); transform: translateY(-2px); }
+  .ext-foot { margin-top: auto; }
+  .ext-eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .ext-badge {
+    font-size: 9.5px; font-weight: 700; padding: 3px 7px; border-radius: 4px;
+    letter-spacing: 0.04em; text-transform: none;
+  }
+  .ext-foot p { font-size: 14px; line-height: 1.6; color: var(--color-ink-2); margin: 0 0 16px; }
+  .ext-link { font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
+
+  .ext-ill { position: relative; height: 200px; }
+
+  /* CLAUDE.md illustration */
+  .ill-md {
+    background: #0F1722; color: #DDE7EE; height: 100%; border-radius: 8px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px; line-height: 1.5; overflow: hidden;
+    border: 1px solid var(--color-line);
+  }
+  .md-tab {
+    background: rgba(255,255,255,.06); padding: 6px 12px; font-size: 10px;
+    color: rgba(255,255,255,.6); border-bottom: 1px solid rgba(255,255,255,.08);
+    letter-spacing: 0.04em;
+  }
+  .md-body { padding: 10px 12px; }
+  .md-h1 { color: var(--color-teal); font-weight: 700; margin-bottom: 5px; }
+  .md-line { color: rgba(221,231,238,.85); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .md-code { color: var(--color-orange); background: rgba(231,111,42,.08); padding: 0 4px; border-radius: 3px; }
+
+  /* Starter tree illustration */
+  .ill-tree {
+    background: #fff; height: 100%; border-radius: 8px; padding: 14px;
+    border: 1px solid var(--color-line);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px; line-height: 1.75; color: var(--color-ink);
+  }
+  .tree-row { display: flex; align-items: center; gap: 6px; }
+  .tree-row .ic { font-size: 12px; }
+  .tree-root { font-weight: 600; }
+  .tree-l1 { padding-left: 18px; color: var(--color-ink-2); }
+  .tree-l2 { padding-left: 36px; color: var(--color-ink-3); }
+
+  /* MCP chat illustration */
+  .ill-chat {
+    background: #fff; height: 100%; border-radius: 8px; padding: 12px;
+    border: 1px solid var(--color-line);
+    display: flex; flex-direction: column; gap: 10px; justify-content: center;
+  }
+  .chat-row { display: flex; gap: 8px; align-items: flex-start; }
+  .chat-row .av {
+    width: 24px; height: 24px; border-radius: 999px; color: #fff;
+    font-size: 11px; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .av-user { background: var(--color-orange); }
+  .av-bot  { background: var(--color-violet); }
+  .bubble {
+    padding: 8px 11px; border-radius: 10px;
+    font-size: 11.5px; line-height: 1.4; color: var(--color-ink);
+  }
+  .bubble-user { background: var(--color-bg-2); border-bottom-left-radius: 3px; }
+  .bubble-bot  { background: var(--c-bg); color: var(--c); border-bottom-left-radius: 3px; display: flex; flex-direction: column; gap: 3px; }
+  .bot-status { font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }
+  .bot-meta { font-size: 9.5px; color: var(--color-ink-4); }
+  .bubble-bot .pulse {
+    display: inline-block; width: 6px; height: 6px; border-radius: 999px;
+    background: var(--color-green);
+    box-shadow: 0 0 0 0 rgba(24,165,122,.5);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(24,165,122,.4); }
+    50%      { box-shadow: 0 0 0 5px rgba(24,165,122,0); }
+  }
+
+  /* Recipes rail */
+  .recipes {
+    border-top: 1px solid var(--color-line);
+    padding-top: 40px;
+  }
+  .recipes-head {
+    display: flex; justify-content: space-between; align-items: end;
+    margin-bottom: 24px; gap: 24px; flex-wrap: wrap;
+  }
+  .recipes-grid {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
+  }
+  .recipe-card {
+    background: #fff; border: 1px solid var(--color-line);
+    border-radius: 10px; padding: 18px;
+    display: flex; flex-direction: column; gap: 10px;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .recipe-card:hover { border-color: var(--color-orange); transform: translateY(-2px); }
+  .rec-num {
+    font-family: var(--font-serif);
+    font-size: 22px; font-weight: 700; color: var(--color-orange);
+    line-height: 1;
+  }
+  .rec-title { font-size: 13.5px; font-weight: 600; color: var(--color-ink); line-height: 1.3; }
+  .rec-desc { font-size: 12px; color: var(--color-ink-3); line-height: 1.5; }
+
+  @media (max-width: 1100px) {
+    .ext-grid { grid-template-columns: 1fr; }
+    .recipes-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .recipes-grid { grid-template-columns: 1fr; }
+  }
+</style>

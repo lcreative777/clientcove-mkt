@@ -1,0 +1,224 @@
+---
+import { Image } from 'astro:assets';
+import dashboardImg from '~/assets/screens/dashboard.png';
+import ticketsImg from '~/assets/screens/tickets.png';
+import projectsImg from '~/assets/screens/project-board.png';
+import tasksImg from '~/assets/screens/tasks-week.png';
+import Icon from '~/components/ui/Icon.astro';
+
+const steps = [
+  {
+    eyebrow: '01 — DASHBOARD',
+    title: 'A morning glance that actually tells you what matters.',
+    body: 'Overdue tickets, invoices outstanding, hours unbilled, recent activity. The action center surfaces what to do next instead of what happened yesterday.',
+    bullets: ['Real-time across the team', 'Per-role views', 'Keyboard-first'],
+    img: dashboardImg,
+    label: 'dashboard',
+  },
+  {
+    eyebrow: '02 — TICKETS',
+    title: 'Support that lives next to the work — not in a separate tab.',
+    body: 'Threaded conversations linked to projects, assets, locations and clients. SLAs, priorities, and triage rules. Resolution times your team can actually hit.',
+    bullets: ['Triage rules & SLAs', 'Linked to projects', 'Audit trail per ticket'],
+    img: ticketsImg,
+    label: 'tickets',
+  },
+  {
+    eyebrow: '03 — PROJECTS',
+    title: 'Three lenses on the same work.',
+    body: 'Kanban, list, timeline. Custom sections per project. Drag-and-drop status, dependencies, checklists, attachments. Switch view without losing context.',
+    bullets: ['Kanban + list + Gantt', 'Per-project sections', 'Drag-and-drop'],
+    img: projectsImg,
+    label: 'projects',
+  },
+  {
+    eyebrow: '04 — TASKS & TIME',
+    title: 'Personal lists. Built-in time tracking. One database.',
+    body: 'A weekly planner, flat list, calendar — same tasks, three lenses. Track time per task with a one-click timer. Hours roll straight into invoices.',
+    bullets: ['Weekly + list + calendar', 'One-click timer', 'Auto-rolls to invoices'],
+    img: tasksImg,
+    label: 'tasks',
+  },
+];
+---
+<section class="sect on-dark grid-bg-dark tour" id="tour">
+  <div class="tour-glow" aria-hidden="true"></div>
+  <div class="container-wide" style="position:relative;">
+    <div class="reveal" style="text-align:center;max-width:760px;margin:0 auto 72px;">
+      <div class="eyebrow" style="margin-bottom:18px;color:var(--color-orange);">
+        <span class="badge">PRODUCT TOUR</span> Stop tab-hopping. Reclaim your day.
+      </div>
+      <h2 class="cc-h1" style="color:#fff;">
+        One platform. Less friction.<br /><em class="acc">Yours to shape</em> — not theirs.
+      </h2>
+      <p style="margin-top:22px;font-family:var(--font-serif);font-size:19px;line-height:1.5;color:rgba(222,231,238,.75);max-width:640px;margin-inline:auto;">
+        Six tools collapsed into one window. Hours of context-switching back in your day.
+        And every workflow bent to your specific business — because you own the platform,
+        not the SaaS network on the other end of the renewal email.
+      </p>
+    </div>
+
+    <div class="tour-grid" data-tour>
+      <div class="tour-text">
+        {steps.map((s, i) => (
+          <div class="step" data-step={i} data-active={i === 0 ? '' : undefined}>
+            <div class="step-eyebrow">{s.eyebrow}</div>
+            <h3 class="cc-h2" style="color:#fff;font-size:clamp(28px,3.2vw,42px);margin-bottom:18px;">{s.title}</h3>
+            <p>{s.body}</p>
+            <ul>
+              {s.bullets.map(b => (
+                <li><span class="check"><Icon name="check" /></span>{b}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <div class="tour-sticky">
+        <div class="tour-frame-glow" aria-hidden="true"></div>
+        <div class="tour-frame">
+          <div class="browser-bar">
+            <div class="dots">
+              <span style="background:#FF5F57"></span>
+              <span style="background:#FEBC2E"></span>
+              <span style="background:#28C840"></span>
+            </div>
+            <div class="addr" data-addr>portal.acmeagency.com / dashboard</div>
+            <span style="width:50px"></span>
+          </div>
+          <div class="tour-screens">
+            {steps.map((s, i) => (
+              <Image src={s.img} alt={`${s.label} screen`} widths={[480, 720, 960, 1200]}
+                sizes="(max-width: 980px) 100vw, 720px" loading={i === 0 ? 'eager' : 'lazy'}
+                class="screen" data-screen={i} data-active={i === 0 ? '' : undefined} />
+            ))}
+          </div>
+        </div>
+        <div class="step-indicator">
+          {steps.map((_, i) => (
+            <span data-dot={i} data-active={i === 0 ? '' : undefined}></span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tour { position: relative; overflow: hidden; }
+  .tour-glow {
+    position: absolute; top: 0; left: 0; right: 0; height: 240px;
+    background: radial-gradient(ellipse 60% 100% at 50% 0%, rgba(231,111,42,.18), transparent 70%);
+    pointer-events: none;
+  }
+  .tour-grid {
+    display: grid; grid-template-columns: 1fr 1.3fr; gap: 80px;
+    align-items: flex-start;
+  }
+  .tour-text {
+    display: flex; flex-direction: column; gap: 200px;
+    padding: 80px 0 200px;
+  }
+  .step { transition: opacity .4s ease; opacity: .35; }
+  .step[data-active] { opacity: 1; }
+  .step-eyebrow {
+    font-family: var(--font-mono); font-size: 11.5px; font-weight: 600;
+    color: var(--color-orange); letter-spacing: 0.1em; margin-bottom: 16px;
+  }
+  .step p {
+    font-size: 17px; line-height: 1.55; color: rgba(222,231,238,.75);
+    margin-bottom: 22px; text-wrap: pretty;
+  }
+  .step ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  .step ul li {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px; color: rgba(222,231,238,.85);
+  }
+  .step .check { background: rgba(43,179,179,.18); color: var(--color-teal); width: 14px; height: 14px; }
+
+  .tour-sticky {
+    position: sticky; top: 100px; align-self: flex-start;
+    height: calc(100vh - 140px); max-height: 700px;
+    display: flex; align-items: center;
+  }
+  .tour-frame-glow {
+    position: absolute; inset: -2px; border-radius: 16px;
+    background: linear-gradient(135deg, rgba(231,111,42,.4), rgba(43,179,179,.4));
+    filter: blur(2px); opacity: .8;
+  }
+  .tour-frame {
+    position: relative; border-radius: 14px; overflow: hidden;
+    background: #fff; border: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 40px 80px -20px rgba(0,0,0,.6);
+    width: 100%;
+  }
+  .browser-bar {
+    height: 32px; background: #F6F8FA; border-bottom: 1px solid var(--color-line);
+    display: flex; align-items: center; padding: 0 12px; gap: 8px;
+  }
+  .browser-bar .dots { display: flex; gap: 5px; }
+  .browser-bar .dots span { width: 10px; height: 10px; border-radius: 999px; }
+  .browser-bar .addr {
+    margin: 0 auto; font-size: 10.5px; color: var(--color-ink-3);
+    background: #fff; padding: 3px 12px; border-radius: 5px;
+    border: 1px solid var(--color-line-2);
+  }
+  .tour-screens { position: relative; aspect-ratio: 16 / 10.5; }
+  .tour-screens .screen {
+    position: absolute !important; inset: 0;
+    width: 100%; height: 100%; object-fit: cover;
+    opacity: 0; transform: scale(1.02);
+    transition: opacity .5s ease, transform .6s ease;
+  }
+  .tour-screens .screen[data-active] { opacity: 1; transform: none; }
+
+  .step-indicator {
+    position: absolute; top: -36px; right: 0; display: flex; gap: 6px;
+  }
+  .step-indicator span {
+    width: 8px; height: 4px; border-radius: 4px;
+    background: rgba(255,255,255,.2);
+    transition: all .3s ease;
+  }
+  .step-indicator span[data-active] {
+    width: 24px; background: var(--color-orange);
+  }
+
+  @media (max-width: 980px) {
+    .tour-grid { grid-template-columns: 1fr; gap: 32px; }
+    .tour-text { gap: 80px; padding: 0 0 60px; }
+    .tour-sticky { position: relative; top: auto; height: auto; max-height: none; order: -1; }
+    .step { opacity: 1; }
+    .step-indicator { top: -28px; }
+  }
+</style>
+
+<script>
+  const root = document.querySelector('[data-tour]');
+  if (root) {
+    const steps = root.querySelectorAll<HTMLElement>('[data-step]');
+    const screens = root.querySelectorAll<HTMLElement>('[data-screen]');
+    const dots = root.querySelectorAll<HTMLElement>('[data-dot]');
+    const addr = root.querySelector<HTMLElement>('[data-addr]');
+    const labels = ['dashboard', 'tickets', 'projects', 'tasks'];
+
+    const setActive = (i: number) => {
+      steps.forEach((el, j) => j === i ? el.setAttribute('data-active', '') : el.removeAttribute('data-active'));
+      screens.forEach((el, j) => j === i ? el.setAttribute('data-active', '') : el.removeAttribute('data-active'));
+      dots.forEach((el, j) => j === i ? el.setAttribute('data-active', '') : el.removeAttribute('data-active'));
+      if (addr) addr.textContent = `portal.acmeagency.com / ${labels[i]}`;
+    };
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            const i = parseInt(e.target.getAttribute('data-step') || '0', 10);
+            setActive(i);
+          }
+        }
+      }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+      steps.forEach(s => io.observe(s));
+    }
+  }
+</script>
