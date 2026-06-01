@@ -95,6 +95,9 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     .primary-nav, .signin-link { display: none; }
     .mobile-toggle { display: inline-flex; align-items: center; justify-content: center; }
   }
+  @media (max-width: 474px) {
+    .btn-dark { display: none; }
+  }
 </style>
 
 <script>
