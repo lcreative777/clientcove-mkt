@@ -345,7 +345,7 @@
   </div>
 </template>
 
-<style>
+<style is:global>
   /* ── Variable bridge ───────────────────────────────────────────────── */
   .hero-tour {
     --orange:     var(--color-orange);
@@ -477,7 +477,7 @@
   .ht-view { animation: heroViewIn .85s ease; height: 100%; overflow: hidden; }
   .ht-projects-bg { background: #FAFBFC; }
   .ht-tasks-bg { background: #fff; }
-  .ht-view-pad { padding: 14px 16px; height: 100%; }
+  .ht-view-pad { padding: 14px 16px; height: 100%; position: relative; }
   .ht-col { display: flex; flex-direction: column; }
 
   /* ── Shared view elements ────────────────────────────────────────── */
@@ -697,10 +697,10 @@
             <div style="font-size:8.5px;color:var(--color-ink-4)">Updated May 28, 2026</div>
           </div>
         </div>`;
-      const wrap = document.createElement('div');
-      wrap.appendChild(backdrop);
-      wrap.appendChild(modal);
-      return wrap;
+      const frag = document.createDocumentFragment();
+      frag.appendChild(backdrop);
+      frag.appendChild(modal);
+      return frag;
     }
 
     // ── Tasks animations ───────────────────────────────────────────
@@ -812,8 +812,9 @@
         canvas.innerHTML = projectsHTML;
         if (!prefersReducedMotion()) {
           viewTimers.push(setTimeout(() => {
-            if (!canvas.querySelector('.ht-backdrop')) {
-              canvas.querySelector('.ht-view').appendChild(buildModal());
+            const pad = canvas.querySelector('.ht-view-pad');
+            if (pad && !pad.querySelector('.ht-backdrop')) {
+              pad.appendChild(buildModal());
             }
           }, 2700));
         }
@@ -843,9 +844,9 @@
     // Start: show projects modal, then begin cycling
     if (!prefersReducedMotion()) {
       viewTimers.push(setTimeout(() => {
-        const view = canvas.querySelector('.ht-view');
-        if (view && !canvas.querySelector('.ht-backdrop')) {
-          view.appendChild(buildModal());
+        const pad = canvas.querySelector('.ht-view-pad');
+        if (pad && !pad.querySelector('.ht-backdrop')) {
+          pad.appendChild(buildModal());
         }
       }, 2700));
     }
