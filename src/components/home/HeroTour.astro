@@ -384,11 +384,11 @@
   @keyframes heroAddedPulse { 0% { box-shadow: 0 0 0 0 rgba(43,179,179,.5); } 100% { box-shadow: 0 0 0 12px rgba(43,179,179,0); } }
   @keyframes htFloatTR {
     0%, 100% { transform: rotate(3deg) translateY(0); }
-    50%       { transform: rotate(3deg) translateY(-18px); }
+    50%       { transform: rotate(3deg) translateY(-14px); }
   }
   @keyframes htFloatBL {
     0%, 100% { transform: rotate(-3deg) translateY(0); }
-    50%       { transform: rotate(-3deg) translateY(-18px); }
+    50%       { transform: rotate(-3deg) translateY(-14px); }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -597,8 +597,8 @@
     border: 1px solid var(--color-line); border-radius: 12px;
     padding: 14px; box-shadow: var(--shadow-lg); z-index: 2;
   }
-  .ht-float-tr { width: 270px; top: -38px; right: -38px; transform: rotate(3deg); animation: htFloatTR 3s ease-in-out infinite; }
-  .ht-float-bl { width: 256px; bottom: -36px; left: -50px; transform: rotate(-3deg); padding: 13px; z-index: 30; animation: htFloatBL 3s ease-in-out infinite 1.5s; }
+  .ht-float-tr { width: 270px; top: -38px; right: -38px; transform: rotate(3deg); animation: htFloatTR 5s ease-in-out infinite; }
+  .ht-float-bl { width: 256px; bottom: -36px; left: -50px; transform: rotate(-3deg); padding: 13px; z-index: 30; animation: htFloatBL 5s ease-in-out infinite 2.5s; }
   .ht-fc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
   .ht-fc-ic { width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .ht-float p { font-size: 11px; color: var(--color-ink-3); line-height: 1.5; padding-left: 42px; margin: 0; }
