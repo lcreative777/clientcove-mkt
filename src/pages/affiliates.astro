@@ -1,0 +1,209 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import PageHero from '~/components/PageHero.astro';
+import Faq from '~/components/Faq.astro';
+import FinalCTA from '~/components/home/FinalCTA.astro';
+import Icon from '~/components/ui/Icon.astro';
+import { SITE, AFFILIATE } from '~/lib/site';
+
+const { coreCommission, currentCommission, cookieDays, ambassador } = AFFILIATE;
+
+const commissions = [
+  {
+    label: 'Core licenses',
+    rate: `${coreCommission}%`,
+    type: 'one-time',
+    desc: 'Earn on every Core license your referral buys — Single, 3-Site, Developer, or Agency.',
+    accent: 'var(--color-orange)',
+  },
+  {
+    label: 'Current subscriptions',
+    rate: `${currentCommission}%`,
+    type: 'recurring · for the life of the subscription',
+    desc: 'Earn every month they stay on Ripple, Wave, or Surge — not just the first payment.',
+    accent: 'var(--color-teal-600)',
+  },
+];
+
+const steps = [
+  { n: '01', h: 'Apply', b: 'Sign up in your ClientCove account dashboard. Approval is fast for relevant audiences.' },
+  { n: '02', h: 'Share your link', b: `Drop your referral link anywhere. We track it with a ${cookieDays}-day cookie, so slow decisions still count.` },
+  { n: '03', h: 'Get paid', b: 'Commissions accrue automatically — one-time on Core, recurring on Current. Paid out on schedule.' },
+];
+
+const ambassadorPerks = [
+  `Free Current Wave for ${ambassador.freeWaveMonths} months`,
+  `${ambassador.commissionLow}–${ambassador.commissionHigh}% commission`,
+  'Early access to new features',
+  'Co-marketing & content collaboration',
+];
+
+const faqs = [
+  { q: 'How do I join the affiliate program?',
+    a: 'Create or sign in to your ClientCove account and open the affiliate area. Once approved, your referral link and dashboard are ready immediately.' },
+  { q: 'How long does the referral cookie last?',
+    a: `${cookieDays} days. If someone clicks your link and buys any time within that window, the referral is credited to you.` },
+  { q: 'What exactly do I earn on?',
+    a: `${coreCommission}% on one-time Core licenses, plus ${currentCommission}% recurring on Current subscriptions (Ripple, Wave, Surge) for as long as that customer stays subscribed.` },
+  { q: 'What is the Ambassador program?',
+    a: `It is our invite-only tier for influential voices in the agency, WordPress, and AI communities. Ambassadors get free Wave for ${ambassador.freeWaveMonths} months, ${ambassador.commissionLow}–${ambassador.commissionHigh}% commission, early access, and co-marketing. If that sounds like you, apply as an affiliate first and mention your audience.` },
+  { q: 'Do you have agency / reseller terms?',
+    a: 'Yes — a dedicated reseller partnership for established agencies that want to bundle ClientCove is coming. Get in touch and we will keep you posted as it opens.' },
+];
+---
+<Layout
+  title="Affiliates & Ambassadors — Earn with ClientCove"
+  description="Earn 30% on one-time Core licenses and 20% recurring on Current subscriptions, with a 60-day cookie. Plus an invite-only Ambassador program with free Wave, higher commissions, and co-marketing."
+>
+  <PageHero
+    eyebrow="AFFILIATES"
+    title="Recommend a portal people <em class='acc'>actually own.</em>"
+    subtitle="ClientCove is an easy yes — a portal customers buy once and keep. Send people who'd love it, and earn on the license and the AI services they run on top."
+  >
+    <div class="hero-ctas reveal" style="margin-top:32px;display:inline-flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+      <a href={SITE.affiliateUrl} class="btn btn-primary btn-lg">Become an affiliate <Icon name="arrow" class="arrow" /></a>
+      <a href="#ambassador" class="btn btn-ghost btn-lg">See the Ambassador program</a>
+    </div>
+  </PageHero>
+
+  <!-- Commission structure -->
+  <section class="sect" style="padding-top:0;">
+    <div class="container-wide">
+      <div class="reveal" style="text-align:center;max-width:640px;margin:0 auto 44px;">
+        <h2 class="cc-h2">Two ways to earn, one referral.</h2>
+        <p style="margin-top:14px;font-size:16px;color:var(--color-ink-2);line-height:1.55;">
+          A single click can pay you twice — once when they buy the portal, then every month they run Current on it.
+        </p>
+      </div>
+
+      <div class="comm-grid">
+        {commissions.map(c => (
+          <div class="comm-card reveal" style={`--accent:${c.accent};`}>
+            <div class="comm-label">{c.label}</div>
+            <div class="comm-rate cc-serif">{c.rate}</div>
+            <div class="comm-type">{c.type}</div>
+            <p class="comm-desc">{c.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <p class="cookie-note reveal">
+        <Icon name="check" /> <span><strong>{cookieDays}-day cookie.</strong> Clicks are tracked for {cookieDays} days, so referrals that take time to decide still count toward you.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="sect" style="background:var(--color-bg-2);">
+    <div class="container-wide">
+      <div class="reveal" style="text-align:center;max-width:600px;margin:0 auto 48px;">
+        <div class="eyebrow" style="justify-content:center;margin-bottom:14px;"><span class="badge">HOW IT WORKS</span></div>
+        <h2 class="cc-h2">Live in three steps.</h2>
+      </div>
+      <div class="steps">
+        {steps.map(s => (
+          <div class="step reveal">
+            <div class="step-n cc-serif">{s.n}</div>
+            <div class="step-h">{s.h}</div>
+            <p class="step-b">{s.b}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Ambassador program -->
+  <section id="ambassador" class="sect on-dark amb-section">
+    <div class="grid-bg-dark" aria-hidden="true" style="position:absolute;inset:0;opacity:.4;"></div>
+    <div class="container-wide amb-grid" style="position:relative;">
+      <div class="reveal">
+        <div class="eyebrow teal" style="color:#2BB3B3;"><span class="label" style="color:#2BB3B3;">Invite-only</span></div>
+        <h2 class="cc-h2" style="margin-top:14px;color:#fff;">The <em class="cool">Ambassador</em> program.</h2>
+        <p class="amb-lede">
+          For the people the agency, WordPress, and AI communities already listen to. A higher tier of partnership —
+          better economics, earlier access, and a real seat at the table.
+        </p>
+        <a href={SITE.affiliateUrl} class="btn btn-primary btn-lg" style="margin-top:8px;">Apply &amp; mention your audience <Icon name="arrow" class="arrow" /></a>
+      </div>
+      <div class="amb-perks reveal">
+        {ambassadorPerks.map(p => (
+          <div class="amb-perk">
+            <span class="amb-check"><Icon name="check" /></span>
+            {p}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faqs} eyebrow="AFFILIATE FAQ" heading="The details, plainly." />
+  <FinalCTA />
+</Layout>
+
+<style>
+  .comm-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+    max-width: 880px; margin: 0 auto;
+  }
+  .comm-card {
+    background: #fff; border: 1px solid var(--color-line);
+    border-top: 3px solid var(--accent);
+    border-radius: 14px; padding: 32px;
+    box-shadow: var(--shadow-sm);
+  }
+  .comm-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--color-ink-3);
+  }
+  .comm-rate { font-size: 64px; font-weight: 700; line-height: 1; color: var(--accent); margin-top: 10px; }
+  .comm-type { font-size: 12.5px; font-weight: 600; color: var(--color-ink-3); margin-top: 4px; }
+  .comm-desc { font-size: 14.5px; color: var(--color-ink-2); line-height: 1.55; margin-top: 16px; }
+
+  .cookie-note {
+    display: flex; align-items: center; gap: 10px; justify-content: center;
+    max-width: 620px; margin: 28px auto 0; padding: 14px 20px;
+    background: var(--color-bg-2); border: 1px solid var(--color-line); border-radius: 12px;
+    font-size: 14px; color: var(--color-ink-2);
+  }
+  .cookie-note strong { color: var(--color-ink); }
+  .cookie-note :global(svg) { color: var(--color-teal-600); flex-shrink: 0; }
+
+  .steps {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+    max-width: 960px; margin: 0 auto;
+  }
+  .step {
+    background: #fff; border: 1px solid var(--color-line);
+    border-radius: 14px; padding: 30px;
+  }
+  .step-n { font-size: 30px; font-weight: 700; color: var(--color-teal-600); }
+  .step-h { margin-top: 14px; font-size: 18px; font-weight: 600; color: var(--color-ink); }
+  .step-b { margin-top: 8px; font-size: 14px; color: var(--color-ink-2); line-height: 1.55; }
+
+  .amb-section { position: relative; overflow: hidden; }
+  .amb-grid {
+    display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center;
+  }
+  .amb-lede {
+    margin: 18px 0 28px; font-size: 17px; line-height: 1.6;
+    color: rgba(222,231,238,.75); max-width: 480px;
+  }
+  .amb-perks { display: flex; flex-direction: column; gap: 12px; }
+  .amb-perk {
+    display: flex; align-items: center; gap: 14px;
+    padding: 18px 22px; border-radius: 12px;
+    background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+    font-size: 15.5px; font-weight: 500; color: #fff;
+  }
+  .amb-check {
+    flex-shrink: 0; width: 26px; height: 26px; border-radius: 999px;
+    background: rgba(43,179,179,.2); color: var(--color-teal);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+
+  @media (max-width: 860px) {
+    .comm-grid { grid-template-columns: 1fr; max-width: 420px; }
+    .steps { grid-template-columns: 1fr; max-width: 420px; }
+    .amb-grid { grid-template-columns: 1fr; gap: 32px; }
+  }
+</style>

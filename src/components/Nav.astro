@@ -8,7 +8,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 <header id="site-nav" class="site-nav">
   <div class="container-wide" style="display:flex;align-items:center;justify-content:space-between;height:88px;">
     <div style="display:flex;align-items:center;gap:40px;">
-      <Logo height={58} />
+      <Logo height={52} />
       <nav class="primary-nav" aria-label="Primary">
         {NAV_PRIMARY.map(n => {
           const active = currentPath === n.href || (n.href !== '/' && currentPath.startsWith(n.href));

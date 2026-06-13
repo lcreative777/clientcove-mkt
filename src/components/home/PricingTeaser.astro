@@ -1,26 +1,29 @@
 ---
 import Icon from '~/components/ui/Icon.astro';
-import { SITE } from '~/lib/site';
+import { SITE, CORE_LICENSES, LAUNCH } from '~/lib/site';
 
-const { single, agency } = SITE.pricing;
+const single = CORE_LICENSES.find(l => l.id === 'single')!;
+const agency = CORE_LICENSES.find(l => l.id === 'agency')!;
 
 const tiers = [
   {
     name: single.name,
-    price: single.price,
+    price: LAUNCH.active ? single.launch : single.regular,
+    was: LAUNCH.active ? single.regular : null,
     desc: 'Solo operators and boutique firms running one portal.',
     feats: ['1 production install', 'Unlimited clients & users', 'Lifetime updates: 1 year', 'Email support', 'Self-hosted on your stack'],
     cta: 'Buy Single Site',
-    href: 'https://account.clientcove.io/subscribe',
+    href: SITE.subscribeUrl,
     dark: false,
   },
   {
     name: agency.name,
-    price: agency.price,
+    price: LAUNCH.active ? agency.launch : agency.regular,
+    was: LAUNCH.active ? agency.regular : null,
     desc: 'Agencies running portals for themselves and their own clients.',
-    feats: ['Up to 10 production installs', 'White-label rights', 'Lifetime updates: included', 'Priority email + chat', 'Migration help from old stack'],
+    feats: ['Unlimited production installs', 'White-label resale rights', 'Lifetime updates: included', 'Priority support', 'Migration help from old stack'],
     cta: 'Buy Agency License',
-    href: 'https://account.clientcove.io/subscribe',
+    href: SITE.subscribeUrl,
     dark: true,
     popular: true,
   },
@@ -44,6 +47,7 @@ const tiers = [
           {p.popular && <span class="popular">MOST POPULAR</span>}
           <div class="tier-name">{p.name}</div>
           <div class="tier-price">
+            {p.was && <span class="was num">${p.was}</span>}
             <span class="cc-serif num">${p.price}</span>
             <span class="cycle">one-time</span>
           </div>
@@ -61,8 +65,9 @@ const tiers = [
     </div>
 
     <p class="guarantee">
-      Every license includes a <strong>30-day money-back guarantee</strong>.
-      Annual updates after year one are optional (${single.yearlyUpdates}/yr).
+      {LAUNCH.active
+        ? <>Launch pricing through <strong>{LAUNCH.endsShort}</strong> — save up to $200 + first month of Wave free.</>
+        : <>Every license includes a <strong>30-day money-back guarantee</strong>.</>}
       <a href="/pricing" class="lnk" style="margin-left:8px;">See full pricing <Icon name="arrow" /></a>
     </p>
   </div>
@@ -96,7 +101,11 @@ const tiers = [
     text-transform: uppercase; color: var(--color-ink-3); margin-bottom: 14px;
   }
   .tier-dark .tier-name { color: rgba(255,255,255,.55); }
-  .tier-price { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+  .tier-price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+  .tier-price .was {
+    font-size: 20px; color: var(--color-ink-4); text-decoration: line-through; font-weight: 600;
+  }
+  .tier-dark .tier-price .was { color: rgba(255,255,255,.45); }
   .tier-price .cc-serif { font-size: 56px; font-weight: 700; line-height: 1; color: var(--color-ink); }
   .tier-dark .tier-price .cc-serif { color: #fff; }
   .cycle { font-size: 13px; color: var(--color-ink-3); white-space: nowrap; }
