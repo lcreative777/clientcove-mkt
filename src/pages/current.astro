@@ -4,74 +4,42 @@ import Mark from '~/components/ui/Mark.astro';
 import Icon from '~/components/ui/Icon.astro';
 import CurrentGlyph from '~/components/current/CurrentGlyph.astro';
 import TierIcon from '~/components/current/TierIcon.astro';
-import TierVisual from '~/components/current/TierVisual.astro';
+import { CURRENT_TIERS, LAUNCH } from '~/lib/site';
 
-const TIERS = [
-  {
-    id: 'comms',
-    name: 'Comms',
-    upstream: 'SendGrid',
-    headline: 'Transactional email. Inbound parsing.',
-    headlineItalic: 'Without becoming a deliverability engineer.',
-    short: 'Email that actually delivers.',
-    icon: 'mail' as const,
-    accent: '#2BB3B3',
-    price: '$29.99',
-    period: '/mo',
-    quota: '50,000 sends · inbound parsing',
-    proof: ['SPF · DKIM · DMARC pre-wired', 'Bounce + complaint handling', 'Inbound webhook routing', 'Warm-up included'],
-    replaces: '"I\'ll just use Gmail SMTP." (works for 100, breaks at 1,000.)',
-  },
-  {
-    id: 'react',
-    name: 'React',
-    upstream: 'Pusher',
-    headline: 'Live tickets, live cursors, live notifications.',
-    headlineItalic: 'Zero infrastructure on your end.',
-    short: 'Real-time, without the WebSocket headaches.',
-    icon: 'wave' as const,
-    accent: '#E76F2A',
-    price: '$59.99',
-    period: '/mo',
-    quota: '200 concurrent connections',
-    proof: ['Reconnect & backoff handled', 'Presence + activity feed', 'Live ticket inbox', 'Document co-presence'],
-    replaces: 'Long-polling (slow, expensive) or your own WebSocket cluster (do not).',
-  },
-  {
-    id: 'surge',
-    name: 'Surge',
-    upstream: 'OpenRouter + Gemini',
-    headline: 'AI for ticket polish, fuzzy search, and the help bot.',
-    headlineItalic: 'Routed across providers, billed flat.',
-    short: 'AI features. You don\'t manage the inference.',
-    icon: 'spark' as const,
-    accent: '#7E5BD7',
-    price: '$99',
-    period: '/mo',
-    quota: '50,000 operations · provider failover',
-    proof: ['Multi-provider failover', 'Model deprecation handled', 'Per-feature rate limits', 'Token + cost telemetry'],
-    replaces: 'Juggling OpenRouter dashboards and writing fallback code when Gemini is down.',
-  },
-];
+const META = {
+  ripple: { accent: '#2BB3B3', icon: 'ripple' as const },
+  wave: { accent: '#E76F2A', icon: 'wave' as const },
+  surge: { accent: '#7E5BD7', icon: 'spark' as const },
+};
+
+const tiers = CURRENT_TIERS.map(t => ({
+  ...t,
+  accent: META[t.id as keyof typeof META].accent,
+  icon: META[t.id as keyof typeof META].icon,
+  annualMonthly: Math.round((t.annual / 12) * 100) / 100,
+  isHero: 'hero' in t && t.hero,
+}));
+
+const wave = tiers.find(t => t.isHero)!;
 
 const FAQ_ITEMS = [
-  { q: 'What if I want to use my own SendGrid, Pusher, or OpenAI?',
-    a: 'Toggle Current off, paste your own credentials. Same UI, same features, same data. ClientCove takes nothing — you pay the upstream vendor directly.' },
-  { q: 'What happens to my data if I cancel a Current tier?',
-    a: 'Nothing. Your install keeps running. You\'ll just lose that one feature until you reconnect a provider — ours, or yours.' },
-  { q: 'Can I start without Current and add it later?',
-    a: 'Yes. Current is per-month, tied to your ClientCove license. Buy Cove today, run on your own infrastructure, switch any tier on next year if you want to stop maintaining it.' },
-  { q: 'Is this SaaS or perpetual?',
-    a: 'Cove is perpetual. You buy it once, you own it forever. Current is a managed services subscription on top, billed monthly. Use either or both. The license is never bait-and-switched.' },
-  { q: 'How is Current Surge billed when traffic spikes?',
-    a: 'Flat monthly with a generous quota. If you exceed it, we throttle gracefully (and notify you) rather than surprise-bill. You can upgrade tiers in-app.' },
-  { q: 'Why three tiers and not one bundle?',
-    a: 'Because most customers only need one or two. Pay for what you use — bundle all three only if you want to skip every integration project at once.' },
+  { q: 'What is the difference between Core and Current?',
+    a: 'Core is the portal software you own — a one-time license. Current is the recurring layer that powers it: transactional email, real-time, and the MCP-powered AI agent. You own the house; Current is the intelligence that lives inside and does the work.' },
+  { q: 'Why is Wave the recommended tier?',
+    a: 'Wave is where the AI happens. It unlocks the full MCP server, so Claude can create tickets, attach assets, update projects, and coordinate across clients using natural language — with Global Notes memory and multi-client scoping. It is the "I need this" moment for most teams.' },
+  { q: 'Do the tiers stack?',
+    a: 'Yes. Each tier includes everything in the tier below it. Wave includes all of Ripple; Surge includes all of Wave plus the highest rate limits, priority AI queue, advanced memory, and priority support.' },
+  { q: 'Monthly or annual?',
+    a: 'Either. Annual billing saves roughly 17% versus paying month to month. You can switch or cancel any time — your Core license is permanent regardless.' },
+  { q: 'What happens to my data if I cancel Current?',
+    a: 'Nothing. Your install keeps running on your Core license. You simply pause the managed email, real-time, and AI services until you resubscribe.' },
+  { q: 'Can I start on a lower tier and upgrade later?',
+    a: 'Absolutely. Start on Ripple, move up to Wave the moment you want the AI agent, and step to Surge when your usage and team grow. Upgrades are instant.' },
 ];
 ---
 <Layout
-  title="Current — Optional managed utilities for ClientCove"
-  description="Cove is the platform. Current is the utilities — email, real-time, and AI inference. Pre-integrated providers under one toggle, with our credentials or yours."
+  title="Current — AI-powered services for ClientCove (Ripple, Wave, Surge)"
+  description="Current is the recurring layer that powers your ClientCove portal: email and real-time on Ripple, the full MCP AI agent on Wave, and maximum throughput on Surge. From $19/mo."
 >
   <!-- Hero -->
   <section class="cur-hero">
@@ -100,34 +68,37 @@ const FAQ_ITEMS = [
       </div>
 
       <div class="eyebrow teal" style="margin-top:32px;justify-content:center;">
-        <span class="badge" style="background:rgba(43,179,179,.12);color:var(--color-teal-600);">Optional managed services</span>
-        <span class="label">A sibling to Cove · not an upsell</span>
+        <span class="badge" style="background:rgba(43,179,179,.12);color:var(--color-teal-600);">Recurring AI-powered services</span>
+        <span class="label">Three tiers · stacked</span>
       </div>
 
       <h1 class="cc-display" style="margin-top:24px;max-width:1100px;margin-inline:auto;">
         Cove is the platform.<br/>
-        <em class="cool">Current</em> is the utilities.
+        <em class="cool">Current</em> is the AI that does the work.
       </h1>
 
       <p class="cur-lede">
-        Three utilities every service business needs — deliverability, real-time, and AI inference.
-        Packaged into ClientCove so you buy them in one place instead of three.
+        Real-time, email, and the MCP-powered AI agent that lives inside your portal — packaged into
+        three stacked tiers. Start with Ripple, unlock the AI on Wave, scale up with Surge.
       </p>
-      <div class="cur-sub">
-        One bill. Pre-integrated providers. Or paste your own keys, anytime.
-      </div>
+      {LAUNCH.active && (
+        <div class="cur-sub">
+          Every Core license includes your <strong>first month of Wave free</strong> through {LAUNCH.endsShort}.
+        </div>
+      )}
 
       <div class="tier-mini">
-        {TIERS.map(t => (
-          <a href={`#${t.id}`} class="card mini-card" style={`--accent:${t.accent};`}>
+        {tiers.map(t => (
+          <a href={`#${t.id}`} class={`card mini-card ${t.isHero ? 'mini-hero' : ''}`} style={`--accent:${t.accent};`}>
             <span class="mini-icon" style={`background:${t.accent}1A;`}>
               <TierIcon kind={t.icon} color={t.accent} />
             </span>
             <div class="mini-text">
               <div class="mini-name">
                 Current <span style={`color:${t.accent};`}>{t.name}</span>
+                {t.isHero && <span class="mini-flag">HERO</span>}
               </div>
-              <div class="mini-up">{t.upstream}, pre-integrated</div>
+              <div class="mini-up">${t.monthly}/mo · {t.positioning}</div>
             </div>
           </a>
         ))}
@@ -135,301 +106,138 @@ const FAQ_ITEMS = [
 
       <div class="cur-cta-row">
         <a href="#pricing" class="btn btn-dark btn-lg">See pricing <Icon name="arrow" class="arrow"/></a>
-        <a href="#proof" class="btn btn-ghost btn-lg">How the toggle works</a>
+        <a href="#wave" class="btn btn-ghost btn-lg">Why Wave is the hero</a>
       </div>
     </div>
   </section>
 
-  <!-- Promise band -->
-  <section class="promise">
-    <div class="container-wide promise-grid">
-      <div class="promise-h">
-        You <em class="acc">own</em> the platform. Buy your utilities through one convenient place — instead of stitching them together yourself.
-      </div>
-      <div class="promise-p">
-        Cove is yours forever. Current is the utility bundle that runs alongside it — email, real-time, and AI inference, packaged so you buy them in one place instead of three.
-        That's not a contradiction with <em>"Pay once. Own forever."</em> — it's the answer to the question
-        that promise raises: <em>OK, but what about the parts that genuinely need a vendor?</em>
-      </div>
-    </div>
-  </section>
-
-  <!-- Toggle proof -->
-  <section id="proof" class="toggle-proof">
-    <div class="container-wide">
-      <div style="text-align:center;max-width:760px;margin:0 auto;">
-        <div class="eyebrow teal" style="justify-content:center;">
-          <span class="label">The proof</span>
+  <!-- Wave spotlight — the "holy shit" moment -->
+  <section id="wave" class="wave-spot">
+    <div class="container-wide wave-grid">
+      <div class="wave-copy">
+        <div class="eyebrow teal" style="flex-wrap:wrap;">
+          <span class="badge" style="background:rgba(231,111,42,.12);color:var(--color-orange);">
+            <CurrentGlyph size={11} color="#E76F2A" />
+            Current Wave
+          </span>
+          <span class="label">The hero tier</span>
         </div>
         <h2 class="cc-h2" style="margin-top:14px;">
-          One toggle. Same product.<br/>
-          <em class="cool">Different payer.</em>
+          Watch Claude do real work<br/>
+          <em class="cool">inside your portal.</em>
         </h2>
-        <p class="proof-lede">
-          Most "managed" tiers in tech are sticky on purpose. Ours isn't.
-          Flip Current on — we manage it. Flip it off, paste your own keys — you manage it.
-          Either way the rest of the portal works exactly the same.
+        <p class="wave-lede">
+          Wave turns on the full MCP server. Now Claude can create tickets, attach files, update projects,
+          and coordinate across every client — in plain language, without leaving the portal. It remembers
+          context with Global Notes and knows which client it's working for.
         </p>
-      </div>
-
-      <div class="proof-frame">
-        <div class="proof-bar">
-          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          <div class="proof-addr">portal.acmeagency.com / settings / current</div>
-        </div>
-
-        <div class="proof-body">
-          <div class="proof-head">
-            <div style="display:flex;align-items:center;gap:14px;">
-              <span class="proof-tier-icon">
-                <TierIcon kind="mail" color="#1F9999" />
-              </span>
-              <div>
-                <div class="proof-tier-name">Current Comms</div>
-                <div class="proof-tier-sub">Transactional email · inbound parsing</div>
-              </div>
-            </div>
-            <div class="on-pill">
-              <span class="pulse"></span>
-              <span>ON</span>
-            </div>
-          </div>
-
-          <div style="margin-top:22px;">
-            <div class="proof-eyebrow">Provider</div>
-            <div class="proof-options" data-proof-options>
-              <button type="button" data-mode="managed" data-active="">
-                <span class="radio"><span></span></span>
-                <div>
-                  <div class="opt-l">Use Current (managed)</div>
-                  <div class="opt-d">We pay SendGrid. Flat monthly bill.</div>
-                </div>
-              </button>
-              <button type="button" data-mode="byo">
-                <span class="radio"><span></span></span>
-                <div>
-                  <div class="opt-l">Use my own SendGrid</div>
-                  <div class="opt-d">Paste your API key. You pay the upstream bill.</div>
-                </div>
-              </button>
-            </div>
-          </div>
-
-          <div class="proof-detail" data-mode="managed" data-active>
-            <div class="detail-grid">
-              <div>
-                <div class="detail-l">Plan</div>
-                <div class="detail-v cc-serif">Comms Standard</div>
-                <div class="detail-s">$29.99 / mo · billed yearly</div>
-              </div>
-              <div>
-                <div class="detail-l">Sends this month</div>
-                <div class="detail-v num" style="font-family:var(--font-mono);font-size:16px;">4,217 / 50,000</div>
-                <div class="bar"><div style="width:8.4%;background:var(--color-teal-600);"></div></div>
-              </div>
-              <div>
-                <div class="detail-l">Status</div>
-                <div style="margin-top:6px;display:inline-flex;align-items:center;gap:8px;">
-                  <span class="pulse"></span>
-                  <span style="font-size:13px;font-weight:600;color:var(--color-teal-600);">Delivering</span>
-                </div>
-                <a href="#" class="manage-link">Manage subscription →</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="proof-detail" data-mode="byo">
-            <div class="byo-grid">
-              <div>
-                <div class="detail-l">SendGrid API key</div>
-                <div class="key-input">sk_••••••••••••••••3a7f</div>
-              </div>
-              <div>
-                <div class="detail-l">Reply-to domain</div>
-                <div class="key-input">replies.acmeagency.com</div>
-              </div>
-            </div>
-            <div class="verified-row">
-              <span class="check"><Icon name="check" /></span>
-              <span style="font-size:13px;font-weight:600;color:var(--color-teal-600);">Verified · domain authenticated</span>
-            </div>
-            <div class="detail-s" style="margin-top:8px;">You pay SendGrid directly. ClientCove takes nothing.</div>
-          </div>
-
-          <div class="proof-foot">
-            <span>Same product, every screen — only the payer changes.</span>
-            <span class="convenience" data-convenience>Convenience tax: $29.99/mo</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Three tier deep-dives -->
-  {TIERS.map((t, idx) => (
-    <section id={t.id} class={`tier-section ${idx === 1 ? 'alt-bg' : ''}`}>
-      <div class="container-wide tier-grid" data-reverse={idx % 2 === 1 ? '' : undefined}>
-        <div class="tier-copy">
-          <div class="eyebrow teal" style="flex-wrap:wrap;">
-            <span class="badge" style={`background:${t.accent}1A;color:${t.accent};`}>
-              <CurrentGlyph size={11} color={t.accent} />
-              Current {t.name}
-            </span>
-            <span class="label">Tier {idx + 1} of 3</span>
-          </div>
-          <div class="tier-short">{t.short}</div>
-          <h2 class="cc-h2" style="margin-top:12px;">
-            {t.headline}<br/>
-            <em class="cool">{t.headlineItalic}</em>
-          </h2>
-
-          <div class="tier-proof">
-            {t.proof.map(p => (
-              <div class="proof-row">
-                <span class="check-wrap" style={`background:${t.accent}1A;color:${t.accent};`}>
-                  <Icon name="check" />
-                </span>
-                {p}
-              </div>
-            ))}
-          </div>
-
-          <div class="replaces" style={`border-left-color:${t.accent};`}>
-            <div class="replaces-l" style={`color:${t.accent};`}>Replaces</div>
-            {t.replaces}
-          </div>
-
-          <div class="tier-price">
-            <div class="price-num">
-              <span class="p-amt cc-serif">{t.price}</span>
-              <span class="p-period">{t.period}</span>
-            </div>
-            <div class="quota">{t.quota}</div>
-            <div class="byo-pill">or BYO {t.upstream}, free</div>
-          </div>
-
-          <div class="tier-ctas">
-            <a href="#pricing" class="btn btn-sm" style={`background:${t.accent};border-color:${t.accent};color:#fff;`}>
-              Add Current {t.name} <Icon name="arrow" class="arrow" />
-            </a>
-            <a href="#" class="btn btn-ghost btn-sm">Setup guide (BYO)</a>
-          </div>
-        </div>
-        <div class="tier-vis">
-          <TierVisual kind={t.id as 'comms' | 'react' | 'surge'} />
-        </div>
-      </div>
-    </section>
-  ))}
-
-  <!-- Pricing comparison table -->
-  <section id="pricing" class="pricing-table-section on-dark">
-    <div class="container-wide">
-      <div style="text-align:center;max-width:720px;margin:0 auto;">
-        <div class="eyebrow teal" style="justify-content:center;color:#2BB3B3;">
-          <span class="label" style="color:#2BB3B3;">Pricing</span>
-        </div>
-        <h2 class="cc-h2" style="margin-top:14px;color:#fff;">
-          Pay us for the convenience.<br/>
-          <em class="cool">Or pay nothing</em> and bring your own keys.
-        </h2>
-        <p class="pt-lede">
-          The convenience tax is the cost of skipping three vendor accounts and three integration projects.
-          Worth it for most. Optional for everyone.
-        </p>
-      </div>
-
-      <div class="pt-table">
-        <div class="pt-head">
-          <span>Tier</span>
-          <span class="ar">Use Current (managed)</span>
-          <span class="ar">Use your own</span>
-        </div>
-
-        {[
-          { name: 'Comms', upstream: 'SendGrid', price: '$29.99/mo', quota: '50k sends', accent: '#2BB3B3', icon: 'mail' as const },
-          { name: 'React', upstream: 'Pusher', price: '$59.99/mo', quota: '200 concurrent', accent: '#E76F2A', icon: 'wave' as const },
-          { name: 'Surge', upstream: 'OpenRouter + Gemini', price: '$99/mo', quota: '50k operations', accent: '#7E5BD7', icon: 'spark' as const },
-        ].map(r => (
-          <div class="pt-row">
-            <div style="display:flex;align-items:center;gap:14px;">
-              <span class="pt-icon" style={`background:${r.accent}26;`}>
-                <TierIcon kind={r.icon} color={r.accent} />
-              </span>
-              <div>
-                <div class="pt-name cc-serif">Current {r.name}</div>
-                <div class="pt-up">{r.upstream}</div>
-              </div>
-            </div>
-            <div class="ar">
-              <div class="pt-price cc-serif">{r.price}</div>
-              <div class="pt-quota">{r.quota}</div>
-            </div>
-            <div class="ar">
-              <div class="pt-free cc-serif">Free</div>
-              <div class="pt-quota">+ your upstream bill</div>
-            </div>
-          </div>
-        ))}
-
-        <div class="pt-bundle">
-          <div>
-            <div class="pt-name cc-serif" style="font-size:22px;">Bundle all three</div>
-            <div class="pt-up" style="font-size:12.5px;color:rgba(255,255,255,.6);">Comms + React + Surge · save ~21%</div>
-          </div>
-          <div class="ar">
-            <div class="bundle-price cc-serif">$149<span style="font-size:14px;color:rgba(255,255,255,.6);">/mo</span></div>
-            <div class="bundle-strike">$188.98/mo separately</div>
-          </div>
-          <div class="ar">
-            <div class="pt-free cc-serif">Free</div>
-            <div class="pt-quota">+ your three bills</div>
-          </div>
-        </div>
-      </div>
-
-      <p class="pt-foot">
-        Your ClientCove license is permanent. Current is a separate, optional, month-to-month subscription.
-        Cancel any tier without losing access to ClientCove — you'll just need to paste your own credentials to keep that feature on.
-      </p>
-
-      <div class="pt-ctas">
-        <a href="/pricing" class="btn btn-primary btn-lg">Buy ClientCove + Current <Icon name="arrow" class="arrow" /></a>
-        <a href="/pricing" class="btn btn-ghost-light btn-lg">Cove only — start here</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Philosophy -->
-  <section class="philosophy">
-    <div class="container-wide phil-grid">
-      <div>
-        <div class="eyebrow ink"><span class="label">Why Current exists</span></div>
-        <h2 class="cc-h2" style="margin-top:14px;">
-          We pay these bills <em class="acc">ourselves.</em>
-        </h2>
-      </div>
-      <div class="phil-content">
-        <p>
-          We built ClientCove for ourselves first. To run it, we pay SendGrid for email, Pusher for real-time, and OpenRouter for AI. Not because we had to — because those three problems are not worth solving from scratch.
-        </p>
-        <p>
-          Customers asked us to package what we use. <em>Current is exactly that</em> — three pre-integrated providers, behind one toggle, with our credentials or yours.
-        </p>
-        <div class="phil-cards">
-          {[
-            ['You still own the platform.', 'Your perpetual license is untouched.'],
-            ['Your data still lives in your install.', 'Current routes traffic — never holds your records.'],
-            ['Cancel any tier, anytime.', 'Paste your own keys to keep the feature on.'],
-            ['Pre-integrate, never lock in.', 'If we add a vendor, you can swap us out for them.'],
-          ].map(p => (
-            <div class="phil-card">
-              <div class="phil-card-h">{p[0]}</div>
-              <div class="phil-card-b">{p[1]}</div>
+        <div class="wave-feats">
+          {wave.feats.map(f => (
+            <div class="wave-feat">
+              <span class="wf-check"><Icon name="check" /></span>
+              {f}
             </div>
           ))}
         </div>
+        <div class="wave-price">
+          <span class="wp-amt cc-serif">${wave.monthly}</span>
+          <span class="wp-period">/mo</span>
+          <span class="wp-or">or ${wave.annual}/yr · save ~17%</span>
+        </div>
+        <a href="#pricing" class="btn btn-primary btn-lg" style="margin-top:24px;">
+          Get Wave <Icon name="arrow" class="arrow"/>
+        </a>
       </div>
+
+      <div class="wave-demo">
+        <div class="demo-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <div class="demo-addr">portal.acmeagency.com / assistant</div>
+        </div>
+        <div class="demo-body">
+          <div class="msg user">Open a ticket for the Riverside drone shoot and attach the latest footage.</div>
+          <div class="msg ai">
+            <span class="ai-glyph"><CurrentGlyph size={14} color="#E76F2A" /></span>
+            <div>
+              <div class="ai-line">✓ Created ticket <strong>#4821</strong> — “Riverside drone shoot”</div>
+              <div class="ai-line">✓ Attached <strong>riverside-4k.mp4</strong> (1.2 GB)</div>
+              <div class="ai-line">✓ Assigned to <strong>Field Ops</strong>, client scope <strong>Riverside</strong></div>
+              <div class="ai-meta">Global Notes updated · multi-client scope verified</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stacked tiers note -->
+  <section class="stack-band">
+    <div class="container-wide stack-inner">
+      <div class="stack-h">Each tier <em class="acc">includes everything</em> below it.</div>
+      <div class="stack-flow">
+        <span class="sf-pill" style="--c:#2BB3B3;">Ripple</span>
+        <Icon name="arrow" />
+        <span class="sf-pill" style="--c:#E76F2A;">Wave <em>+ AI agent</em></span>
+        <Icon name="arrow" />
+        <span class="sf-pill" style="--c:#7E5BD7;">Surge <em>+ scale</em></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="pricing-section">
+    <div class="container-wide">
+      <div style="text-align:center;max-width:680px;margin:0 auto;">
+        <div class="eyebrow teal" style="justify-content:center;"><span class="label">Pricing</span></div>
+        <h2 class="cc-h2" style="margin-top:14px;">Pick a tier. <em class="cool">Upgrade anytime.</em></h2>
+        <div class="bill-toggle" data-billing="monthly" id="bill-toggle" style="margin-top:26px;">
+          <button data-period="monthly" aria-pressed="true">Monthly</button>
+          <button data-period="annual" aria-pressed="false">Annual · save 17%</button>
+        </div>
+      </div>
+
+      <div class="price-grid" id="price-grid" data-billing="monthly">
+        {tiers.map(t => (
+          <div class={`pcard ${t.isHero ? 'pcard-hero' : ''}`} id={t.id} style={`--accent:${t.accent};`}>
+            {t.isHero && <span class="pcard-flag">RECOMMENDED</span>}
+            <div class="pcard-head">
+              <span class="pcard-icon" style={`background:${t.accent}1A;`}>
+                <TierIcon kind={t.icon} color={t.accent} size={20} />
+              </span>
+              <div class="pcard-name">Current {t.name}</div>
+            </div>
+            <p class="pcard-tag">{t.tagline}</p>
+            <div class="pcard-price">
+              <span class="pp-monthly">
+                <span class="pp-amt cc-serif">${t.monthly}</span><span class="pp-cyc">/mo</span>
+              </span>
+              <span class="pp-annual">
+                <span class="pp-amt cc-serif">${t.annual}</span><span class="pp-cyc">/yr</span>
+                <span class="pp-equiv">≈ ${t.annualMonthly}/mo</span>
+              </span>
+            </div>
+            <div class="pcard-pos">{t.positioning}</div>
+            <a href="/pricing" class={t.isHero ? 'btn btn-primary' : 'btn btn-dark'} style="width:100%;margin:18px 0;">
+              Choose {t.name} <Icon name="arrow" class="arrow"/>
+            </a>
+            <ul class="pcard-feats">
+              {t.feats.map(f => {
+                const hl = 'highlight' in t && t.highlight === f;
+                return (
+                  <li class={hl ? 'pf-hl' : undefined} style={hl ? `background:${t.accent}14;` : undefined}>
+                    <span class="pf-check" style={`color:${t.accent};`}><Icon name="check" /></span>
+                    {hl ? <strong style={`color:${t.accent};`}>{f}</strong> : f}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <p class="pricing-foot">
+        Your ClientCove license is permanent. Current is a separate, optional subscription you can change or cancel any time.
+      </p>
     </div>
   </section>
 
@@ -439,10 +247,10 @@ const FAQ_ITEMS = [
       <div>
         <div class="eyebrow ink"><span class="label">FAQ</span></div>
         <h2 class="cc-h2" style="margin-top:14px;">
-          The honest <em class="cool">trade-offs.</em>
+          Core, Current, <em class="cool">and the AI.</em>
         </h2>
         <p class="faq-lede">
-          Current works because the answers don't change depending on who's reading.
+          The honest version — what you own, what you rent, and where the magic lives.
         </p>
       </div>
       <div class="faq-list">
@@ -467,48 +275,40 @@ const FAQ_ITEMS = [
     <div class="cta-blob" aria-hidden="true"></div>
     <div class="container-wide" style="position:relative;text-align:center;">
       <div style="display:inline-flex;align-items:center;gap:16px;">
-        <Mark size={48} />
+        <Mark size={48} inverse />
         <span style="font-size:28px;color:rgba(255,255,255,.3);">+</span>
         <CurrentGlyph size={44} />
       </div>
       <h2 class="cc-h1" style="margin-top:28px;color:#fff;">
         Own the platform.<br/>
-        <em class="cool">Buy your utilities</em> in one place.
+        <em class="cool">Let the AI do the work.</em>
       </h2>
       <p class="cta-sub">
-        Pay once for the platform. Pay monthly only for the utilities you'd hate to run yourself.
-        Or run them all yourself — your call, every time.
+        Buy Core once. Add Wave and watch Claude run your client operations from inside the portal.
       </p>
       <div class="cta-btns">
-        <a href="#pricing" class="btn btn-primary btn-lg">Configure Cove + Current <Icon name="arrow" class="arrow" /></a>
-        <a href="/pricing" class="btn btn-ghost-light btn-lg">Just Cove for now</a>
+        <a href="/pricing" class="btn btn-primary btn-lg">Buy Core + Current <Icon name="arrow" class="arrow" /></a>
+        <a href="#wave" class="btn btn-ghost-light btn-lg">See Wave in action</a>
       </div>
     </div>
   </section>
 </Layout>
 
 <script>
-  // Toggle proof — switch managed/byo
-  (() => {
-    const opts = document.querySelector<HTMLElement>('[data-proof-options]');
-    if (!opts) return;
-    const buttons = opts.querySelectorAll<HTMLButtonElement>('[data-mode]');
-    const details = document.querySelectorAll<HTMLElement>('.proof-detail[data-mode]');
-    const conv = document.querySelector<HTMLElement>('[data-convenience]');
-
-    buttons.forEach(b => b.addEventListener('click', () => {
-      const m = b.getAttribute('data-mode');
-      buttons.forEach(x => {
-        if (x === b) x.setAttribute('data-active', '');
-        else x.removeAttribute('data-active');
+  const toggle = document.getElementById('bill-toggle');
+  const grid = document.getElementById('price-grid');
+  if (toggle && grid) {
+    toggle.querySelectorAll<HTMLButtonElement>('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const p = btn.getAttribute('data-period') || 'monthly';
+        toggle.setAttribute('data-billing', p);
+        grid.setAttribute('data-billing', p);
+        toggle.querySelectorAll<HTMLButtonElement>('button').forEach(b => {
+          b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+        });
       });
-      details.forEach(d => {
-        if (d.getAttribute('data-mode') === m) d.setAttribute('data-active', '');
-        else d.removeAttribute('data-active');
-      });
-      if (conv) conv.textContent = m === 'managed' ? 'Convenience tax: $29.99/mo' : 'Convenience tax: $0/mo';
-    }));
-  })();
+    });
+  }
 </script>
 
 <style>
@@ -524,39 +324,34 @@ const FAQ_ITEMS = [
     background: var(--color-bg-2); border: 1px solid var(--color-line);
     font-family: var(--font-sans); font-size: 13px; font-weight: 600;
   }
-  .prod-switch .ps-link {
-    padding: 7px 16px; border-radius: 999px; color: var(--color-ink-3);
-  }
+  .prod-switch .ps-link { padding: 7px 16px; border-radius: 999px; color: var(--color-ink-3); }
   .prod-switch .ps-link:hover { color: var(--color-ink); }
   .prod-switch .ps-active {
     padding: 7px 16px; border-radius: 999px;
     background: var(--color-navy-900); color: #fff;
     display: inline-flex; align-items: center; gap: 8px;
   }
-
   .cur-lede {
     margin: 28px auto 0; font-family: var(--font-serif); font-size: 22px; line-height: 1.45;
-    color: var(--color-ink-2); max-width: 760px;
+    color: var(--color-ink-2); max-width: 780px;
   }
   .cur-sub {
     margin-top: 22px; font-family: var(--font-sans); font-size: 15px; font-weight: 600;
     color: var(--color-teal-600);
   }
+  .cur-sub strong { color: var(--color-orange); }
 
   .tier-mini {
     margin: 56px auto 0;
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
-    max-width: 880px;
+    max-width: 920px;
   }
   .mini-card {
     padding: 22px; display: flex; align-items: center; gap: 14px; background: #fff;
     transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
   }
-  .mini-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-    border-color: var(--accent);
-  }
+  .mini-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--accent); }
+  .mini-hero { border-color: var(--accent); box-shadow: 0 10px 30px -12px rgba(231,111,42,.4); }
   .mini-icon {
     flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px;
     display: inline-flex; align-items: center; justify-content: center;
@@ -564,257 +359,123 @@ const FAQ_ITEMS = [
   .mini-text { text-align: left; }
   .mini-name {
     font-family: var(--font-serif); font-weight: 600; font-size: 18px; color: var(--color-ink);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .mini-flag {
+    font-family: var(--font-sans); font-size: 8.5px; font-weight: 700; letter-spacing: .08em;
+    padding: 2px 6px; border-radius: 4px; background: var(--color-orange); color: #fff;
   }
   .mini-up { font-size: 12px; color: var(--color-ink-3); margin-top: 2px; }
-  .cur-cta-row {
-    margin-top: 36px; display: inline-flex; flex-wrap: wrap; gap: 10px; justify-content: center;
-  }
+  .cur-cta-row { margin-top: 36px; display: inline-flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
 
-  /* Promise band */
-  .promise { padding: 70px 0; background: #fff; border-bottom: 1px solid var(--color-line); }
-  .promise-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
-  }
-  .promise-h {
-    font-family: var(--font-serif); font-size: 30px; line-height: 1.25; font-weight: 500;
-    letter-spacing: -0.02em; color: var(--color-ink);
-  }
-  .promise-p { font-size: 16px; line-height: 1.65; color: var(--color-ink-2); max-width: 520px; }
-
-  /* Toggle proof */
-  .toggle-proof { padding: 120px 0; background: var(--color-bg-2); }
-  .proof-lede {
-    margin-top: 18px; font-family: var(--font-serif); font-size: 19px; line-height: 1.5;
-    color: var(--color-ink-2);
-  }
-  .proof-frame {
-    margin: 56px auto 0; max-width: 860px;
-    background: #fff; border: 1px solid var(--color-line);
-    border-radius: 18px; box-shadow: var(--shadow-lg); overflow: hidden;
-  }
-  .proof-bar {
-    display: flex; align-items: center; gap: 8px;
-    padding: 14px 18px; background: var(--color-bg-2); border-bottom: 1px solid var(--color-line);
-  }
-  .proof-bar .dot { width: 10px; height: 10px; border-radius: 999px; background: var(--color-line); }
-  .proof-addr {
-    margin-left: 14px; padding: 4px 12px; background: #fff; border: 1px solid var(--color-line);
-    border-radius: 6px; font-family: var(--font-mono); font-size: 11px; color: var(--color-ink-3);
-  }
-  .proof-body { padding: 32px 36px 36px; }
-  .proof-head {
-    display: flex; align-items: center; justify-content: space-between; gap: 24px;
-    padding-bottom: 18px; border-bottom: 1px solid var(--color-line);
-  }
-  .proof-tier-icon {
-    width: 38px; height: 38px; border-radius: 10px; background: rgba(43,179,179,.12);
-    display: inline-flex; align-items: center; justify-content: center;
-  }
-  .proof-tier-name { font-family: var(--font-sans); font-weight: 600; font-size: 16px; color: var(--color-ink); }
-  .proof-tier-sub { font-family: var(--font-sans); font-size: 12px; color: var(--color-ink-3); }
-  .on-pill {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 6px 12px; border-radius: 999px; background: var(--color-teal-50);
-    font-size: 12px; font-weight: 600; color: var(--color-teal-600);
-  }
-  .proof-eyebrow {
-    font-family: var(--font-sans); font-size: 12px; font-weight: 600; letter-spacing: 0.12em;
-    text-transform: uppercase; color: var(--color-ink-3);
-  }
-  .proof-options {
-    margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-  }
-  .proof-options button {
-    text-align: left; padding: 14px 16px; border-radius: 10px;
-    background: #fff; border: 1.5px solid var(--color-line);
-    cursor: pointer; display: flex; gap: 12px; align-items: flex-start;
-    transition: border-color .15s ease, background .15s ease;
-    font-family: var(--font-sans);
-  }
-  .proof-options button[data-active] {
-    border-color: var(--color-teal-600); background: var(--color-teal-50);
-  }
-  .proof-options .radio {
-    flex-shrink: 0; width: 18px; height: 18px; border-radius: 999px;
-    border: 2px solid var(--color-ink-4);
-    display: inline-flex; align-items: center; justify-content: center;
-    margin-top: 2px;
-  }
-  .proof-options [data-active] .radio { border-color: var(--color-teal-600); }
-  .proof-options .radio span { width: 0; height: 0; border-radius: 999px; background: var(--color-teal-600); transition: width .15s ease, height .15s ease; }
-  .proof-options [data-active] .radio span { width: 8px; height: 8px; }
-  .opt-l { font-weight: 600; font-size: 14px; color: var(--color-ink); }
-  .opt-d { margin-top: 4px; font-size: 12px; color: var(--color-ink-3); line-height: 1.5; }
-
-  .proof-detail {
-    margin-top: 18px; background: var(--color-bg-2); border: 1px solid var(--color-line);
-    border-radius: 12px; padding: 22px 24px; font-family: var(--font-sans);
-    display: none;
-  }
-  .proof-detail[data-active] { display: block; animation: fadeUp .35s ease-out; }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-
-  .detail-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
-  .detail-l {
-    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--color-ink-3); font-weight: 600;
-  }
-  .detail-v { margin-top: 6px; font-size: 18px; font-weight: 600; color: var(--color-ink); }
-  .detail-s { font-size: 12px; color: var(--color-ink-3); margin-top: 2px; }
-  .bar { margin-top: 6px; height: 4px; border-radius: 2px; background: var(--color-line); overflow: hidden; }
-  .bar > div { height: 100%; }
-  .manage-link { margin-top: 6px; display: inline-block; font-size: 12px; color: var(--color-ink-2); text-decoration: underline; }
-
-  .byo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  .key-input {
-    margin-top: 6px; padding: 10px 12px; background: #fff;
-    border: 1px solid var(--color-line); border-radius: 8px;
-    font-family: var(--font-mono); font-size: 12.5px; color: var(--color-ink);
-  }
-  .verified-row { margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; }
-
-  .proof-foot {
-    margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--color-line);
-    font-family: var(--font-sans); font-size: 12.5px; color: var(--color-ink-3);
-    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
-  }
-  .convenience { color: var(--color-teal-600); font-weight: 600; }
-
-  /* Tier section */
-  .tier-section {
-    padding: 110px 0; border-bottom: 1px solid var(--color-line);
-    background: #fff;
-  }
-  .tier-section.alt-bg { background: var(--color-bg-2); }
-  .tier-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
-  }
-  .tier-grid[data-reverse] .tier-copy { order: 2; }
-  .tier-grid[data-reverse] .tier-vis { order: 1; }
-  .tier-short {
-    margin-top: 18px;
-    font-family: var(--font-sans); font-size: 13px; font-weight: 600;
-    letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-ink-3);
-  }
-  .tier-proof {
-    margin-top: 26px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-  }
-  .proof-row {
-    display: flex; gap: 10px; align-items: flex-start;
-    font-size: 14px; line-height: 1.45; color: var(--color-ink-2);
-  }
-  .check-wrap {
-    flex-shrink: 0; width: 18px; height: 18px; border-radius: 999px;
+  /* Wave spotlight */
+  .wave-spot { padding: 110px 0; background: #fff; border-bottom: 1px solid var(--color-line); }
+  .wave-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .wave-lede { margin-top: 18px; font-size: 16.5px; line-height: 1.65; color: var(--color-ink-2); max-width: 520px; }
+  .wave-feats { margin-top: 24px; display: flex; flex-direction: column; gap: 10px; }
+  .wave-feat { display: flex; gap: 10px; align-items: flex-start; font-size: 14.5px; color: var(--color-ink-2); }
+  .wf-check {
+    flex-shrink: 0; width: 20px; height: 20px; border-radius: 999px;
+    background: rgba(231,111,42,.14); color: var(--color-orange);
     display: inline-flex; align-items: center; justify-content: center; margin-top: 1px;
   }
-  .replaces {
-    margin-top: 24px; padding: 14px 18px;
-    background: var(--color-bg-2); border-left: 3px solid var(--color-orange);
-    border-radius: 4px;
-    font-family: var(--font-serif); font-style: italic; font-size: 15px; line-height: 1.55;
-    color: var(--color-ink-2);
-  }
-  .alt-bg .replaces { background: #fff; }
-  .replaces-l {
-    font-family: var(--font-sans); font-style: normal; font-size: 11px; font-weight: 700;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    display: block; margin-bottom: 4px;
-  }
-  .tier-price {
-    margin-top: 28px; display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap;
-  }
-  .price-num { display: flex; align-items: baseline; gap: 4px; }
-  .p-amt { font-size: 44px; font-weight: 600; color: var(--color-ink); letter-spacing: -0.03em; }
-  .p-period { font-size: 16px; color: var(--color-ink-3); }
-  .quota { font-size: 13px; color: var(--color-ink-3); }
-  .byo-pill {
-    padding: 4px 10px; border-radius: 999px; background: var(--color-bg-2);
-    border: 1px solid var(--color-line);
-    font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
-    color: var(--color-ink-3);
-  }
-  .alt-bg .byo-pill { background: #fff; }
-  .tier-ctas { margin-top: 28px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .wave-price { margin-top: 28px; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .wp-amt { font-size: 48px; font-weight: 700; color: var(--color-ink); line-height: 1; }
+  .wp-period { font-size: 16px; color: var(--color-ink-3); }
+  .wp-or { font-size: 13px; color: var(--color-ink-3); margin-left: 6px; }
 
-  /* Pricing table */
-  .pricing-table-section { padding: 120px 0; }
-  .pt-lede {
-    margin-top: 18px; font-family: var(--font-serif); font-size: 19px; line-height: 1.5;
-    color: rgba(222,231,238,.75);
+  .wave-demo {
+    background: var(--color-navy-900); border-radius: 16px; overflow: hidden;
+    box-shadow: 0 30px 60px -22px rgba(10,31,46,.5);
   }
-  .pt-table {
-    margin: 56px auto 0; max-width: 980px;
-    background: rgba(255,255,255,.03);
-    border: 1px solid rgba(255,255,255,.08); border-radius: 18px; overflow: hidden;
+  .demo-bar {
+    display: flex; align-items: center; gap: 8px; padding: 14px 18px;
+    background: rgba(255,255,255,.04); border-bottom: 1px solid rgba(255,255,255,.08);
   }
-  .pt-head {
-    display: grid; grid-template-columns: 1.4fr 1fr 1fr;
-    padding: 20px 32px; border-bottom: 1px solid rgba(255,255,255,.08);
-    font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
-    color: rgba(255,255,255,.5); font-weight: 600;
+  .demo-bar .dot { width: 10px; height: 10px; border-radius: 999px; background: rgba(255,255,255,.18); }
+  .demo-addr {
+    margin-left: 14px; padding: 4px 12px; background: rgba(255,255,255,.06); border-radius: 6px;
+    font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,.6);
   }
-  .ar { text-align: right; }
-  .pt-row {
-    display: grid; grid-template-columns: 1.4fr 1fr 1fr;
-    padding: 24px 32px; align-items: center;
-    border-bottom: 1px solid rgba(255,255,255,.05);
+  .demo-body { padding: 26px; display: flex; flex-direction: column; gap: 16px; }
+  .msg { font-size: 14px; line-height: 1.5; border-radius: 12px; padding: 14px 16px; }
+  .msg.user { background: rgba(255,255,255,.08); color: #fff; align-self: flex-end; max-width: 85%; }
+  .msg.ai {
+    background: rgba(231,111,42,.1); border: 1px solid rgba(231,111,42,.25);
+    color: rgba(255,255,255,.92); display: flex; gap: 12px; align-items: flex-start; max-width: 92%;
   }
-  .pt-icon {
-    width: 36px; height: 36px; border-radius: 8px;
-    display: inline-flex; align-items: center; justify-content: center;
-  }
-  .pt-name { font-weight: 600; font-size: 18px; color: #fff; }
-  .pt-up { font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,.5); }
-  .pt-price { font-size: 22px; font-weight: 600; color: #fff; }
-  .pt-quota { font-size: 12px; color: rgba(255,255,255,.55); margin-top: 2px; }
-  .pt-free { font-size: 22px; font-weight: 600; color: #2BB3B3; }
-  .pt-bundle {
-    display: grid; grid-template-columns: 1.4fr 1fr 1fr;
-    padding: 28px 32px; align-items: center;
-    background: rgba(231,111,42,.08); border-top: 1px solid rgba(231,111,42,.2);
-  }
-  .bundle-price { font-size: 28px; font-weight: 600; color: #E76F2A; }
-  .bundle-strike {
-    font-size: 11px; color: rgba(255,255,255,.55); text-decoration: line-through; margin-top: 2px;
-  }
-  .pt-foot {
-    margin: 28px auto 0; max-width: 720px; text-align: center;
-    font-family: var(--font-sans); font-size: 13px; color: rgba(222,231,238,.5);
-  }
-  .pt-ctas {
-    margin-top: 32px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
-  }
+  .ai-glyph { flex-shrink: 0; margin-top: 2px; }
+  .ai-line { font-family: var(--font-mono); font-size: 12.5px; color: rgba(255,255,255,.85); margin-bottom: 4px; }
+  .ai-line strong { color: #fff; }
+  .ai-meta { margin-top: 8px; font-size: 11px; color: var(--color-teal); }
 
-  /* Philosophy */
-  .philosophy { padding: 120px 0; background: #fff; }
-  .phil-grid {
-    display: grid; grid-template-columns: 1fr 1.3fr; gap: 64px; align-items: start;
+  /* Stacked band */
+  .stack-band { padding: 56px 0; background: var(--color-bg-2); }
+  .stack-inner { display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap; text-align: center; }
+  .stack-h { font-family: var(--font-serif); font-size: 26px; font-weight: 500; color: var(--color-ink); }
+  .stack-flow { display: inline-flex; align-items: center; gap: 14px; flex-wrap: wrap; color: var(--color-ink-3); }
+  .sf-pill {
+    display: inline-flex; align-items: baseline; gap: 6px;
+    padding: 8px 16px; border-radius: 999px; background: #fff;
+    border: 1.5px solid var(--c); color: var(--c); font-weight: 700; font-size: 14px;
   }
-  .phil-content {
-    display: flex; flex-direction: column; gap: 22px;
-    font-family: var(--font-serif); font-size: 19px; line-height: 1.55; color: var(--color-ink-2);
+  .sf-pill em { font-style: normal; font-weight: 500; font-size: 12px; opacity: .8; }
+
+  /* Pricing */
+  .pricing-section { padding: 110px 0; background: #fff; }
+  .bill-toggle {
+    display: inline-flex; padding: 4px; background: var(--color-bg-2);
+    border: 1px solid var(--color-line); border-radius: 999px;
   }
-  .phil-content p { margin: 0; }
-  .phil-cards {
-    margin-top: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-    font-family: var(--font-sans); font-size: 14px; line-height: 1.5;
+  .bill-toggle button {
+    background: transparent; border: 0; padding: 8px 18px; border-radius: 999px;
+    font-size: 13.5px; font-weight: 600; color: var(--color-ink-2);
+    cursor: pointer; transition: background .2s ease, color .2s ease; font-family: inherit;
   }
-  .phil-card {
-    padding: 16px 18px; background: var(--color-bg-2); border-radius: 10px;
-    border: 1px solid var(--color-line);
+  .bill-toggle button[aria-pressed="true"] { background: var(--color-navy-900); color: #fff; }
+
+  .price-grid {
+    margin: 48px auto 0; display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 18px; max-width: 1000px; align-items: start;
   }
-  .phil-card-h { font-weight: 600; color: var(--color-ink); }
-  .phil-card-b { margin-top: 4px; color: var(--color-ink-3); }
+  .pcard {
+    position: relative; background: #fff; border: 1px solid var(--color-line);
+    border-radius: 16px; padding: 30px 26px; box-shadow: var(--shadow-sm);
+  }
+  .pcard-hero {
+    border-color: var(--accent); box-shadow: 0 30px 60px -24px rgba(231,111,42,.45);
+    transform: translateY(-8px);
+  }
+  .pcard-flag {
+    position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+    font-size: 9.5px; font-weight: 700; letter-spacing: .08em;
+    padding: 5px 12px; border-radius: 999px; background: var(--color-orange); color: #fff;
+  }
+  .pcard-head { display: flex; align-items: center; gap: 12px; }
+  .pcard-icon { width: 38px; height: 38px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; }
+  .pcard-name { font-family: var(--font-serif); font-weight: 600; font-size: 19px; color: var(--color-ink); }
+  .pcard-tag { margin-top: 14px; font-size: 13.5px; color: var(--color-ink-2); line-height: 1.5; min-height: 40px; }
+  .pcard-price { margin-top: 16px; }
+  .pp-amt { font-size: 44px; font-weight: 700; color: var(--color-ink); line-height: 1; }
+  .pp-cyc { font-size: 14px; color: var(--color-ink-3); margin-left: 2px; }
+  .pp-equiv { display: block; font-size: 12px; color: var(--color-ink-3); margin-top: 4px; }
+  .pp-annual { display: none; }
+  .price-grid[data-billing="annual"] .pp-monthly { display: none; }
+  .price-grid[data-billing="annual"] .pp-annual { display: block; }
+  .pcard-pos {
+    margin-top: 10px; font-size: 11px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--color-ink-3);
+  }
+  .pcard-feats { list-style: none; padding: 16px 0 0; margin: 0; border-top: 1px solid var(--color-line-2); display: flex; flex-direction: column; gap: 10px; }
+  .pcard-feats li { display: flex; gap: 9px; font-size: 13.5px; color: var(--color-ink-2); line-height: 1.45; }
+  .pcard-feats li.pf-hl { font-weight: 600; padding: 7px 10px; margin: -3px -10px; border-radius: 8px; }
+  .pf-check { flex-shrink: 0; margin-top: 1px; }
+  .pricing-foot { margin: 36px auto 0; max-width: 640px; text-align: center; font-size: 13px; color: var(--color-ink-3); }
 
   /* FAQ */
   .cur-faq { padding: 120px 0; background: var(--color-bg-2); }
-  .faq-grid {
-    display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px; align-items: start;
-  }
-  .faq-lede {
-    margin-top: 16px; font-family: var(--font-serif); font-size: 17px; line-height: 1.5;
-    color: var(--color-ink-2);
-  }
+  .faq-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px; align-items: start; }
+  .faq-lede { margin-top: 16px; font-family: var(--font-serif); font-size: 17px; line-height: 1.5; color: var(--color-ink-2); }
   .faq-list { display: flex; flex-direction: column; gap: 4px; }
   .faq-item { border-bottom: 1px solid var(--color-line); padding: 22px 4px; }
   .faq-item summary {
@@ -826,20 +487,17 @@ const FAQ_ITEMS = [
   .faq-icon {
     flex-shrink: 0; width: 28px; height: 28px; border-radius: 999px;
     background: #fff; border: 1px solid var(--color-line); color: var(--color-ink-2);
-    display: inline-flex; align-items: center; justify-content: center;
-    transition: all .2s ease;
+    display: inline-flex; align-items: center; justify-content: center; transition: all .2s ease;
   }
   .faq-item[open] .faq-icon {
-    background: var(--color-orange); border-color: var(--color-orange); color: #fff;
-    transform: rotate(45deg);
+    background: var(--color-orange); border-color: var(--color-orange); color: #fff; transform: rotate(45deg);
   }
   .faq-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .35s ease; }
   .faq-item[open] .faq-body { grid-template-rows: 1fr; }
   .faq-body > div { overflow: hidden; }
   .faq-body p {
     margin: 12px 0 0; font-size: 15.5px; line-height: 1.6;
-    color: var(--color-ink-2); max-width: 680px;
-    font-family: var(--font-sans);
+    color: var(--color-ink-2); max-width: 680px; font-family: var(--font-sans);
   }
 
   /* Final CTA */
@@ -857,19 +515,9 @@ const FAQ_ITEMS = [
 
   @media (max-width: 980px) {
     .tier-mini { grid-template-columns: 1fr; }
-    .promise-grid { grid-template-columns: 1fr; gap: 24px; }
-    .proof-options { grid-template-columns: 1fr; }
-    .detail-grid { grid-template-columns: 1fr; gap: 16px; }
-    .byo-grid { grid-template-columns: 1fr; }
-    .tier-grid { grid-template-columns: 1fr; gap: 32px; }
-    .tier-grid[data-reverse] .tier-copy,
-    .tier-grid[data-reverse] .tier-vis { order: unset; }
-    .tier-proof { grid-template-columns: 1fr; }
-    .pt-head, .pt-row, .pt-bundle { grid-template-columns: 1fr; gap: 8px; padding: 18px 22px; }
-    .pt-head { display: none; }
-    .ar { text-align: left; }
-    .phil-grid { grid-template-columns: 1fr; gap: 28px; }
-    .phil-cards { grid-template-columns: 1fr; }
+    .wave-grid { grid-template-columns: 1fr; gap: 40px; }
+    .price-grid { grid-template-columns: 1fr; max-width: 420px; }
+    .pcard-hero { transform: none; }
     .faq-grid { grid-template-columns: 1fr; gap: 32px; }
     .cur-cta { padding: 90px 0; }
   }

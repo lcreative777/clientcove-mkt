@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import Nav from '~/components/Nav.astro';
 import Footer from '~/components/Footer.astro';
-import { SITE } from '~/lib/site';
+import { SITE, CORE_LICENSES, FOUNDERS_LIFETIME, LAUNCH } from '~/lib/site';
 
 interface Props {
   title?: string;
@@ -55,18 +55,20 @@ const softwareLd = {
   operatingSystem: 'Web, Linux, Docker',
   description: SITE.description,
   offers: [
-    {
+    ...CORE_LICENSES.map(l => ({
       '@type': 'Offer',
-      name: 'Single Site License',
-      price: SITE.pricing.single.price,
+      name: l.name + ' License',
+      price: LAUNCH.active ? l.launch : l.regular,
       priceCurrency: 'USD',
-    },
-    {
+      ...(LAUNCH.active ? { priceValidUntil: LAUNCH.endsISO } : {}),
+    })),
+    ...(LAUNCH.active ? [{
       '@type': 'Offer',
-      name: 'Agency License',
-      price: SITE.pricing.agency.price,
+      name: FOUNDERS_LIFETIME.name + ' (Lifetime)',
+      price: FOUNDERS_LIFETIME.price,
       priceCurrency: 'USD',
-    },
+      priceValidUntil: LAUNCH.endsISO,
+    }] : []),
   ],
   aggregateRating: {
     '@type': 'AggregateRating',

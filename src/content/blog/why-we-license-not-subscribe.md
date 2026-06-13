@@ -16,7 +16,7 @@ We did that math. Then we did it again from the other side.
 
 ## Pay once. Own forever.
 
-ClientCove is sold as a perpetual license — $497 for a single site, $997 for an Agency License with source-code access. You pay once. You install on your VPS. Year one of updates is included. After that, annual updates are optional ($97/yr Single, $297/yr Agency).
+ClientCove is sold as a perpetual license — $349 for a single site, $949 for an Agency / Unlimited license. You pay once. You install on your VPS. Year one of updates is included. After that, annual updates are optional ($149/yr Single, $299/yr Agency).
 
 If you skip a year of updates, your install keeps working. Forever. No license server to phone home to. No "trial expired" screen. No surprise bill when your team grows.
 

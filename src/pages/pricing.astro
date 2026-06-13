@@ -4,163 +4,162 @@ import PageHero from '~/components/PageHero.astro';
 import Faq from '~/components/Faq.astro';
 import FinalCTA from '~/components/home/FinalCTA.astro';
 import Icon from '~/components/ui/Icon.astro';
-import { SITE } from '~/lib/site';
+import { SITE, CORE_LICENSES, FOUNDERS_LIFETIME, LAUNCH } from '~/lib/site';
 
-const { single, agency } = SITE.pricing;
-
-const tiers = [
-  {
-    id: 'single',
-    name: single.name,
-    priceMonthly: single.price,
-    priceYearly: single.price,
-    desc: 'Solo operators and boutique firms running one portal.',
-    cta: 'Buy Single Site License',
-    href: '#',
-    feats: [
-      '1 production install',
-      'Unlimited clients & users',
-      'All 8 modules',
-      'White-label branding',
-      '1 year of updates included',
-      'Email support',
-      'DigitalOcean / Docker deployment',
-    ],
-    excludes: [
-      'Source code access',
-      'Multi-install',
-    ],
-  },
-  {
-    id: 'agency',
-    name: agency.name,
-    priceMonthly: agency.price,
-    priceYearly: agency.price,
-    desc: 'Agencies running portals for themselves and their own clients.',
-    cta: 'Buy Agency License',
-    href: '#',
-    popular: true,
-    dark: true,
-    feats: [
-      'Up to 10 production installs',
-      'Unlimited clients & users on each',
-      'Full source-code access',
-      'White-label rights (resell to your clients)',
-      'Lifetime updates included',
-      'Priority email + chat support',
-      '4 hours of white-glove migration',
-      'Managed hosting option',
-    ],
-    excludes: [],
-  },
-];
+const tiers = CORE_LICENSES.map(l => ({
+  ...l,
+  save: l.regular - l.launch,
+  popular: 'recommended' in l && l.recommended,
+}));
 
 const billingFaqs = [
-  { q: 'Is this really one-time?',
-    a: 'Yes. The license fee is paid once. Year one of updates is included. After that, annual updates are optional ($97/yr Single Site, $297/yr Agency). Skip a year, your install keeps working — you only lose access to the next year of releases.' },
+  { q: 'What is launch pricing?',
+    a: `Through ${LAUNCH.endsLabel}, every core license is discounted (save up to $200) and includes your first month of Current Wave free. After that date, licenses return to full price. Buy during the window and you keep the launch rate forever.` },
+  { q: 'Is the license really one-time?',
+    a: 'Yes. The license fee is paid once and you own the portal software. Year one of updates is included. After that, annual updates are optional ($149/yr Single Site up to $299/yr Agency). Skip a year and your install keeps working — you only lose access to the next year of releases.' },
+  { q: 'What is the difference between Core and Current?',
+    a: 'Core is the portal software you own (one-time). Current is the optional recurring layer — email, real-time, and the MCP-powered AI agent — billed monthly under three tiers (Ripple, Wave, Surge). You can run Core on its own and add Current whenever you want.' },
+  { q: 'Which license should a developer or agency pick?',
+    a: 'The Developer License covers up to 12 client sites you build for others (not for resale). The Agency / Unlimited license adds white-label resale rights across unlimited installs. Solo operators on one portal want Single Site; small shops with a few brands want the 3-Site license.' },
+  { q: 'What is the Unlimited Founders lifetime deal?',
+    a: `A one-time $${FOUNDERS_LIFETIME.price.toLocaleString('en-US')} license with unlimited sites, white-label resale rights, and lifetime Core updates — no annual renewal, ever. It's a limited founder offer that retires when the launch window closes on ${LAUNCH.endsLabel}. Current (the AI services layer) remains a separate monthly subscription.` },
   { q: 'What payment methods do you accept?',
     a: 'Card (via Stripe), ACH (US/CA), and wire transfer for orders over $5,000. Invoice & PO accepted for organizations.' },
   { q: 'Do you offer refunds?',
     a: '30-day money-back guarantee, no questions asked. Email us within 30 days of purchase.' },
-  { q: 'Can I upgrade from Single Site to Agency?',
-    a: 'Yes — pay the difference, keep your install, gain source access and the additional install seats.' },
   { q: 'Are there discounts for non-profits / education?',
     a: 'Yes — 30% off for registered non-profits and accredited educational institutions. Email us with your details.' },
-  { q: 'What about hosting?',
-    a: 'Self-host on any VPS that runs Docker (DigitalOcean, Hetzner, AWS, anything). Or pick our managed hosting at $49/mo per install — same software, we run the server.' },
 ];
 
 const compare = [
-  { feat: 'Production installs', single: '1', agency: 'Up to 10' },
-  { feat: 'Clients & users', single: 'Unlimited', agency: 'Unlimited' },
-  { feat: 'All 8 modules', single: '✓', agency: '✓' },
-  { feat: 'White-label branding', single: '✓', agency: '✓' },
-  { feat: 'Source-code access', single: '—', agency: '✓' },
-  { feat: 'Resell rights', single: '—', agency: '✓' },
-  { feat: 'Year-one updates', single: '✓', agency: '✓' },
-  { feat: 'Lifetime updates', single: '$97/yr after year 1', agency: 'Included' },
-  { feat: 'Support', single: 'Email', agency: 'Priority email + chat' },
-  { feat: 'White-glove migration', single: '—', agency: '4 hours' },
+  { feat: 'Launch price (through ' + LAUNCH.endsShort + ')', vals: tiers.map(t => '$' + t.launch) },
+  { feat: 'Regular price', vals: tiers.map(t => '$' + t.regular) },
+  { feat: 'Annual renewal (optional)', vals: tiers.map(t => '$' + t.renewal + '/yr') },
+  { feat: 'Websites', vals: tiers.map(t => t.sites) },
+  { feat: 'Unlimited clients & users', vals: ['✓', '✓', '✓', '✓'] },
+  { feat: 'White-label branding', vals: ['✓', '✓', '✓', '✓'] },
+  { feat: 'Build for clients', vals: ['—', '—', '✓', '✓'] },
+  { feat: 'White-label resale rights', vals: ['—', '—', '—', '✓'] },
+  { feat: '1st month of Wave free (launch)', vals: ['✓', '✓', '✓', '✓'] },
+  { feat: 'Support', vals: ['Email', 'Email', 'Priority', 'Priority'] },
 ];
 ---
 <Layout
-  title="Pricing — Pay once. Own forever."
-  description="One-time license. No per-seat tax. No monthly fees. Two tiers — $497 or $997. Includes white-label branding, year-one updates, and a 30-day money-back guarantee."
+  title="Pricing — Own your portal. Launch pricing through Sep 1."
+  description="One-time core license from $249 during launch. Four tiers — Single, 3-Site, Developer, and Agency — plus optional Current AI services. Save up to $200 and get your first month of Wave free through September 1, 2026."
 >
   <PageHero
     eyebrow="PRICING"
-    title="Pay once. <em class='acc'>Own forever.</em>"
-    subtitle="No monthly fees. No per-seat charges. No surprise quotas. One license. Yours."
+    title="Own the core. <em class='acc'>Power it with Current.</em>"
+    subtitle="Pay once for the portal you own. Add the AI-powered Current layer only if you want it. No per-seat tax, no surprise quotas."
   >
-    <div class="billing-toggle reveal" data-billing="monthly" id="billing-toggle" style="margin-top:32px;">
-      <button data-period="monthly" aria-pressed="true">Monthly updates</button>
-      <button data-period="yearly" aria-pressed="false">Save 17% yearly</button>
-    </div>
-    <p class="reveal" style="margin-top:14px;font-size:13px;color:var(--color-ink-3);">
-      Toggle is informational — license is one-time either way. Toggle adjusts the optional <strong>updates plan</strong>.
-    </p>
+    {LAUNCH.active && (
+      <div class="launch-banner reveal">
+        <span class="lb-tag">LAUNCH</span>
+        <span class="lb-text">
+          Save up to <strong>$200</strong> + your <strong>first month of Wave free</strong>.
+          Intro pricing ends <strong>{LAUNCH.endsLabel}</strong>.
+        </span>
+      </div>
+    )}
   </PageHero>
 
   <section class="sect" style="padding-top:0;">
     <div class="container-wide">
-      <div class="tiers" id="tier-grid" data-billing="monthly">
+      <div class="core-grid">
         {tiers.map(t => (
-          <div class={`tier reveal ${t.dark ? 'tier-dark' : ''}`} id={t.id}>
-            {t.popular && <span class="popular">MOST POPULAR</span>}
+          <div class={`tier reveal ${t.popular ? 'tier-dark' : ''}`} id={t.id}>
+            {t.popular && <span class="popular">RECOMMENDED</span>}
             <div class="tier-name">{t.name}</div>
             <div class="tier-price">
-              <span class="cc-serif num">${t.priceMonthly}</span>
-              <span class="cycle">one-time license</span>
+              {LAUNCH.active && <span class="was num">${t.regular}</span>}
+              <div class="now-row">
+                <span class="cc-serif num now">${LAUNCH.active ? t.launch : t.regular}</span>
+                <span class="cycle">one-time</span>
+              </div>
+              {LAUNCH.active && <span class="save">Save ${t.save}</span>}
             </div>
-            <p class="tier-desc">{t.desc}</p>
-            <div class="updates-line">
-              <span class="muted">Updates plan (optional):</span>
-              <strong class="num">
-                <span class="price-monthly">${t.id === 'single' ? '12' : '29'}/mo</span>
-                <span class="price-yearly">${t.id === 'single' ? '97' : '297'}/yr</span>
-              </strong>
-            </div>
-            <a href={t.href} class={t.dark ? 'btn btn-primary btn-lg' : 'btn btn-dark btn-lg'} style="width:100%;margin-bottom:22px;">
-              {t.cta} <Icon name="arrow" class="arrow" />
+            <div class="sites">{t.sites}</div>
+            <p class="tier-desc">{t.blurb}</p>
+            <a href={SITE.subscribeUrl} class={t.popular ? 'btn btn-primary' : 'btn btn-dark'} style="width:100%;margin-bottom:14px;">
+              Buy {t.name} <Icon name="arrow" class="arrow" />
             </a>
-            <ul>
-              {t.feats.map(f => (
-                <li><span class="check"><Icon name="check" /></span>{f}</li>
-              ))}
-              {t.excludes.map(f => (
-                <li class="excl"><span class="x"><Icon name="x" /></span>{f}</li>
-              ))}
-            </ul>
+            <div class="renewal">
+              <span class="muted">Updates after year one:</span>
+              <strong class="num">${t.renewal}/yr</strong>
+            </div>
           </div>
         ))}
       </div>
 
+      {LAUNCH.active && (
+        <div class="founders reveal">
+          <div class="founders-left">
+            <span class="founders-badge">FOUNDER EDITION · THROUGH {LAUNCH.endsShort}</span>
+            <div class="founders-name">{FOUNDERS_LIFETIME.name} — <span class="cool">Lifetime</span></div>
+            <p class="founders-sub">
+              Own every install forever. Unlimited sites, white-label resale, and lifetime Core
+              updates — <strong>no annual renewal, ever</strong>. A one-time founder offer that retires
+              when the launch window closes.
+            </p>
+            <ul class="founders-feats">
+              {FOUNDERS_LIFETIME.feats.map(f => (
+                <li><span class="check"><Icon name="check" /></span>{f}</li>
+              ))}
+            </ul>
+          </div>
+          <div class="founders-right">
+            <div class="founders-price">
+              <span class="cc-serif num">${FOUNDERS_LIFETIME.price.toLocaleString('en-US')}</span>
+              <span class="cycle">one-time · lifetime</span>
+            </div>
+            <a href={SITE.subscribeUrl} class="btn btn-primary btn-lg" style="width:100%;">
+              Claim Founders Lifetime <Icon name="arrow" class="arrow" />
+            </a>
+            <div class="founders-note">{FOUNDERS_LIFETIME.note}</div>
+          </div>
+        </div>
+      )}
+
       <p class="guarantee">
-        Every license includes a <strong>30-day money-back guarantee</strong>.
+        Every license is one-time and includes a <strong>30-day money-back guarantee</strong>.
+        {LAUNCH.active && <> Launch buyers also get their <strong>first month of Current Wave free</strong>.</>}
       </p>
+    </div>
+  </section>
+
+  <!-- Current cross-sell -->
+  <section class="sect current-band">
+    <div class="container-wide current-band-inner reveal">
+      <div>
+        <div class="cb-eyebrow">RECURRING · OPTIONAL</div>
+        <h2 class="cc-h2" style="margin-top:10px;">Add <em class="cool">Current</em> when you want the AI to do the work.</h2>
+        <p>Ripple, Wave, and Surge — stacked tiers for transactional email, real-time, and the MCP-powered AI agent that runs inside your portal. From $19/mo.</p>
+      </div>
+      <a href="/current" class="btn btn-dark btn-lg">See Current pricing <Icon name="arrow" class="arrow" /></a>
     </div>
   </section>
 
   <section class="sect" style="background:var(--color-bg-2);">
     <div class="container-wide">
       <div class="reveal" style="text-align:center;max-width:680px;margin:0 auto 48px;">
-        <h2 class="cc-h2">Tier comparison</h2>
+        <h2 class="cc-h2">Compare licenses</h2>
       </div>
       <div class="reveal compare-wrap">
         <table class="compare-table">
           <thead>
             <tr>
               <th></th>
-              <th>Single Site</th>
-              <th>Agency License</th>
+              {tiers.map(t => <th>{t.name}</th>)}
             </tr>
           </thead>
           <tbody>
             {compare.map(row => (
               <tr>
                 <td>{row.feat}</td>
-                <td>{row.single}</td>
-                <td class="cc">{row.agency}</td>
+                {row.vals.map((v, i) => (
+                  <td class={tiers[i].popular ? 'cc' : ''}>{v}</td>
+                ))}
               </tr>
             ))}
           </tbody>
@@ -173,51 +172,33 @@ const compare = [
   <FinalCTA />
 </Layout>
 
-<script>
-  const toggle = document.getElementById('billing-toggle');
-  const grid = document.getElementById('tier-grid');
-  if (toggle && grid) {
-    toggle.querySelectorAll<HTMLButtonElement>('button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const p = btn.getAttribute('data-period') || 'monthly';
-        toggle.setAttribute('data-billing', p);
-        grid.setAttribute('data-billing', p);
-        toggle.querySelectorAll<HTMLButtonElement>('button').forEach(b => {
-          b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
-        });
-      });
-    });
-  }
-</script>
-
 <style>
-  .billing-toggle {
-    display: inline-flex; padding: 4px;
-    background: #fff; border: 1px solid var(--color-line);
+  .launch-banner {
+    display: inline-flex; align-items: center; gap: 12px;
+    margin-top: 28px; padding: 10px 18px;
+    background: rgba(231,111,42,.08);
+    border: 1px solid rgba(231,111,42,.28);
     border-radius: 999px;
   }
-  .billing-toggle button {
-    background: transparent; border: 0;
-    padding: 8px 18px; border-radius: 999px;
-    font-size: 13.5px; font-weight: 600; color: var(--color-ink-2);
-    cursor: pointer;
-    transition: background .2s ease, color .2s ease;
-    font-family: inherit;
+  .lb-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 4px 9px; border-radius: 5px;
+    background: var(--color-orange); color: #fff;
   }
-  .billing-toggle button[aria-pressed="true"] {
-    background: var(--color-navy-900); color: #fff;
-  }
+  .lb-text { font-size: 13.5px; color: var(--color-ink-2); }
+  .lb-text strong { color: var(--color-ink); }
 
-  .tiers {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 16px; max-width: 920px; margin: 0 auto;
+  .core-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 14px; max-width: 1080px; margin: 0 auto;
   }
   .tier {
     position: relative;
     background: #fff; color: var(--color-ink);
     border: 1px solid var(--color-line);
-    border-radius: 14px; padding: 32px;
+    border-radius: 14px; padding: 26px 22px;
     box-shadow: var(--shadow-sm);
+    display: flex; flex-direction: column;
   }
   .tier-dark {
     background: var(--color-navy-900); color: #fff;
@@ -225,58 +206,130 @@ const compare = [
     box-shadow: 0 30px 60px -20px rgba(10,31,46,.4);
   }
   .popular {
-    position: absolute; top: 16px; right: 16px;
-    font-size: 9.5px; font-weight: 700; padding: 4px 9px; border-radius: 4px;
+    position: absolute; top: 14px; right: 14px;
+    font-size: 9px; font-weight: 700; padding: 4px 8px; border-radius: 4px;
     background: var(--color-orange); color: #fff; letter-spacing: 0.08em;
   }
   .tier-name {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--color-ink-3); margin-bottom: 14px;
   }
   .tier-dark .tier-name { color: rgba(255,255,255,.55); }
-  .tier-price { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
-  .tier-price .cc-serif { font-size: 56px; font-weight: 700; line-height: 1; color: var(--color-ink); }
-  .tier-dark .tier-price .cc-serif { color: #fff; }
-  .cycle { font-size: 13px; color: var(--color-ink-3); white-space: nowrap; }
-  .tier-dark .cycle { color: rgba(255,255,255,.5); }
-  .tier-desc { font-size: 14px; color: var(--color-ink-2); line-height: 1.5; margin-bottom: 18px; }
-  .tier-dark .tier-desc { color: rgba(255,255,255,.7); }
-  .updates-line {
-    display: flex; justify-content: space-between; align-items: baseline;
-    padding: 12px 14px; background: var(--color-bg-2); border-radius: 8px;
-    margin-bottom: 18px; font-size: 13px;
+  .tier-price { margin-bottom: 14px; }
+  .was {
+    font-size: 14px; color: var(--color-ink-4); text-decoration: line-through;
+    display: block; line-height: 1;
   }
-  .tier-dark .updates-line { background: rgba(255,255,255,.06); color: rgba(255,255,255,.85); }
-  .updates-line .muted { color: var(--color-ink-3); }
-  .tier-dark .updates-line .muted { color: rgba(255,255,255,.6); }
-  .updates-line strong { color: var(--color-ink); }
-  .tier-dark .updates-line strong { color: #fff; }
-  .tier ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px; }
-  .tier li { display: flex; gap: 8px; font-size: 13.5px; color: var(--color-ink-2); }
-  .tier-dark li { color: rgba(255,255,255,.85); }
-  .tier li.excl { color: var(--color-ink-4); }
-  .tier-dark li.excl { color: rgba(255,255,255,.45); }
-  .tier-dark .check { background: rgba(43,179,179,.2); color: var(--color-teal); }
+  .tier-dark .was { color: rgba(255,255,255,.45); }
+  .now-row { display: flex; align-items: baseline; gap: 7px; margin-top: 4px; }
+  .now-row .now { font-size: 44px; font-weight: 700; line-height: 1; color: var(--color-ink); }
+  .tier-dark .now-row .now { color: #fff; }
+  .cycle { font-size: 12px; color: var(--color-ink-3); white-space: nowrap; }
+  .tier-dark .cycle { color: rgba(255,255,255,.5); }
+  .save {
+    display: inline-block; margin-top: 8px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+    padding: 3px 9px; border-radius: 999px;
+    background: rgba(43,179,179,.14); color: var(--color-teal-600);
+  }
+  .tier-dark .save { background: rgba(43,179,179,.22); color: var(--color-teal); }
+  .sites {
+    font-size: 12.5px; font-weight: 600; color: var(--color-ink-2);
+    padding-bottom: 12px; margin-bottom: 12px;
+    border-bottom: 1px solid var(--color-line-2);
+  }
+  .tier-dark .sites { color: rgba(255,255,255,.8); border-bottom-color: var(--color-navy-700); }
+  .tier-desc { font-size: 13px; color: var(--color-ink-2); line-height: 1.5; margin-bottom: 18px; flex: 1; }
+  .tier-dark .tier-desc { color: rgba(255,255,255,.7); }
+  .renewal {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 10px 12px; background: var(--color-bg-2); border-radius: 8px; font-size: 12px;
+  }
+  .tier-dark .renewal { background: rgba(255,255,255,.06); }
+  .renewal .muted { color: var(--color-ink-3); }
+  .tier-dark .renewal .muted { color: rgba(255,255,255,.6); }
+  .renewal strong { color: var(--color-ink); }
+  .tier-dark .renewal strong { color: #fff; }
 
   .guarantee { text-align: center; margin: 32px 0 0; font-size: 13px; color: var(--color-ink-3); }
   .guarantee strong { color: var(--color-ink); }
+
+  /* Founders Lifetime — scarce premium anchor */
+  .founders {
+    max-width: 1080px; margin: 28px auto 0;
+    display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; align-items: center;
+    padding: 36px 40px; border-radius: 18px;
+    background: linear-gradient(120deg, var(--color-navy-900), #143247);
+    border: 1px solid var(--color-orange);
+    box-shadow: 0 30px 70px -28px rgba(231,111,42,.45);
+  }
+  .founders-badge {
+    display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 5px 11px; border-radius: 999px;
+    background: var(--color-orange); color: #fff;
+  }
+  .founders-name {
+    margin-top: 14px; font-family: var(--font-serif); font-size: 27px; font-weight: 600;
+    color: #fff; letter-spacing: -0.01em;
+  }
+  .founders-sub {
+    margin-top: 10px; font-size: 14px; line-height: 1.6; color: rgba(222,231,238,.72); max-width: 460px;
+  }
+  .founders-sub strong { color: #fff; }
+  .founders-feats {
+    margin: 18px 0 0; padding: 0; list-style: none;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 9px;
+  }
+  .founders-feats li { display: flex; gap: 8px; font-size: 13px; color: rgba(222,231,238,.9); }
+  .founders-feats .check { background: rgba(43,179,179,.22); color: var(--color-teal); }
+  .founders-right { text-align: center; }
+  .founders-price { margin-bottom: 16px; }
+  .founders-price .cc-serif { font-size: 56px; font-weight: 700; line-height: 1; color: #fff; }
+  .founders-price .cycle { display: block; margin-top: 4px; font-size: 12.5px; color: rgba(255,255,255,.55); }
+  .founders-note { margin-top: 12px; font-size: 11.5px; color: rgba(255,255,255,.5); }
+
+  /* Current cross-sell band */
+  .current-band { background: #fff; }
+  .current-band-inner {
+    display: flex; align-items: center; justify-content: space-between; gap: 40px;
+    max-width: 1080px; margin: 0 auto;
+    padding: 36px 40px; border-radius: 18px;
+    background: linear-gradient(120deg, #F2F8F8, var(--color-bg-2));
+    border: 1px solid var(--color-line);
+  }
+  .cb-eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+    color: var(--color-teal-600);
+  }
+  .current-band-inner p { margin-top: 12px; font-size: 14.5px; color: var(--color-ink-2); line-height: 1.55; max-width: 560px; }
+  .current-band-inner .btn { flex-shrink: 0; }
 
   .compare-wrap {
     overflow-x: auto; border-radius: 14px;
     border: 1px solid var(--color-line); background: #fff;
   }
-  .compare-table { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 600px; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 760px; }
   .compare-table th, .compare-table td {
-    text-align: left; padding: 14px 22px;
+    text-align: left; padding: 13px 18px;
     border-bottom: 1px solid var(--color-line-2);
   }
   .compare-table th {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--color-ink-3);
     background: var(--color-bg-2); border-bottom-color: var(--color-line);
   }
   .compare-table tr:last-child td { border-bottom: none; }
   .compare-table td.cc { color: var(--color-orange); font-weight: 600; }
 
-  @media (max-width: 720px) { .tiers { grid-template-columns: 1fr; } }
+  @media (max-width: 980px) {
+    .core-grid { grid-template-columns: 1fr 1fr; max-width: 620px; }
+    .current-band-inner { flex-direction: column; align-items: flex-start; }
+    .founders { grid-template-columns: 1fr; gap: 24px; padding: 28px; }
+  }
+  @media (max-width: 560px) {
+    .founders-feats { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .core-grid { grid-template-columns: 1fr; max-width: 380px; }
+  }
 </style>

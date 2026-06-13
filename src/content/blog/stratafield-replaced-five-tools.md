@@ -45,9 +45,9 @@ They moved everything except QuickBooks (accounting integration is sticky), Loom
 ## The numbers
 
 - **$1,014/mo → $0/mo** for the SaaS subscriptions they cut
-- **$497** one-time for the Single Site license (year one updates included)
-- **$97/yr** optional update plan after year one
-- **Net first-year savings: $11,671**
+- **$349** one-time for the Single Site license (year one updates included)
+- **$149/yr** optional update plan after year one
+- **Net first-year savings: $11,819**
 - **Five-year savings (at flat 2026 prices): $60,343**
 
 ## What surprised them
