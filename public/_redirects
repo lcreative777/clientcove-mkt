@@ -1,0 +1,6 @@
+# Cloudflare Pages redirects.
+# /privacy is the memorable URL people type and the one older links point at.
+# /app/privacy-policy is the canonical, stable URL registered with Google for
+# OAuth verification — it must not move.
+/privacy   /app/privacy-policy   301
+/privacy/  /app/privacy-policy   301
