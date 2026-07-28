@@ -28,3 +28,9 @@ graphify-out/20*/
 
 # internal architecture graphs — never commit to this PUBLIC repo
 graphify-out/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
