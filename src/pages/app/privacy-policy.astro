@@ -17,7 +17,7 @@ const mailScopes = [
     tier: 'Restricted',
     restricted: true,
     why:
-      'Read the message headers, bodies and attachments needed to attach an email conversation to the contact or company it belongs to. Read-only: the connection cannot send, modify, label, archive or delete anything in the mailbox.',
+      'Reads message headers, bodies and attachments. Of what is read, only messages whose counterparty already matches a contact or company in the portal are retained — everything else is evaluated in memory and discarded at capture, never written to disk. Read-only: the connection cannot send, modify, label, archive or delete anything in the mailbox.',
   },
   {
     scope: 'openid',
@@ -117,15 +117,16 @@ const policyLd = {
           </p>
           <ul>
             <li>
+              <strong>Only mail that already relates to an existing business contact is
+              retained.</strong> A message is stored only if its counterparty already corresponds to
+              a contact or company record in the portal. Newsletters, marketing and personal
+              correspondence are discarded at capture and never written to disk — the portal never
+              accumulates a copy of the mailbox.
+            </li>
+            <li>
               <strong>Message content never reaches ClientCove's servers.</strong> ClientCove is
               self-hosted. The Gmail API is called from the customer's own installation, and mail
               is stored in the customer's own database.
-            </li>
-            <li>
-              <strong>Only mail that already relates to a known business contact is stored.</strong>
-              Messages whose counterparty does not match an existing contact or company in the
-              portal — newsletters, personal correspondence, marketing — are discarded at capture
-              and never written to disk.
             </li>
             <li>
               <strong>Gmail access is read-only.</strong> ClientCove cannot send, reply, modify,
@@ -219,12 +220,29 @@ const policyLd = {
             </tbody>
           </table>
         </div>
+        <div class="callout">
+          <p>
+            <strong>Why the feature needs full message bodies.</strong> The portal shows the actual
+            correspondence with a client on that client's record, so headers alone are not
+            sufficient — they establish that a conversation happened, not what it said.
+          </p>
+          <p>
+            What matters more than the breadth of the scope is how much narrower the retention is
+            than the access. <code>gmail.readonly</code> grants read access to the mailbox, but
+            <strong>a message is stored only if its counterparty — the sender or recipient on the
+            other side of the conversation — already corresponds to a contact or company record in
+            the portal.</strong> Filtering happens at capture, not after storage:
+            newsletters, notifications, marketing and personal correspondence with people who are not
+            business contacts are evaluated in memory and discarded before anything is written to
+            disk. The portal never accumulates a copy of the mailbox — only the business
+            correspondence the customer already has a record for.
+          </p>
+        </div>
         <p class="note">
-          <code>gmail.readonly</code> is the narrowest scope that returns message bodies and
-          attachments. Narrower alternatives were considered and rejected:
-          <code>gmail.metadata</code> returns headers only, which cannot show the correspondence
-          itself; <code>gmail.modify</code> and <code>gmail.send</code> grant write access the
-          feature does not need and are therefore not requested.
+          Narrower scopes were considered and rejected: <code>gmail.metadata</code> returns headers
+          and labels only, which cannot show the correspondence itself; <code>gmail.modify</code> and
+          <code>gmail.send</code> grant write access the feature does not need.
+          <code>gmail.readonly</code> is the least-permissive scope that supports the feature.
         </p>
 
         <h3>ClientCove Sign-In</h3>
