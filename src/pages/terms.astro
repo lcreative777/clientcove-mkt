@@ -1,0 +1,165 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import PageHero from '~/components/PageHero.astro';
+import Icon from '~/components/ui/Icon.astro';
+import { SITE } from '~/lib/site';
+
+const UPDATED = 'July 28, 2026';
+
+// This page is deliberately a pointer rather than a contract. The operative
+// documents are the licence agreement supplied with a purchase and the privacy
+// policy; inventing terms of service text here would create ambiguity about
+// which document actually governs.
+const governed = [
+  {
+    t: 'Use of this website',
+    b: 'clientcove.io is informational. It has no accounts and no login, and browsing it does not create an agreement between us.',
+  },
+  {
+    t: 'Your ClientCove licence',
+    b: 'What you may do with the software is set by the licence agreement supplied with your licence. The plain-language summary is on the licence page.',
+    href: '/license',
+    hrefLabel: 'Read the licence summary',
+  },
+  {
+    t: 'Current subscriptions',
+    b: 'Current is a recurring service billed monthly or annually. Its commercial terms — billing, cancellation, and what each tier includes — are presented at the point of subscription in your account.',
+    href: '/pricing',
+    hrefLabel: 'See what Current includes',
+  },
+  {
+    t: 'How we handle data',
+    b: 'Covered in full by the privacy policy, including the handling of Google user data for mail sync and sign-in.',
+    href: '/app/privacy-policy',
+    hrefLabel: 'Read the privacy policy',
+  },
+];
+---
+<Layout
+  title="Terms — What governs your use of ClientCove"
+  description="Which documents govern your use of ClientCove: the licence agreement supplied with your licence, the privacy policy, and the commercial terms shown when you subscribe to Current."
+>
+  <PageHero
+    eyebrow="TERMS"
+    title="What actually <em class='acc'>governs things.</em>"
+    subtitle="Rather than restate agreements you have already signed, this page tells you which document covers what — and where to find it."
+  />
+
+  <section class="sect" style="padding-top:0;">
+    <div class="container legal-wrap">
+      <div class="legal-meta">
+        <span><strong>Last updated</strong> {UPDATED}</span>
+      </div>
+
+      <div class="legal">
+        <div class="callout callout-strong">
+          <p>
+            <strong>Read this first.</strong> This page is a signpost, not a contract. It is an
+            interim summary while our full Terms of Service are being finalised. It does not create,
+            replace or vary any agreement, and where it differs from a document you have actually
+            entered into, that document governs — not this page.
+          </p>
+        </div>
+
+        <h2>What governs what</h2>
+        <ul class="split">
+          {governed.map(g => (
+            <li>
+              <strong>{g.t}</strong>
+              <span>
+                {g.b}
+                {g.href && (
+                  <><br /><a href={g.href}>{g.hrefLabel}</a></>
+                )}
+              </span>
+            </li>
+          ))}
+        </ul>
+
+        <h2>Getting the full text</h2>
+        <p>
+          The complete licence agreement is provided with your licence, and we will send it before
+          you buy if you would like to read it first — write to
+          <a href="mailto:sales@clientcove.io">sales@clientcove.io</a>. If you are an existing
+          customer and want another copy of anything you have agreed to, ask
+          <a href="mailto:support@clientcove.io">support@clientcove.io</a> and we will send it over.
+        </p>
+
+        <h2>When the full terms land</h2>
+        <p>
+          We would rather publish nothing than publish boilerplate that turns out not to describe how
+          we actually operate. The complete Terms of Service will replace this page, and we will
+          update the date above when they do. Until then, treat the licence agreement and the
+          <a href="/app/privacy-policy">privacy policy</a> as the documents that carry weight.
+        </p>
+
+        <h2>Contact</h2>
+        <p>
+          Questions about any of this go to
+          <a href="mailto:sales@clientcove.io">sales@clientcove.io</a> for licensing and
+          <a href={`mailto:${SITE.email}`}>{SITE.email}</a> for anything else. We are a small team and
+          we answer our own email.
+        </p>
+      </div>
+
+      <div class="legal-cta">
+        <a href="/contact" class="btn btn-dark btn-lg">Contact the team <Icon name="arrow" class="arrow" /></a>
+        <a href="/license" class="btn btn-ghost btn-lg">Licence summary</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .legal-wrap { max-width: 820px; }
+
+  .legal-meta {
+    display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+    font-size: 13.5px; color: var(--color-ink-3);
+    padding-bottom: 22px; margin-bottom: 40px;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .legal-meta strong { color: var(--color-ink-2); font-weight: 600; }
+
+  .legal { font-size: 16px; line-height: 1.7; color: var(--color-ink-2); }
+  .legal h2 {
+    font-family: var(--font-serif); font-weight: 600;
+    font-size: 27px; line-height: 1.2; letter-spacing: -0.018em;
+    color: var(--color-ink); margin: 52px 0 16px;
+  }
+  .legal p { margin: 0 0 16px; text-wrap: pretty; }
+  .legal strong { color: var(--color-ink); font-weight: 600; }
+  .legal a { color: var(--color-orange-600); border-bottom: 1px solid rgba(231,111,42,.3); }
+  .legal a:hover { border-bottom-color: var(--color-orange); }
+
+  .split { list-style: none; margin: 0 0 16px; padding: 0; }
+  .split li {
+    display: grid; grid-template-columns: 220px 1fr; gap: 18px;
+    padding: 18px 0; border-bottom: 1px solid var(--color-line-2);
+    font-size: 15px;
+  }
+  .split li:last-child { border-bottom: 0; }
+  .split li > strong { color: var(--color-ink); }
+
+  .callout {
+    background: var(--color-bg-2); border: 1px solid var(--color-line);
+    border-radius: 12px; padding: 26px 28px; margin-bottom: 16px;
+  }
+  .callout > :last-child { margin-bottom: 0; }
+  .callout-strong {
+    background: var(--color-orange-50); border-color: rgba(231,111,42,.28);
+  }
+  .callout-strong p { color: var(--color-ink); margin: 0; }
+
+  .legal-cta {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    margin-top: 56px; padding-top: 36px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  @media (max-width: 720px) {
+    .legal { font-size: 15.5px; }
+    .legal h2 { font-size: 24px; margin-top: 42px; }
+    .split li { grid-template-columns: 1fr; gap: 6px; }
+  }
+</style>
