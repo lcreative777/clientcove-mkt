@@ -14,7 +14,7 @@ export const HOMEPAGE_FAQS = [
   { q: 'How do I extend ClientCove with Claude Code?',
     a: "Every install ships with CLAUDE.md and AGENTS.md — documentation written for AI agents to read. Drop the child theme starter into wp-content/themes, open Claude Code in that folder, and prompt it (\"add a Slack notification when a new client is created\"). The repo includes 5 working starter recipes you can fork." },
   { q: "Do I need to know how to code to extend it?",
-    a: "No. The MCP server (shipping v3.3) lets you manage clients, projects, and invoices by chatting with Claude Desktop or Claude Code. For deeper custom work, Claude Code reads the docs and writes the code for you — most starter recipes are one prompt." },
+    a: "No. The MCP server is live — 98 tools that let you manage clients, projects, tickets and invoices by chatting with Claude Desktop or Claude Code, using the permissions you already have. For deeper custom work, Claude Code reads the docs and writes the code for you — most starter recipes are one prompt." },
   { q: 'How long does setup take?',
     a: 'About 90 seconds with the DigitalOcean image. About 20 minutes with Docker on any VPS. About a coffee with the managed hosting option.' },
   { q: 'What happens if ClientCove disappears tomorrow?',
