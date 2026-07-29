@@ -1,0 +1,171 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import PageHero from '~/components/PageHero.astro';
+import Icon from '~/components/ui/Icon.astro';
+
+const UPDATED = 'July 28, 2026';
+
+const REPORT_EMAIL = 'privacy@clientcove.io';
+
+// Deliberately limited to the posture already stated publicly in the privacy
+// policy. Operational specifics belong in the self-host documentation, not on a
+// marketing page in a public repo.
+const weOperate = [
+  { t: 'clientcove.io', b: 'This marketing site. Static pages, no accounts, no customer data.' },
+  { t: 'account.clientcove.io', b: 'Licence issuing and validation, and the OAuth broker for Google connections.' },
+];
+
+const weDont = [
+  { t: 'Your portal', b: 'Runs on infrastructure you own or rent, on your domain.' },
+  { t: 'Your database', b: 'Your clients, projects, files, invoices and any synced mail. We have no access to it.' },
+  { t: 'Your backups', b: 'Yours to take, store and restore on your own schedule.' },
+];
+---
+<Layout
+  title="Security — How ClientCove is built and what we can and can't see"
+  description="ClientCove is self-hosted: your portal and your database run on infrastructure you control. What we operate, what we don't, and how to report a vulnerability."
+>
+  <PageHero
+    eyebrow="SECURITY"
+    title="We can't lose <em class='acc'>what we never hold.</em>"
+    subtitle="ClientCove is self-hosted by design. Your database lives on your infrastructure, which changes what a compromise of ours could even reach."
+  />
+
+  <section class="sect" style="padding-top:0;">
+    <div class="container legal-wrap">
+      <div class="legal-meta">
+        <span><strong>Last updated</strong> {UPDATED}</span>
+      </div>
+
+      <div class="legal">
+        <h2>The architecture is the control</h2>
+        <p>
+          Most client portals are multi-tenant: every customer's data sits in one provider's
+          database, and that database becomes a single, very attractive target. ClientCove is
+          licensed and self-hosted, so there is no such database. Each install is its own system, on
+          its own infrastructure, under its owner's control.
+        </p>
+        <p>
+          That is a genuine security property rather than a marketing line — but it moves
+          responsibility as well as risk. We are responsible for the software and the small number of
+          services we run. You are responsible for the server it runs on.
+        </p>
+
+        <h2>What we operate</h2>
+        <ul class="split">
+          {weOperate.map(x => <li><strong>{x.t}</strong><span>{x.b}</span></li>)}
+        </ul>
+
+        <h2>What we don't</h2>
+        <ul class="split">
+          {weDont.map(x => <li><strong>{x.t}</strong><span>{x.b}</span></li>)}
+        </ul>
+
+        <h2>Handling of connected accounts</h2>
+        <p>
+          Where the portal connects to an outside service on your behalf — a Google mailbox, for
+          example — credentials are held on your install rather than centrally, and the broker that
+          performs the authorisation exchange retains no tokens. The reasoning, and the specifics of
+          what is stored and for how long, are set out in the
+          <a href="/app/privacy-policy">privacy policy</a>.
+        </p>
+
+        <h2>This website</h2>
+        <p>
+          clientcove.io runs no analytics, no advertising tags and no third-party tracking scripts,
+          and sets no tracking cookies. There is no account system here and no customer data to
+          expose.
+        </p>
+
+        <h2>Your side of it</h2>
+        <p>
+          Because you run the install, its security is yours to configure: the host, transport
+          security, database access, backups, and who has administrative accounts. We publish
+          hardening guidance in the
+          <a href="https://docs.clientcove.io/self-host" rel="noopener">self-host playbook</a>, and
+          support can help you work through it — but we cannot enforce it on infrastructure we do not
+          operate, and we would rather say so plainly than imply otherwise.
+        </p>
+
+        <h2>Reporting a vulnerability</h2>
+        <div class="callout">
+          <p>
+            If you believe you have found a security issue in ClientCove, write to
+            <a href={`mailto:${REPORT_EMAIL}`}>{REPORT_EMAIL}</a>. Include enough detail to
+            reproduce it. We will acknowledge your report, keep you updated while we work on it, and
+            credit you when a fix ships if you would like us to.
+          </p>
+          <p>
+            Please give us a reasonable opportunity to fix an issue before disclosing it publicly. We
+            will not pursue legal action against anyone who reports a genuine vulnerability in good
+            faith and does not access, alter or destroy other people's data in the course of finding
+            it.
+          </p>
+        </div>
+
+        <h2>No system is perfect</h2>
+        <p>
+          We do not claim ClientCove is unbreakable, and we are wary of vendors who do. What we can
+          say is that the design deliberately avoids collecting things we would then have to protect,
+          and that we would rather hold less of your data than promise to guard more of it.
+        </p>
+      </div>
+
+      <div class="legal-cta">
+        <a href="/contact" class="btn btn-dark btn-lg">Contact the team <Icon name="arrow" class="arrow" /></a>
+        <a href="/app/privacy-policy" class="btn btn-ghost btn-lg">Privacy policy</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .legal-wrap { max-width: 820px; }
+
+  .legal-meta {
+    display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+    font-size: 13.5px; color: var(--color-ink-3);
+    padding-bottom: 22px; margin-bottom: 40px;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .legal-meta strong { color: var(--color-ink-2); font-weight: 600; }
+
+  .legal { font-size: 16px; line-height: 1.7; color: var(--color-ink-2); }
+  .legal h2 {
+    font-family: var(--font-serif); font-weight: 600;
+    font-size: 27px; line-height: 1.2; letter-spacing: -0.018em;
+    color: var(--color-ink); margin: 52px 0 16px;
+  }
+  .legal h2:first-child { margin-top: 0; }
+  .legal p { margin: 0 0 16px; text-wrap: pretty; }
+  .legal strong { color: var(--color-ink); font-weight: 600; }
+  .legal a { color: var(--color-orange-600); border-bottom: 1px solid rgba(231,111,42,.3); }
+  .legal a:hover { border-bottom-color: var(--color-orange); }
+
+  .split { list-style: none; margin: 0 0 16px; padding: 0; }
+  .split li {
+    display: grid; grid-template-columns: 220px 1fr; gap: 18px;
+    padding: 15px 0; border-bottom: 1px solid var(--color-line-2);
+    font-size: 15px;
+  }
+  .split li:last-child { border-bottom: 0; }
+  .split li strong { color: var(--color-ink); font-family: var(--font-mono); font-size: 13.5px; }
+
+  .callout {
+    background: var(--color-bg-2); border: 1px solid var(--color-line);
+    border-radius: 12px; padding: 26px 28px; margin-bottom: 16px;
+  }
+  .callout > :last-child { margin-bottom: 0; }
+
+  .legal-cta {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    margin-top: 56px; padding-top: 36px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  @media (max-width: 720px) {
+    .legal { font-size: 15.5px; }
+    .legal h2 { font-size: 24px; margin-top: 42px; }
+    .split li { grid-template-columns: 1fr; gap: 6px; }
+  }
+</style>
