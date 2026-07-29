@@ -1,0 +1,312 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import PageHero from '~/components/PageHero.astro';
+import FinalCTA from '~/components/home/FinalCTA.astro';
+import Icon from '~/components/ui/Icon.astro';
+import { CURRENT_TIERS } from '~/lib/site';
+
+// TOOL_COUNT is the live figure reported by the running MCP bridge catalog.
+// Re-check it against the bridge before changing this number — it moves as
+// tools ship, and it is the one claim on this page a reader can verify.
+const TOOL_COUNT = 98;
+
+const DOCS_URL = 'https://docs.clientcove.io/developer/mcp-server';
+
+const wave = CURRENT_TIERS.find(t => t.id === 'wave')!;
+
+const stats = [
+  { n: String(TOOL_COUNT), l: 'tools', s: 'Full portal coverage, not a read-only subset.' },
+  { n: 'Per-user', l: 'OAuth', s: 'Everyone connects as themselves, with their own permissions.' },
+  { n: 'Zero', l: 'data shared', s: 'The server runs inside your install. Nothing leaves it.' },
+];
+
+// Grouped from the live tool catalog rather than aspirationally — every area
+// below is backed by tools the bridge actually exposes today.
+const areas = [
+  { t: 'Clients & companies', b: 'Create, update and search client records, and pull a full overview of any account.' },
+  { t: 'Projects & boards', b: 'Spin up projects, manage board lists and cards, set and evaluate scope, read activity.' },
+  { t: 'Tasks', b: 'Create, assign, complete and delegate tasks — for yourself, a teammate, or a client user.' },
+  { t: 'Tickets', b: 'Open, update, reply and bulk-triage support tickets without leaving the conversation.' },
+  { t: 'Estimates & invoices', b: 'Draft and send estimates and invoices, bill from tracked tasks, record payments.' },
+  { t: 'Campaigns & email', b: 'Build campaigns, preview the audience, manage templates, schedule and send.' },
+  { t: 'Assets & locations', b: 'Track managed assets and sites — the backbone of MSP and facilities work.' },
+  { t: 'Resources', b: 'Create and organise resource collections and the documents inside them.' },
+  { t: 'Automations', b: 'List, build, toggle and run automations, including from prebuilt recipes.' },
+  { t: 'Reports & queries', b: 'Generate reports, check deadlines and user stats, query across contexts at once.' },
+  { t: 'Notes & memory', b: 'Read and write Global Notes, so context persists between conversations.' },
+  { t: 'Subscriptions', b: 'Check subscription status and handle renewals and cancellations.' },
+];
+
+const safety = [
+  {
+    t: 'Each person connects as themselves',
+    b: 'Authentication is per-user OAuth, not a shared key pasted into a config file. There is no single credential that unlocks the whole portal.',
+  },
+  {
+    t: 'Tools inherit existing permissions',
+    b: 'The catalog a user sees is the set of tools their role already allows. Connecting Claude does not widen what someone can reach — if they cannot do it in the portal, they cannot do it through the agent.',
+  },
+  {
+    t: 'Acting on behalf of someone is guarded and logged',
+    b: 'Where a tool can run as another user, the portal enforces its permission guards and writes an audit record of the impersonation.',
+  },
+  {
+    t: 'Destructive actions ask first',
+    b: 'Operations that would remove or irreversibly change something require an explicit confirmation step rather than firing on a single ambiguous sentence.',
+  },
+  {
+    t: 'Everything is audited',
+    b: 'Agent actions land in the same audit trail as human ones, so "what changed and who changed it" has one answer.',
+  },
+];
+
+const prompts = [
+  'Create a project "Acme Q3 launch" for Acme Corp, due September 30.',
+  'Which invoices are overdue by more than 14 days, and who do I chase?',
+  'Reply to the open tickets from Northwind and mark them waiting on client.',
+  'Add Dena to the onboarding tasks for the two new clients this week.',
+  'Bill the tracked time on the Meridian project as a draft invoice.',
+];
+
+const mcpLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'ClientCove MCP Server',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web, Linux, Docker',
+  description: `A Model Context Protocol server that runs inside your self-hosted ClientCove install, exposing ${TOOL_COUNT} tools to Claude Desktop and Claude Code with per-user OAuth.`,
+  offers: {
+    '@type': 'Offer',
+    name: `Current — ${wave.name}`,
+    price: wave.monthly,
+    priceCurrency: 'USD',
+  },
+};
+---
+<Layout
+  title="MCP Server — Run your portal by talking to Claude"
+  description={`ClientCove's MCP server is live: ${TOOL_COUNT} tools covering clients, projects, tickets, invoices, campaigns and more. Per-user OAuth, permissions inherited from the portal, running inside your own install.`}
+  jsonLd={mcpLd}
+>
+  <PageHero
+    eyebrow="MCP SERVER"
+    title="Run your portal by <em class='acc'>talking to Claude.</em>"
+    subtitle={`Connect Claude Desktop or Claude Code to your install and work in plain language across ${TOOL_COUNT} tools — with the permissions each teammate already has.`}
+  >
+    <div class="hero-btns">
+      <a href="/pricing" class="btn btn-primary btn-lg">Get it with {wave.name} <Icon name="arrow" class="arrow" /></a>
+      <a href={DOCS_URL} class="btn btn-ghost btn-lg" rel="noopener">Setup guide</a>
+    </div>
+  </PageHero>
+
+  <section class="sect" style="padding-top:0;">
+    <div class="container">
+      <div class="stats reveal">
+        {stats.map(s => (
+          <div class="stat">
+            <div class="stat-n num">{s.n} <span>{s.l}</span></div>
+            <p>{s.s}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sect" style="padding-top:0;">
+    <div class="container prose-wrap">
+      <div class="reveal">
+        <h2 class="cc-h2">It's the portal, not a chatbot bolted on.</h2>
+        <p class="lede">
+          MCP — the Model Context Protocol — is the standard way an AI client talks to a system that
+          holds real data. ClientCove ships an MCP server inside the install you already run. Point
+          Claude Desktop or Claude Code at it and Claude gets structured access to your portal:
+          not a summary of it, not an export of it, the live thing.
+        </p>
+        <p class="lede">
+          That distinction matters. Most "AI features" are a text box that produces a suggestion you
+          then go and carry out yourself. This creates the project, sends the invoice and closes the
+          ticket — inside your database, under your rules, with your name on the audit entry.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sect" style="background:var(--color-bg-2);">
+    <div class="container-wide">
+      <div class="reveal sect-head">
+        <div class="eyebrow" style="margin-bottom:14px;justify-content:center;">
+          <span class="badge">COVERAGE</span> What Claude can reach
+        </div>
+        <h2 class="cc-h2">{TOOL_COUNT} tools across the whole portal.</h2>
+        <p class="sect-sub">
+          Not a read-only preview of a few endpoints. The catalog spans the same surfaces your team
+          uses every day.
+        </p>
+      </div>
+      <div class="areas">
+        {areas.map(a => (
+          <div class="card reveal area">
+            <h3>{a.t}</h3>
+            <p>{a.b}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sect">
+    <div class="container prose-wrap">
+      <div class="reveal sect-head" style="text-align:left;">
+        <div class="eyebrow" style="margin-bottom:14px;">
+          <span class="badge">IN PRACTICE</span> What you actually type
+        </div>
+        <h2 class="cc-h2">Things people ask it to do.</h2>
+      </div>
+      <ul class="prompts reveal">
+        {prompts.map(p => (
+          <li><span class="caret">›</span> {p}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="sect" style="background:var(--color-bg-2);">
+    <div class="container prose-wrap">
+      <div class="reveal sect-head" style="text-align:left;">
+        <div class="eyebrow teal" style="margin-bottom:14px;">
+          <span class="badge">SAFETY</span> The part that matters
+        </div>
+        <h2 class="cc-h2">An agent with your permissions, not admin's.</h2>
+        <p class="sect-sub" style="margin-left:0;">
+          Handing an AI agent write access to the system that runs your business is a real decision.
+          Here is exactly what constrains it.
+        </p>
+      </div>
+      <ol class="safety reveal">
+        {safety.map(s => (
+          <li>
+            <h3>{s.t}</h3>
+            <p>{s.b}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="sect">
+    <div class="container prose-wrap">
+      <div class="reveal">
+        <h2 class="cc-h2">Where it runs</h2>
+        <p class="lede">
+          Inside your install. There is no ClientCove-operated middleman holding your data, no shared
+          multi-tenant server, and no copy of your database anywhere we control. The MCP server is
+          part of the software you licensed, running on the infrastructure you own — which is the
+          same reason the rest of ClientCove works the way it does.
+        </p>
+
+        <h2 class="cc-h2" style="margin-top:56px;">How to turn it on</h2>
+        <p class="lede">
+          The MCP server is part of <strong>Current — {wave.name}</strong>, ${wave.monthly}/month or
+          ${wave.annual}/year. Everything in {CURRENT_TIERS[0].name} is included, plus Global Notes
+          memory and multi-client scoping alongside the server itself.
+        </p>
+        <p class="lede">
+          Connection takes a few minutes: subscribe, then follow the setup guide to connect Claude
+          Desktop or Claude Code and authorise your own user. Each teammate who wants access connects
+          separately, as themselves.
+        </p>
+        <div class="cta-row">
+          <a href="/pricing" class="btn btn-dark btn-lg">See {wave.name} pricing <Icon name="arrow" class="arrow" /></a>
+          <a href={DOCS_URL} class="btn btn-ghost btn-lg" rel="noopener">Read the setup guide</a>
+        </div>
+        <p class="fineprint">
+          The setup guide lives in the Developer Guide on docs.clientcove.io and asks you to sign in
+          with a paid plan.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA />
+</Layout>
+
+<style>
+  .hero-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
+
+  .prose-wrap { max-width: 760px; }
+  .lede { font-size: 17.5px; line-height: 1.65; color: var(--color-ink-2); margin: 0 0 18px; text-wrap: pretty; }
+
+  .sect-head { text-align: center; max-width: 680px; margin: 0 auto 48px; }
+  .sect-sub { font-size: 16px; line-height: 1.6; color: var(--color-ink-2); margin: 14px auto 0; max-width: 560px; text-wrap: pretty; }
+
+  /* Stats */
+  .stats {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    max-width: 900px; margin: 0 auto;
+  }
+  .stat {
+    background: #fff; border: 1px solid var(--color-line);
+    border-radius: 12px; padding: 26px 24px;
+  }
+  .stat-n {
+    font-family: var(--font-serif); font-weight: 600;
+    font-size: 34px; line-height: 1; color: var(--color-ink);
+    letter-spacing: -0.02em; margin-bottom: 10px;
+  }
+  .stat-n span {
+    font-family: var(--font-sans); font-size: 13px; font-weight: 600;
+    color: var(--color-ink-3); letter-spacing: 0.02em; margin-left: 4px;
+  }
+  .stat p { font-size: 13.5px; line-height: 1.55; color: var(--color-ink-2); margin: 0; }
+
+  /* Coverage grid */
+  .areas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .area { padding: 24px; }
+  .area h3 {
+    font-size: 15px; font-weight: 650; color: var(--color-ink);
+    margin: 0 0 8px; letter-spacing: -0.005em;
+  }
+  .area p { font-size: 13.5px; line-height: 1.6; color: var(--color-ink-2); margin: 0; }
+
+  /* Prompts */
+  .prompts { list-style: none; padding: 0; margin: 0; }
+  .prompts li {
+    display: flex; gap: 12px; align-items: baseline;
+    background: var(--color-bg-2); border: 1px solid var(--color-line);
+    border-radius: 10px; padding: 16px 18px; margin-bottom: 10px;
+    font-family: var(--font-mono); font-size: 13.5px; line-height: 1.55;
+    color: var(--color-ink); text-wrap: pretty;
+  }
+  .prompts .caret { color: var(--color-violet); font-weight: 700; flex-shrink: 0; }
+
+  /* Safety */
+  .safety { counter-reset: s; list-style: none; padding: 0; margin: 0; }
+  .safety li {
+    counter-increment: s; position: relative;
+    padding: 0 0 22px 46px; margin-bottom: 22px;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .safety li:last-child { border-bottom: 0; padding-bottom: 0; margin-bottom: 0; }
+  .safety li::before {
+    content: counter(s, decimal-leading-zero);
+    position: absolute; left: 0; top: 1px;
+    font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+    color: var(--color-teal-600);
+  }
+  .safety h3 {
+    font-size: 16px; font-weight: 650; color: var(--color-ink);
+    margin: 0 0 8px; letter-spacing: -0.008em;
+  }
+  .safety p { font-size: 15px; line-height: 1.6; color: var(--color-ink-2); margin: 0; text-wrap: pretty; }
+
+  .cta-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px; }
+  .fineprint { font-size: 13px; color: var(--color-ink-3); margin-top: 16px; }
+
+  @media (max-width: 980px) {
+    .areas { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 720px) {
+    .stats { grid-template-columns: 1fr; }
+    .areas { grid-template-columns: 1fr; }
+  }
+</style>
