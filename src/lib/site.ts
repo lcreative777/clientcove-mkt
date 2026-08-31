@@ -158,6 +158,7 @@ export const NAV_PRIMARY = [
   { label: 'Features', href: '/features' },
   { label: 'Industries', href: '/industries' },
   { label: 'Current', href: '/current' },
+  { label: 'MCP', href: '/mcp' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'Blog', href: '/blog' },
   { label: 'About', href: '/about' },

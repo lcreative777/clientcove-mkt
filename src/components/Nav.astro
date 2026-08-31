@@ -91,7 +91,9 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     position: fixed; inset: 0; background: rgba(10,31,46,.4); z-index: 199;
   }
 
-  @media (max-width: 880px) {
+  /* 960, not 880: with seven primary items the nav meets the CTA at ~900px and
+     pushes it past the viewport edge. Hand over to the mobile menu before that. */
+  @media (max-width: 960px) {
     .primary-nav, .signin-link { display: none; }
     .mobile-toggle { display: inline-flex; align-items: center; justify-content: center; }
   }
