@@ -184,6 +184,11 @@ const steps = [
     width: 24px; background: var(--color-orange);
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .tour-screens .screen { transition-duration: .01ms; transform: none; }
+    .step { transition-duration: .01ms; }
+  }
+
   @media (max-width: 980px) {
     .tour-grid { grid-template-columns: 1fr; gap: 32px; }
     .tour-text { gap: 80px; padding: 0 0 60px; }
@@ -194,31 +199,58 @@ const steps = [
 </style>
 
 <script>
+  // Scroll position maps directly to the active step. This previously used an
+  // IntersectionObserver watching a thin band across the middle of the viewport,
+  // which had two failure modes: a fast scroll could carry a step across the band
+  // between frames without ever reporting as intersecting, and jumping into the
+  // section (the hero's own "#tour" link does exactly that) could land past the
+  // band entirely, leaving the first screen showing against a later step.
+  // Mapping position to an index is deterministic — every scroll offset resolves
+  // to exactly one step, gaps between steps included.
   const root = document.querySelector('[data-tour]');
   if (root) {
-    const steps = root.querySelectorAll<HTMLElement>('[data-step]');
-    const screens = root.querySelectorAll<HTMLElement>('[data-screen]');
-    const dots = root.querySelectorAll<HTMLElement>('[data-dot]');
+    const steps = Array.from(root.querySelectorAll<HTMLElement>('[data-step]'));
+    const screens = Array.from(root.querySelectorAll<HTMLElement>('[data-screen]'));
+    const dots = Array.from(root.querySelectorAll<HTMLElement>('[data-dot]'));
     const addr = root.querySelector<HTMLElement>('[data-addr]');
     const labels = ['dashboard', 'tickets', 'projects', 'tasks'];
 
+    let current = -1;
+
     const setActive = (i: number) => {
+      if (i === current) return;
+      current = i;
       steps.forEach((el, j) => j === i ? el.setAttribute('data-active', '') : el.removeAttribute('data-active'));
       screens.forEach((el, j) => j === i ? el.setAttribute('data-active', '') : el.removeAttribute('data-active'));
       dots.forEach((el, j) => j === i ? el.setAttribute('data-active', '') : el.removeAttribute('data-active'));
-      if (addr) addr.textContent = `portal.acmeagency.com / ${labels[i]}`;
+      if (addr) addr.textContent = `portal.acmeagency.com / ${labels[i] ?? labels[0]}`;
     };
 
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver((entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            const i = parseInt(e.target.getAttribute('data-step') || '0', 10);
-            setActive(i);
-          }
-        }
-      }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
-      steps.forEach(s => io.observe(s));
-    }
+    // Sits slightly above centre, so a step reads as current while its heading
+    // occupies the upper half of the screen rather than after it has passed.
+    const FOCUS = 0.45;
+
+    const update = () => {
+      const line = window.innerHeight * FOCUS;
+      let next = 0;
+      for (let i = 0; i < steps.length; i++) {
+        // A step becomes current once its top crosses the focus line and stays
+        // current until the next one reaches it — so the 200px gaps between
+        // steps hold the previous screen instead of clearing it.
+        if (steps[i].getBoundingClientRect().top <= line) next = i;
+      }
+      setActive(next);
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { ticking = false; update(); });
+    };
+
+    update();
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', onScroll);
   }
 </script>
