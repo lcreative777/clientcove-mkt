@@ -59,21 +59,6 @@ const steps = [
     </div>
 
     <div class="tour-grid" data-tour>
-      <div class="tour-text">
-        {steps.map((s, i) => (
-          <div class="step" data-step={i} data-active={i === 0 ? '' : undefined}>
-            <div class="step-eyebrow">{s.eyebrow}</div>
-            <h3 class="cc-h2" style="color:#fff;font-size:clamp(28px,3.2vw,42px);margin-bottom:18px;">{s.title}</h3>
-            <p>{s.body}</p>
-            <ul>
-              {s.bullets.map(b => (
-                <li><span class="check"><Icon name="check" /></span>{b}</li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-
       <div class="tour-sticky">
         <div class="tour-frame-glow" aria-hidden="true"></div>
         <div class="tour-frame">
@@ -100,12 +85,30 @@ const steps = [
           ))}
         </div>
       </div>
+
+      <div class="tour-text">
+        {steps.map((s, i) => (
+          <div class="step" data-step={i} data-active={i === 0 ? '' : undefined}>
+            <div class="step-eyebrow">{s.eyebrow}</div>
+            <h3 class="cc-h2" style="color:#fff;font-size:clamp(28px,3.2vw,42px);margin-bottom:18px;">{s.title}</h3>
+            <p>{s.body}</p>
+            <ul>
+              {s.bullets.map(b => (
+                <li><span class="check"><Icon name="check" /></span>{b}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
     </div>
   </div>
 </section>
 
 <style>
-  .tour { position: relative; overflow: hidden; }
+  /* clip, not hidden: `overflow: hidden` here makes .tour the sticky scrolling
+     container for .tour-sticky, which defeats the pinning entirely. `clip`
+     contains the glow the same way without establishing a scroll container. */
+  .tour { position: relative; overflow: clip; }
   .tour-glow {
     position: absolute; top: 0; left: 0; right: 0; height: 240px;
     background: radial-gradient(ellipse 60% 100% at 50% 0%, rgba(231,111,42,.18), transparent 70%);
@@ -113,8 +116,13 @@ const steps = [
   }
   .tour-grid {
     display: grid; grid-template-columns: 1fr 1.3fr; gap: 80px;
-    align-items: flex-start;
+    align-items: start;
   }
+  /* DOM order is frame-then-text; placement restores the intended visual order.
+     The grid area spans the full row height, which is what .tour-sticky sticks
+     within. */
+  .tour-text   { grid-column: 1; grid-row: 1; }
+  .tour-sticky { grid-column: 2; grid-row: 1; }
   .tour-text {
     display: flex; flex-direction: column; gap: 200px;
     padding: 80px 0 200px;
@@ -184,41 +192,80 @@ const steps = [
     width: 24px; background: var(--color-orange);
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .tour-screens .screen { transition-duration: .01ms; transform: none; }
+    .step { transition-duration: .01ms; }
+  }
+
   @media (max-width: 980px) {
-    .tour-grid { grid-template-columns: 1fr; gap: 32px; }
-    .tour-text { gap: 80px; padding: 0 0 60px; }
-    .tour-sticky { position: relative; top: auto; height: auto; max-height: none; order: -1; }
-    .step { opacity: 1; }
-    .step-indicator { top: -28px; }
+    /* Block, not a single-column grid: a sticky grid item only travels within
+       its own row, so in a 1-col grid the frame could never follow the steps. */
+    .tour-grid { display: block; }
+    .tour-text, .tour-sticky { grid-column: auto; grid-row: auto; }
+    .tour-text { gap: 72px; padding: 0 0 40px; }
+    .tour-sticky {
+      top: 72px; height: auto; max-height: none;
+      margin-bottom: 36px;
+    }
+    .step { opacity: .45; }
+    .step[data-active] { opacity: 1; }
+    .step-indicator { top: -26px; }
   }
 </style>
 
 <script>
+  // Scroll position maps directly to the active step. This previously used an
+  // IntersectionObserver watching a thin band across the middle of the viewport,
+  // which had two failure modes: a fast scroll could carry a step across the band
+  // between frames without ever reporting as intersecting, and jumping into the
+  // section (the hero's own "#tour" link does exactly that) could land past the
+  // band entirely, leaving the first screen showing against a later step.
+  // Mapping position to an index is deterministic — every scroll offset resolves
+  // to exactly one step, gaps between steps included.
   const root = document.querySelector('[data-tour]');
   if (root) {
-    const steps = root.querySelectorAll<HTMLElement>('[data-step]');
-    const screens = root.querySelectorAll<HTMLElement>('[data-screen]');
-    const dots = root.querySelectorAll<HTMLElement>('[data-dot]');
+    const steps = Array.from(root.querySelectorAll<HTMLElement>('[data-step]'));
+    const screens = Array.from(root.querySelectorAll<HTMLElement>('[data-screen]'));
+    const dots = Array.from(root.querySelectorAll<HTMLElement>('[data-dot]'));
     const addr = root.querySelector<HTMLElement>('[data-addr]');
     const labels = ['dashboard', 'tickets', 'projects', 'tasks'];
 
+    let current = -1;
+
     const setActive = (i: number) => {
+      if (i === current) return;
+      current = i;
       steps.forEach((el, j) => j === i ? el.setAttribute('data-active', '') : el.removeAttribute('data-active'));
       screens.forEach((el, j) => j === i ? el.setAttribute('data-active', '') : el.removeAttribute('data-active'));
       dots.forEach((el, j) => j === i ? el.setAttribute('data-active', '') : el.removeAttribute('data-active'));
-      if (addr) addr.textContent = `portal.acmeagency.com / ${labels[i]}`;
+      if (addr) addr.textContent = `portal.acmeagency.com / ${labels[i] ?? labels[0]}`;
     };
 
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver((entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            const i = parseInt(e.target.getAttribute('data-step') || '0', 10);
-            setActive(i);
-          }
-        }
-      }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
-      steps.forEach(s => io.observe(s));
-    }
+    // Sits slightly above centre, so a step reads as current while its heading
+    // occupies the upper half of the screen rather than after it has passed.
+    const FOCUS = 0.45;
+
+    const update = () => {
+      const line = window.innerHeight * FOCUS;
+      let next = 0;
+      for (let i = 0; i < steps.length; i++) {
+        // A step becomes current once its top crosses the focus line and stays
+        // current until the next one reaches it — so the 200px gaps between
+        // steps hold the previous screen instead of clearing it.
+        if (steps[i].getBoundingClientRect().top <= line) next = i;
+      }
+      setActive(next);
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { ticking = false; update(); });
+    };
+
+    update();
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', onScroll);
   }
 </script>
