@@ -10,7 +10,7 @@ const tiers = CORE_LICENSES.map(l => ({
   renewal: l.renewal,
   sites: l.sites,
   blurb: l.blurb,
-  popular: 'recommended' in l && l.recommended,
+  popular: l.id === 'agency', // GTM bullseye: highlight Agency, not Developer
 }));
 ---
 <section class="sect pricing-teaser" id="pricing">
@@ -30,7 +30,7 @@ const tiers = CORE_LICENSES.map(l => ({
     <div class="tiers">
       {tiers.map(t => (
         <div class={`tier reveal ${t.popular ? 'tier-dark' : ''}`}>
-          {t.popular && <span class="popular">RECOMMENDED</span>}
+          {t.popular && <span class="popular">MOST POPULAR</span>}
           <div class="tier-name">{t.name}</div>
           <div class="tier-price">
             {t.was && <span class="was num">${t.was}</span>}
