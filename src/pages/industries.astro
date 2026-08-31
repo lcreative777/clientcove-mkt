@@ -4,6 +4,9 @@ import Icon from '~/components/ui/Icon.astro';
 import Mark from '~/components/ui/Mark.astro';
 import IndustryArt from '~/components/industries/IndustryArt.astro';
 import IndustryIcon from '~/components/industries/IndustryIcon.astro';
+import { LAUNCH, CORE_LICENSES } from '~/lib/site';
+
+const lowestPrice = Math.min(...CORE_LICENSES.map(l => LAUNCH.active ? l.launch : l.regular));
 
 const INDUSTRIES = [
   {
@@ -132,7 +135,11 @@ const features = [
           client portal — streamlined, branded, and genuinely user-friendly for teams and clients alike.
         </p>
         <div style="display:flex;gap:12px;margin-top:32px;flex-wrap:wrap;">
-          <a href="/pricing" class="btn btn-primary btn-lg">Get early access <Icon name="arrow" class="arrow"/></a>
+          <a href="/pricing" class="btn btn-primary btn-lg">
+            {LAUNCH.active 
+              ? <>Buy from ${lowestPrice} <Icon name="arrow" class="arrow"/></>
+              : <>See pricing <Icon name="arrow" class="arrow"/></>}
+          </a>
           <a href="#industries" class="btn btn-ghost btn-lg">Explore industries</a>
         </div>
         <div class="hero-chips" data-hero-chips>
@@ -257,7 +264,11 @@ const features = [
         Pick the version that fits your industry. Or pick "any service business" and tell us what to build next.
       </p>
       <div class="cta-btns">
-        <a href="/pricing" class="btn btn-primary btn-lg">Get early access <Icon name="arrow" class="arrow"/></a>
+        <a href="/pricing" class="btn btn-primary btn-lg">
+          {LAUNCH.active 
+            ? <>Buy from ${lowestPrice} <Icon name="arrow" class="arrow"/></>
+            : <>See pricing <Icon name="arrow" class="arrow"/></>}
+        </a>
         <a href="/#tour" class="btn btn-ghost-light btn-lg">See live demo</a>
       </div>
       <div class="cta-fineprint">Pay once · self-host · unlimited users · own forever</div>

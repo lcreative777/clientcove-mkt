@@ -1,6 +1,9 @@
 ---
 import Icon from '~/components/ui/Icon.astro';
 import HeroTour from '~/components/home/HeroTour.astro';
+import { LAUNCH, CORE_LICENSES } from '~/lib/site';
+
+const lowestPrice = Math.min(...CORE_LICENSES.map(l => LAUNCH.active ? l.launch : l.regular));
 ---
 <section class="hero">
   <svg class="hero-mesh" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -80,7 +83,9 @@ import HeroTour from '~/components/home/HeroTour.astro';
 
       <div class="reveal hero-ctas">
         <a href="/pricing" class="btn btn-primary btn-lg">
-          Buy ClientCove — $349 <Icon name="arrow" class="arrow" />
+          {LAUNCH.active 
+            ? <>Buy ClientCove — from ${lowestPrice} <Icon name="arrow" class="arrow" /></>
+            : <>See pricing <Icon name="arrow" class="arrow" /></>}
         </a>
         <a href="#tour" class="btn btn-ghost btn-lg">
           Live product tour <Icon name="arrow" class="arrow" />

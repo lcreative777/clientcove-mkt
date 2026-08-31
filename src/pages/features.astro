@@ -5,6 +5,9 @@ import FeatureGrid from '~/components/home/FeatureGrid.astro';
 import Faq from '~/components/Faq.astro';
 import FinalCTA from '~/components/home/FinalCTA.astro';
 import Icon from '~/components/ui/Icon.astro';
+import { LAUNCH, CORE_LICENSES } from '~/lib/site';
+
+const lowestPrice = Math.min(...CORE_LICENSES.map(l => LAUNCH.active ? l.launch : l.regular));
 
 const compare = [
   { feat: 'Tickets & support inbox',         clientcove: '✓ Native', stack: 'Zendesk / Help Scout' },
@@ -40,7 +43,11 @@ const faqs = [
     subtitle="Tickets, projects, tasks, time, files, contracts, and Stripe billing — under one schema, one branded URL, one fee."
   >
     <div style="margin-top:32px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-      <a href="/pricing" class="btn btn-primary btn-lg">Buy ClientCove — $349 <Icon name="arrow" class="arrow" /></a>
+      <a href="/pricing" class="btn btn-primary btn-lg">
+        {LAUNCH.active 
+          ? `Buy ClientCove — from $${lowestPrice}` 
+          : 'See pricing'} <Icon name="arrow" class="arrow" />
+      </a>
       <a href="/#tour" class="btn btn-ghost btn-lg">Watch product tour <Icon name="arrow" class="arrow" /></a>
     </div>
   </PageHero>

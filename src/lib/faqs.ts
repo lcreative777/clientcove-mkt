@@ -4,7 +4,7 @@ export const HOMEPAGE_FAQS = [
   { q: 'Is the source code included?',
     a: 'Yes. The Agency License includes full source-code access under a perpetual commercial license. Modify, extend, fork — no rev-share, no audits.' },
   { q: 'How do updates work after year one?',
-    a: 'Year one of updates is included with every license. After that, annual updates are optional ($97/yr Single Site, $297/yr Agency). Skip a year, your install keeps working.' },
+    a: 'Year one of updates is included with every license. After that, annual updates are optional ($149/yr Single Site, $199/yr 3-Site & Developer, $299/yr Agency). Skip a year, your install keeps working.' },
   { q: 'Can I migrate off ClickUp / Notion / DocuSign / Harvest?',
     a: 'Yes. We ship importers for ClickUp, Notion, Asana, Trello, Harvest, Toggl, DocuSign and HelloSign. The Agency License includes 4 hours of white-glove migration help.' },
   { q: 'Is there a per-user fee?',
