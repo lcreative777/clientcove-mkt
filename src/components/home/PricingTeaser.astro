@@ -1,33 +1,17 @@
 ---
 import Icon from '~/components/ui/Icon.astro';
-import { SITE, CORE_LICENSES, LAUNCH } from '~/lib/site';
+import { SITE, CORE_LICENSES, FOUNDERS_LIFETIME, LAUNCH } from '~/lib/site';
 
-const single = CORE_LICENSES.find(l => l.id === 'single')!;
-const agency = CORE_LICENSES.find(l => l.id === 'agency')!;
-
-const tiers = [
-  {
-    name: single.name,
-    price: LAUNCH.active ? single.launch : single.regular,
-    was: LAUNCH.active ? single.regular : null,
-    desc: 'Solo operators and boutique firms running one portal.',
-    feats: ['1 production install', 'Unlimited clients & users', 'Lifetime updates: 1 year', 'Email support', 'Self-hosted on your stack'],
-    cta: 'Buy Single Site',
-    href: SITE.subscribeUrl,
-    dark: false,
-  },
-  {
-    name: agency.name,
-    price: LAUNCH.active ? agency.launch : agency.regular,
-    was: LAUNCH.active ? agency.regular : null,
-    desc: 'Agencies running portals for themselves and their own clients.',
-    feats: ['Unlimited production installs', 'White-label resale rights', 'Lifetime updates: included', 'Priority support', 'Migration help from old stack'],
-    cta: 'Buy Agency License',
-    href: SITE.subscribeUrl,
-    dark: true,
-    popular: true,
-  },
-];
+const tiers = CORE_LICENSES.map(l => ({
+  id: l.id,
+  name: l.name,
+  price: LAUNCH.active ? l.launch : l.regular,
+  was: LAUNCH.active ? l.regular : null,
+  renewal: l.renewal,
+  sites: l.sites,
+  blurb: l.blurb,
+  popular: l.id === 'agency', // GTM bullseye: highlight Agency, not Developer
+}));
 ---
 <section class="sect pricing-teaser" id="pricing">
   <div class="container-wide">
@@ -37,32 +21,58 @@ const tiers = [
       </div>
       <h2 class="cc-h1">Pay once. <em class="acc">Own forever.</em></h2>
       <p style="font-size:17px;line-height:1.55;color:var(--color-ink-2);margin-top:18px;">
-        No monthly fees. No per-seat charges. No surprise quotas. One license. Yours.
+        {LAUNCH.active 
+          ? <>Four core licenses from <strong>${tiers[0].price}</strong> — save up to $200 through {LAUNCH.endsShort}.</>
+          : <>No monthly fees. No per-seat charges. No surprise quotas. One license. Yours.</>}
       </p>
     </div>
 
     <div class="tiers">
-      {tiers.map(p => (
-        <div class={`tier reveal ${p.dark ? 'tier-dark' : ''}`}>
-          {p.popular && <span class="popular">MOST POPULAR</span>}
-          <div class="tier-name">{p.name}</div>
+      {tiers.map(t => (
+        <div class={`tier reveal ${t.popular ? 'tier-dark' : ''}`}>
+          {t.popular && <span class="popular">MOST POPULAR</span>}
+          <div class="tier-name">{t.name}</div>
           <div class="tier-price">
-            {p.was && <span class="was num">${p.was}</span>}
-            <span class="cc-serif num">${p.price}</span>
-            <span class="cycle">one-time</span>
+            {t.was && <span class="was num">${t.was}</span>}
+            <div class="now-row">
+              <span class="cc-serif num">${t.price}</span>
+              <span class="cycle">one-time</span>
+            </div>
           </div>
-          <p class="tier-desc">{p.desc}</p>
-          <a href={p.href} class={p.dark ? 'btn btn-primary' : 'btn btn-dark'} style="width:100%;margin-bottom:22px;">
-            {p.cta} <Icon name="arrow" class="arrow" />
+          <div class="tier-sites">{t.sites}</div>
+          <p class="tier-desc">{t.blurb}</p>
+          <a href={SITE.subscribeUrl} class={t.popular ? 'btn btn-primary' : 'btn btn-dark'} style="width:100%;margin-bottom:14px;">
+            Buy {t.name} <Icon name="arrow" class="arrow" />
           </a>
-          <ul>
-            {p.feats.map(f => (
-              <li><span class="check"><Icon name="check" /></span>{f}</li>
-            ))}
-          </ul>
+          <div class="tier-renewal">
+            <span class="muted">Year 2+ updates:</span>
+            <strong class="num">${t.renewal}/yr</strong>
+          </div>
         </div>
       ))}
     </div>
+
+    {LAUNCH.active && (
+      <div class="founders reveal">
+        <div class="founders-content">
+          <span class="founders-badge">FOUNDER EDITION · THROUGH {LAUNCH.endsShort.toUpperCase()}</span>
+          <div class="founders-name">{FOUNDERS_LIFETIME.name} — <span class="cool">Lifetime</span></div>
+          <p class="founders-desc">
+            Unlimited sites, white-label resale, and lifetime Core updates — <strong>no annual renewal, ever</strong>. 
+            A one-time founder offer that retires when the launch window closes.
+          </p>
+        </div>
+        <div class="founders-price-box">
+          <div class="founders-price">
+            <span class="cc-serif num">${FOUNDERS_LIFETIME.price.toLocaleString('en-US')}</span>
+            <span class="cycle">one-time · lifetime</span>
+          </div>
+          <a href={SITE.subscribeUrl} class="btn btn-primary" style="width:100%;">
+            Claim Founders <Icon name="arrow" class="arrow" />
+          </a>
+        </div>
+      </div>
+    )}
 
     <p class="guarantee">
       {LAUNCH.active
@@ -76,15 +86,16 @@ const tiers = [
 <style>
   .pricing-teaser { background: var(--color-bg-2); }
   .tiers {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 16px; max-width: 920px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 14px; max-width: 1080px; margin: 0 auto;
   }
   .tier {
     position: relative;
     background: #fff; color: var(--color-ink);
     border: 1px solid var(--color-line);
-    border-radius: 14px; padding: 32px;
+    border-radius: 14px; padding: 26px 22px;
     box-shadow: var(--shadow-sm);
+    display: flex; flex-direction: column;
   }
   .tier-dark {
     background: var(--color-navy-900); color: #fff;
@@ -92,35 +103,80 @@ const tiers = [
     box-shadow: 0 30px 60px -20px rgba(10,31,46,.4);
   }
   .popular {
-    position: absolute; top: 16px; right: 16px;
-    font-size: 9.5px; font-weight: 700; padding: 4px 9px; border-radius: 4px;
+    position: absolute; top: 14px; right: 14px;
+    font-size: 9px; font-weight: 700; padding: 4px 8px; border-radius: 4px;
     background: var(--color-orange); color: #fff; letter-spacing: 0.08em;
   }
   .tier-name {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--color-ink-3); margin-bottom: 14px;
   }
   .tier-dark .tier-name { color: rgba(255,255,255,.55); }
-  .tier-price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+  .tier-price { margin-bottom: 14px; }
   .tier-price .was {
-    font-size: 20px; color: var(--color-ink-4); text-decoration: line-through; font-weight: 600;
+    font-size: 14px; color: var(--color-ink-4); text-decoration: line-through;
+    display: block; line-height: 1;
   }
   .tier-dark .tier-price .was { color: rgba(255,255,255,.45); }
-  .tier-price .cc-serif { font-size: 56px; font-weight: 700; line-height: 1; color: var(--color-ink); }
-  .tier-dark .tier-price .cc-serif { color: #fff; }
-  .cycle { font-size: 13px; color: var(--color-ink-3); white-space: nowrap; }
+  .now-row { display: flex; align-items: baseline; gap: 7px; margin-top: 4px; }
+  .now-row .cc-serif { font-size: 44px; font-weight: 700; line-height: 1; color: var(--color-ink); }
+  .tier-dark .now-row .cc-serif { color: #fff; }
+  .cycle { font-size: 12px; color: var(--color-ink-3); white-space: nowrap; }
   .tier-dark .cycle { color: rgba(255,255,255,.5); }
-  .tier-desc {
-    font-size: 14px; color: var(--color-ink-2); line-height: 1.5; margin-bottom: 22px;
+  .tier-sites {
+    font-size: 12.5px; font-weight: 600; color: var(--color-ink-2);
+    padding-bottom: 12px; margin-bottom: 12px;
+    border-bottom: 1px solid var(--color-line-2);
   }
+  .tier-dark .tier-sites { color: rgba(255,255,255,.8); border-bottom-color: var(--color-navy-700); }
+  .tier-desc { font-size: 13px; color: var(--color-ink-2); line-height: 1.5; margin-bottom: 18px; flex: 1; }
   .tier-dark .tier-desc { color: rgba(255,255,255,.7); }
-  .tier ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px; }
-  .tier li { display: flex; gap: 8px; font-size: 13.5px; color: var(--color-ink-2); }
-  .tier-dark li { color: rgba(255,255,255,.85); }
-  .tier-dark .check { background: rgba(43,179,179,.2); color: var(--color-teal); }
+  .tier-renewal {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 10px 12px; background: var(--color-bg-2); border-radius: 8px; font-size: 12px;
+  }
+  .tier-dark .tier-renewal { background: rgba(255,255,255,.06); }
+  .tier-renewal .muted { color: var(--color-ink-3); }
+  .tier-dark .tier-renewal .muted { color: rgba(255,255,255,.6); }
+  .tier-renewal strong { color: var(--color-ink); }
+  .tier-dark .tier-renewal strong { color: #fff; }
+
+  .founders {
+    max-width: 1080px; margin: 28px auto 0;
+    display: grid; grid-template-columns: 1.5fr 1fr; gap: 32px; align-items: center;
+    padding: 32px 36px; border-radius: 18px;
+    background: linear-gradient(120deg, var(--color-navy-900), #143247);
+    border: 1px solid var(--color-orange);
+    box-shadow: 0 30px 70px -28px rgba(231,111,42,.45);
+  }
+  .founders-badge {
+    display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 5px 10px; border-radius: 999px;
+    background: var(--color-orange); color: #fff;
+  }
+  .founders-name {
+    margin-top: 12px; font-family: var(--font-serif); font-size: 24px; font-weight: 600;
+    color: #fff; letter-spacing: -0.01em;
+  }
+  .founders-desc {
+    margin-top: 10px; font-size: 14px; line-height: 1.6; color: rgba(222,231,238,.72); max-width: 460px;
+  }
+  .founders-desc strong { color: #fff; }
+  .founders-price-box { text-align: center; }
+  .founders-price { margin-bottom: 16px; }
+  .founders-price .cc-serif { font-size: 52px; font-weight: 700; line-height: 1; color: #fff; }
+  .founders-price .cycle { display: block; margin-top: 4px; font-size: 12px; color: rgba(255,255,255,.55); }
+
   .guarantee {
     text-align: center; margin: 32px 0 0; font-size: 13px; color: var(--color-ink-3);
   }
   .guarantee strong { color: var(--color-ink); }
-  @media (max-width: 720px) { .tiers { grid-template-columns: 1fr; } }
+
+  @media (max-width: 980px) {
+    .tiers { grid-template-columns: 1fr 1fr; max-width: 620px; }
+    .founders { grid-template-columns: 1fr; gap: 24px; padding: 28px; }
+  }
+  @media (max-width: 560px) {
+    .tiers { grid-template-columns: 1fr; max-width: 380px; }
+  }
 </style>

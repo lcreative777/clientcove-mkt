@@ -3,6 +3,9 @@ import Layout from '~/layouts/Layout.astro';
 import PageHero from '~/components/PageHero.astro';
 import FinalCTA from '~/components/home/FinalCTA.astro';
 import Icon from '~/components/ui/Icon.astro';
+import { SOLUTIONS, LAUNCH, CORE_LICENSES } from '~/lib/site';
+
+const lowestPrice = Math.min(...CORE_LICENSES.map(l => LAUNCH.active ? l.launch : l.regular));
 
 export async function getStaticPaths() {
   return [
@@ -89,7 +92,11 @@ const { name, eyebrow, headline, subtitle, modules, problem, solution } = Astro.
 >
   <PageHero eyebrow={eyebrow} title={headline} subtitle={subtitle}>
     <div style="margin-top:32px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-      <a href="/pricing" class="btn btn-primary btn-lg">Buy ClientCove — $349 <Icon name="arrow" class="arrow" /></a>
+      <a href="/pricing" class="btn btn-primary btn-lg">
+        {LAUNCH.active 
+          ? <>Buy ClientCove — from ${lowestPrice} <Icon name="arrow" class="arrow" /></>
+          : <>See pricing <Icon name="arrow" class="arrow" /></>}
+      </a>
       <a href="/#tour" class="btn btn-ghost btn-lg">See product tour</a>
     </div>
   </PageHero>

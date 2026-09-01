@@ -1,6 +1,9 @@
 ---
 import Mark from '~/components/ui/Mark.astro';
 import Icon from '~/components/ui/Icon.astro';
+import { LAUNCH, CORE_LICENSES } from '~/lib/site';
+
+const lowestPrice = Math.min(...CORE_LICENSES.map(l => LAUNCH.active ? l.launch : l.regular));
 ---
 <section class="on-dark final-cta">
   <div class="cta-bg" aria-hidden="true"></div>
@@ -18,7 +21,9 @@ import Icon from '~/components/ui/Icon.astro';
     </p>
     <div class="reveal cta-btns">
       <a href="/pricing" class="btn btn-primary btn-lg">
-        Buy ClientCove — $349 <Icon name="arrow" class="arrow" />
+        {LAUNCH.active 
+          ? <>Buy ClientCove — from ${lowestPrice} <Icon name="arrow" class="arrow" /></>
+          : <>See pricing <Icon name="arrow" class="arrow" /></>}
       </a>
       <a href="#tour" class="btn btn-ghost-light btn-lg">See live demo</a>
     </div>

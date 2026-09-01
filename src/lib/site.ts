@@ -21,13 +21,15 @@ export const SITE = {
 };
 
 // Founder launch window — introductory core pricing + first month of Wave free.
-const LAUNCH_ENDS_ISO = '2026-09-01';
+// Launch prices valid through the end of Sep 1, 2026 PT (inclusive of that calendar day).
+// Regular prices apply from Sep 2, 2026 00:00 PT onward.
+const LAUNCH_ENDS_ISO = '2026-09-02';
 export const LAUNCH = {
-  // Computed at build time (midnight Pacific on the end date). Any deploy on or
+  // Computed at build time (midnight Pacific on the cutoff date). Any deploy on or
   // after the cutoff reverts the site to regular pricing automatically — a
   // scheduled job triggers a rebuild on that date so it flips without a manual push.
   active: Date.now() < Date.parse(`${LAUNCH_ENDS_ISO}T00:00:00-07:00`),
-  endsISO: LAUNCH_ENDS_ISO,
+  endsISO: '2026-09-01', // Public-facing date (last day of launch)
   endsLabel: 'September 1, 2026',
   endsShort: 'Sep 1, 2026',
   bonus: 'First month of Current Wave free',
